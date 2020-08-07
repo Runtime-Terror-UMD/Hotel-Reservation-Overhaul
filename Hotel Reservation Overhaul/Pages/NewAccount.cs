@@ -15,9 +15,11 @@ namespace Hotel_Reservation_Overhaul
 {
     public partial class NewAccount : Form
     {
-        public NewAccount()
+        Login loginForm;
+        public NewAccount(Login loginScreen)
         {
             InitializeComponent();
+            this.loginForm = loginScreen;
         }
 
         // DESCRIPTION: Checks to see if user-entered email address is in valid format
@@ -87,7 +89,7 @@ namespace Hotel_Reservation_Overhaul
 
         // DESCRIPTION: Checks to see if user-entered username address is already in use
         private bool usernameExists(string username)
-        { 
+        {
             // query to run 
             string usernameExistsQuery = "SELECT Count(*) from dbo.user where username = @username";
 
@@ -110,77 +112,77 @@ namespace Hotel_Reservation_Overhaul
         private void btnNew_Click(object sender, EventArgs e)
         {
             //reset error status
-            lblError.Visible = false;              
+            lblError.Visible = false;
 
             // check that fields are entered and valid
-            
+
             // if no account type selected
-            if ((rbtnCustomer.Checked == false) && (rbtnEmployee.Checked == false)) 
+            if ((rbtnCustomer.Checked == false) && (rbtnEmployee.Checked == false))
             {
-                lblError.Text = "Error: Please select account type";  
+                lblError.Text = "Error: Please select account type";
                 lblError.Visible = true;
             }
             // if first name not entered
-            else if (string.IsNullOrWhiteSpace(txtFirstName.Text))    
+            else if (string.IsNullOrWhiteSpace(txtFirstName.Text))
             {
-                lblError.Text = "Error: First Name is required";  
+                lblError.Text = "Error: First Name is required";
                 lblError.Visible = true;
             }
             // if last name not entered
-            else if (string.IsNullOrWhiteSpace(txtLastName.Text)) 
+            else if (string.IsNullOrWhiteSpace(txtLastName.Text))
             {
-                lblError.Text = "Error: Last Name is required";  
+                lblError.Text = "Error: Last Name is required";
                 lblError.Visible = true;
             }
             // if username  not entered
-            else if (string.IsNullOrWhiteSpace(txtUsername.Text)) 
+            else if (string.IsNullOrWhiteSpace(txtUsername.Text))
             {
-                lblError.Text = "Error: Username is required";  
+                lblError.Text = "Error: Username is required";
                 lblError.Visible = true;
             }
             // if password  not entered
-            else if (string.IsNullOrWhiteSpace(txtPassword.Text)) 
+            else if (string.IsNullOrWhiteSpace(txtPassword.Text))
             {
-                lblError.Text = "Error: Password is required"; 
+                lblError.Text = "Error: Password is required";
                 lblError.Visible = true;
             }
             // if email not entered
-            else if (string.IsNullOrWhiteSpace(txtEmail.Text)) 
+            else if (string.IsNullOrWhiteSpace(txtEmail.Text))
             {
-                lblError.Text = "Error: Email address is required";  
+                lblError.Text = "Error: Email address is required";
                 lblError.Visible = true;
             }
             // if email format is invalid
-            else if (!(isValidEmail(txtEmail.Text)))     
+            else if (!(isValidEmail(txtEmail.Text)))
             {
-                lblError.Text = "Error: Invalid email format";  
+                lblError.Text = "Error: Invalid email format";
                 lblError.Visible = true;
             }
             // if secret question not entered
-            else if (string.IsNullOrWhiteSpace(txtSQuest.Text)) 
+            else if (string.IsNullOrWhiteSpace(txtSQuest.Text))
             {
-                lblError.Text = "Error: Secret Question is required";  
+                lblError.Text = "Error: Secret Question is required";
                 lblError.Visible = true;
             }
             // if secret answer  not entered
             else if (string.IsNullOrWhiteSpace(txtSAns.Text))
             {
-                lblError.Text = "Error: Secret Answer is required"; 
+                lblError.Text = "Error: Secret Answer is required";
                 lblError.Visible = true;
             }
             else
             {
                 //Fields are entered and valid. Proceed with mySQL
                 // if email address already in use
-                if (emailExists(txtEmail.Text))          
+                if (emailExists(txtEmail.Text))
                 {
-                    lblError.Text = "Error: Email address already in use"; 
+                    lblError.Text = "Error: Email address already in use";
                     lblError.Visible = true;
                 }
                 // if username already in use
-                else if (usernameExists(txtUsername.Text))           
+                else if (usernameExists(txtUsername.Text))
                 {
-                    lblError.Text = "Error: Username already in use";  
+                    lblError.Text = "Error: Username already in use";
                     lblError.Visible = true;
                 }
 
@@ -214,7 +216,7 @@ namespace Hotel_Reservation_Overhaul
 
                     // set user type
 
-                    if (rbtnCustomer.Checked == true)                    
+                    if (rbtnCustomer.Checked == true)
                     { cmd.Parameters["@isCustomer"].Value = 1; }
                     else { cmd.Parameters["@isCustomer"].Value = 0; }
 
@@ -224,13 +226,9 @@ namespace Hotel_Reservation_Overhaul
                     // execute statement
                     userCreationConn.NonQuery(cmd);
 
-                    /*
-                    
-                    RETURN TO LOGIN SCREEN. DISPLAY "ACCOUNT CREATED SUCCESSFULLY" MESSAGE
-
-                     */
-                    this.Close();  
-                                      
+                    // return to login page
+                    this.Close();
+                    loginForm.accountCreated("Account created successfully!");
                 }
 
             }
@@ -239,10 +237,7 @@ namespace Hotel_Reservation_Overhaul
 
         private void btnReturnToLogin_Click(object sender, EventArgs e)
         {
-            /*
-             RETURN TO LOGIN SCREEN. 
-             */
-            this.Close();
+           this.Close();
         }
     }
 }
