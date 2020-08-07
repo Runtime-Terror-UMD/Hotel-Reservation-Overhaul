@@ -49,6 +49,7 @@
             this.lblLastName = new System.Windows.Forms.Label();
             this.txtFirstName = new System.Windows.Forms.TextBox();
             this.lblFirstName = new System.Windows.Forms.Label();
+            this.btnReturnToLogin = new System.Windows.Forms.Button();
             this.grpType.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -173,7 +174,6 @@
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(328, 28);
             this.txtEmail.TabIndex = 5;
-            this.txtEmail.UseSystemPasswordChar = true;
             // 
             // lblEmail
             // 
@@ -194,7 +194,6 @@
             this.txtSQuest.Name = "txtSQuest";
             this.txtSQuest.Size = new System.Drawing.Size(328, 28);
             this.txtSQuest.TabIndex = 6;
-            this.txtSQuest.UseSystemPasswordChar = true;
             // 
             // lblSQuest
             // 
@@ -215,7 +214,6 @@
             this.txtSAns.Name = "txtSAns";
             this.txtSAns.Size = new System.Drawing.Size(328, 28);
             this.txtSAns.TabIndex = 7;
-            this.txtSAns.UseSystemPasswordChar = true;
             // 
             // lblSAns
             // 
@@ -248,7 +246,6 @@
             this.txtLastName.Name = "txtLastName";
             this.txtLastName.Size = new System.Drawing.Size(328, 28);
             this.txtLastName.TabIndex = 24;
-            this.txtLastName.UseSystemPasswordChar = true;
             // 
             // lblLastName
             // 
@@ -281,11 +278,23 @@
             this.lblFirstName.Text = "First Name:";
             this.lblFirstName.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // btnReturnToLogin
+            // 
+            this.btnReturnToLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReturnToLogin.Location = new System.Drawing.Point(12, 35);
+            this.btnReturnToLogin.Name = "btnReturnToLogin";
+            this.btnReturnToLogin.Size = new System.Drawing.Size(160, 44);
+            this.btnReturnToLogin.TabIndex = 25;
+            this.btnReturnToLogin.Text = "Back to Login";
+            this.btnReturnToLogin.UseVisualStyleBackColor = true;
+            this.btnReturnToLogin.Click += new System.EventHandler(this.btnReturnToLogin_Click);
+            // 
             // NewAccount
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1176, 863);
+            this.Controls.Add(this.btnReturnToLogin);
             this.Controls.Add(this.txtLastName);
             this.Controls.Add(this.lblLastName);
             this.Controls.Add(this.txtFirstName);
@@ -337,5 +346,6 @@
         private System.Windows.Forms.Label lblLastName;
         private System.Windows.Forms.TextBox txtFirstName;
         private System.Windows.Forms.Label lblFirstName;
+        private System.Windows.Forms.Button btnReturnToLogin;
     }
 }
