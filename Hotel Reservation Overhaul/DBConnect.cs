@@ -38,7 +38,6 @@ namespace Hotel_Reservation_Overhaul
         }
 
         //DESCRIPTION: Opens connection to database
-
         public bool OpenConnection()
         {
             try
@@ -54,7 +53,7 @@ namespace Hotel_Reservation_Overhaul
             return false;
         }
 
-        //Close connection
+        //DESCRIPTION: Closea connection to database
         public bool CloseConnection()
         {
             try
@@ -95,6 +94,8 @@ namespace Hotel_Reservation_Overhaul
             }
             return null;
         }
+
+        // DESCRIPTION: Executes SELECT statements
         public MySqlDataReader ExecuteReader(MySqlCommand cmd)
         {
             if (this.OpenConnection() == true)
@@ -114,6 +115,8 @@ namespace Hotel_Reservation_Overhaul
             }
             return null;
         }
+
+        //DESCRIPTION: Executes Non-Queries (INSERT, DELETE, UPDATE)
         public int ExecuteNonQuery(string sql)
         {
             try
@@ -142,8 +145,10 @@ namespace Hotel_Reservation_Overhaul
             if (this.OpenConnection() == true)
             {
                 cmd.Connection = connection;
-                Count = int.Parse(cmd.ExecuteScalar() + "");    //ExecuteScalar will return one value
-                this.CloseConnection();                       //close Connection
+                
+                //ExecuteScalar will return one value
+                Count = int.Parse(cmd.ExecuteScalar() + "");    
+                this.CloseConnection();                       
                 return Count;
             }
             else
