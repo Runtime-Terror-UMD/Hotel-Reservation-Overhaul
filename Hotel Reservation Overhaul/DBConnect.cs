@@ -68,16 +68,6 @@ namespace Hotel_Reservation_Overhaul
                 return false;
             }
         }
-        // DESCRIPTION: Executes non-query (INSERT, UPDATE, DELETE)
-        public void NonQuery(MySqlCommand cmd)
-        {
-            if (OpenConnection() == true)
-            {
-                cmd.Connection = connection;
-                cmd.ExecuteNonQuery();
-                CloseConnection();
-            }
-        }
 
         public DataSet ExecuteDataSet(string sql)
         {
@@ -117,15 +107,13 @@ namespace Hotel_Reservation_Overhaul
         }
 
         //DESCRIPTION: Executes Non-Queries (INSERT, DELETE, UPDATE)
-        public int ExecuteNonQuery(string sql)
+        public int NonQuery(MySqlCommand cmd)
         {
             try
             {
                 int affected;
                 MySqlTransaction mytransaction = connection.BeginTransaction();
-                MySqlCommand cmd = connection.CreateCommand();
-                cmd.CommandText = sql;
-                affected = cmd.ExecuteNonQuery();
+               affected = cmd.ExecuteNonQuery();
                 mytransaction.Commit();
                 return affected;
             }
@@ -137,23 +125,43 @@ namespace Hotel_Reservation_Overhaul
         }
 
         // DESCRIPTION: Runs COUNT command 
-        public int Count(MySqlCommand cmd)
+        public int intScalar(MySqlCommand cmd)
         {
-            int Count = -1;
+            int returnInt = -1;
 
             //Open Connection
             if (this.OpenConnection() == true)
             {
                 cmd.Connection = connection;
-                
+
                 //ExecuteScalar will return one value
-                Count = int.Parse(cmd.ExecuteScalar() + "");    
+                returnInt = int.Parse(cmd.ExecuteScalar() + "");    
                 this.CloseConnection();                       
-                return Count;
+                return returnInt;
             }
             else
             {
-                return Count;
+                return returnInt;
+            }
+        }
+
+        public string stringScalar(MySqlCommand cmd)
+        {
+            string returnString = null;
+
+            //Open Connection
+            if (this.OpenConnection() == true)
+            {
+                cmd.Connection = connection;
+
+                //ExecuteScalar will return one value
+                returnString = cmd.ExecuteScalar().ToString();
+                this.CloseConnection();
+                return returnString;
+            }
+            else
+            {
+                return returnString;
             }
         }
     }

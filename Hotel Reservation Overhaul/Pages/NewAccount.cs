@@ -6,8 +6,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using System.Globalization;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
@@ -22,96 +20,13 @@ namespace Hotel_Reservation_Overhaul
             this.loginForm = loginScreen;
         }
 
-        // DESCRIPTION: Checks to see if user-entered email address is in valid format
-        private bool isValidEmail(string email)
-        {
-            try
-            {
-                // Normalize the domain
-                email = Regex.Replace(email, @"(@)(.+)$", DomainMapper, RegexOptions.None, TimeSpan.FromMilliseconds(200));
-
-                // Examines the domain part of the email and normalizes it.
-                string DomainMapper(Match match)
-                {
-                    // Use IdnMapping class to convert Unicode domain names.
-                    var idn = new IdnMapping();
-
-                    // Pull out and process domain name (throws ArgumentException on invalid)
-                    var domainName = idn.GetAscii(match.Groups[2].Value);
-
-                    return match.Groups[1].Value + domainName;
-                }
-            }
-            catch (RegexMatchTimeoutException e)
-            {
-                return false;
-            }
-            catch (ArgumentException e)
-            {
-                return false;
-            }
-
-            try
-            {
-                return Regex.IsMatch(email,
-                    @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
-                    @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
-                    RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
-            }
-            catch (RegexMatchTimeoutException)
-            {
-                return false;
-            }
-        }
-
-        // DESCRIPTION: Checks to see if user-entered email address is already in use
-        private bool emailExists(string email)
-        {
-            // query to run 
-            string emailExistsQuery = "SELECT Count(*) from dbo.user where email = @email";
-
-            // declare and parameterize mySQL Command
-
-            MySqlCommand cmd = new MySqlCommand(emailExistsQuery);
-            cmd.Parameters.Add("@email", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@email"].Value = email;
-
-            // connect to database
-            DBConnect emailExistsConn = new DBConnect();
-
-            // if records exist
-            if (emailExistsConn.Count(cmd) > 0)
-                return true;
-            else
-                return false;
-        }
-
-        // DESCRIPTION: Checks to see if user-entered username address is already in use
-        private bool usernameExists(string username)
-        {
-            // query to run 
-            string usernameExistsQuery = "SELECT Count(*) from dbo.user where username = @username";
-
-            // declare and parameterize mySQL Command
-            MySqlCommand cmd = new MySqlCommand(usernameExistsQuery);
-            cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@username"].Value = username;
-
-            // connect to database
-            DBConnect usernameExistsConn = new DBConnect();
-
-            // if records exist
-            if (usernameExistsConn.Count(cmd) > 0)
-                return true;
-            else
-                return false;
-        }
-
         // DESCRIPTION: Begins user account creation process
         private void btnNew_Click(object sender, EventArgs e)
         {
             //reset error status
             lblError.Visible = false;
+
+            Utilities verifyNewAccount = new Utilities();
 
             // check that fields are entered and valid
 
@@ -152,7 +67,7 @@ namespace Hotel_Reservation_Overhaul
                 lblError.Visible = true;
             }
             // if email format is invalid
-            else if (!(isValidEmail(txtEmail.Text)))
+            else if (!(verifyNewAccount.isValidEmail(txtEmail.Text)))
             {
                 lblError.Text = "Error: Invalid email format";
                 lblError.Visible = true;
@@ -173,13 +88,13 @@ namespace Hotel_Reservation_Overhaul
             {
                 //Fields are entered and valid. Proceed with mySQL
                 // if email address already in use
-                if (emailExists(txtEmail.Text))
+                if (verifyNewAccount.emailExists(txtEmail.Text))
                 {
                     lblError.Text = "Error: Email address already in use";
                     lblError.Visible = true;
                 }
                 // if username already in use
-                else if (usernameExists(txtUsername.Text))
+                else if (verifyNewAccount.usernameExists(txtUsername.Text))
                 {
                     lblError.Text = "Error: Username already in use";
                     lblError.Visible = true;

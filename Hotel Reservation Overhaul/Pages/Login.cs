@@ -43,27 +43,6 @@ namespace Hotel_Reservation_Overhaul
 
         }
 
-        // DESCRIPTION: checks if entered username exists
-        private bool usernameExists(string username)
-        {
-            // query to run 
-            string usernameExistsQuery = "SELECT Count(*) from dbo.user where username = @username";
-
-            // declare and parameterize mySQL Command
-            MySqlCommand cmd = new MySqlCommand(usernameExistsQuery);
-            cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@username"].Value = username;
-
-            // connect to database
-            DBConnect usernameExistsConn = new DBConnect();
-
-            // if records exist
-            if (usernameExistsConn.Count(cmd) > 0)
-                return true;
-            else
-                return false;
-        }
-
         // DESCRIPTION: Checks if entered password matches specified username
         private bool passwordMatches(string username, string password)
         {
@@ -79,7 +58,7 @@ namespace Hotel_Reservation_Overhaul
             DBConnect passwordMatches = new DBConnect();
 
             // if records exist
-            if (passwordMatches.Count(cmd) > 0)
+            if (passwordMatches.intScalar(cmd) > 0)
                 return true;
             else
                 return false;
@@ -119,6 +98,8 @@ namespace Hotel_Reservation_Overhaul
          // DESCRIPTION: Login process
          private void btnLogin_Click(object sender, EventArgs e)
         {
+            Utilities verifyCredentials = new Utilities();
+
             // reset error status
             lblError.Visible = false;
             lblError.ForeColor = System.Drawing.Color.Red;
@@ -138,7 +119,7 @@ namespace Hotel_Reservation_Overhaul
 
             else
             {
-                if(usernameExists(txtUsername.Text))
+                if(verifyCredentials.usernameExists(txtUsername.Text))
                 {
                     if(passwordMatches(txtUsername.Text, txtPassword.Text))
                     {
@@ -173,13 +154,15 @@ namespace Hotel_Reservation_Overhaul
         //DESCRIPTION: re-directs to username recovery page
         private void linklblUsername_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
+            var recoverUsername = new Recovery("username");
+            this.Hide();
+            recoverUsername.Show();
         }
 
         //DESCRIPTION: re-directs to password reset page
         private void linklblPass_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            var resetPassword = new Recovery();
+            var resetPassword = new Recovery("password");
             this.Hide();
             resetPassword.Show();
         }
