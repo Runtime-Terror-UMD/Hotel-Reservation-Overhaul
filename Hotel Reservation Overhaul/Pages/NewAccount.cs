@@ -24,7 +24,6 @@ namespace Hotel_Reservation_Overhaul
 
         // DESCRIPTION: Checks to see if user-entered email address is in valid format
         private bool isValidEmail(string email)
-
         {
             try
             {

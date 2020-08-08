@@ -136,7 +136,7 @@
             this.rbtnCustomer.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rbtnCustomer.Name = "rbtnCustomer";
             this.rbtnCustomer.Size = new System.Drawing.Size(150, 31);
-            this.rbtnCustomer.TabIndex = 1;
+            this.rbtnCustomer.TabIndex = 0;
             this.rbtnCustomer.TabStop = true;
             this.rbtnCustomer.Text = "Customer";
             this.rbtnCustomer.UseVisualStyleBackColor = true;
@@ -150,7 +150,7 @@
             this.grpType.Name = "grpType";
             this.grpType.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpType.Size = new System.Drawing.Size(450, 77);
-            this.grpType.TabIndex = 19;
+            this.grpType.TabIndex = 0;
             this.grpType.TabStop = false;
             this.grpType.Text = "Account Type";
             // 
@@ -161,7 +161,7 @@
             this.rbtnEmployee.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rbtnEmployee.Name = "rbtnEmployee";
             this.rbtnEmployee.Size = new System.Drawing.Size(150, 31);
-            this.rbtnEmployee.TabIndex = 2;
+            this.rbtnEmployee.TabIndex = 1;
             this.rbtnEmployee.TabStop = true;
             this.rbtnEmployee.Text = "Employee";
             this.rbtnEmployee.UseVisualStyleBackColor = true;
@@ -245,7 +245,7 @@
             this.txtLastName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtLastName.Name = "txtLastName";
             this.txtLastName.Size = new System.Drawing.Size(328, 28);
-            this.txtLastName.TabIndex = 24;
+            this.txtLastName.TabIndex = 2;
             // 
             // lblLastName
             // 
@@ -265,7 +265,7 @@
             this.txtFirstName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtFirstName.Name = "txtFirstName";
             this.txtFirstName.Size = new System.Drawing.Size(328, 28);
-            this.txtFirstName.TabIndex = 23;
+            this.txtFirstName.TabIndex = 1;
             // 
             // lblFirstName
             // 
@@ -284,7 +284,7 @@
             this.btnReturnToLogin.Location = new System.Drawing.Point(12, 35);
             this.btnReturnToLogin.Name = "btnReturnToLogin";
             this.btnReturnToLogin.Size = new System.Drawing.Size(160, 44);
-            this.btnReturnToLogin.TabIndex = 25;
+            this.btnReturnToLogin.TabIndex = 9;
             this.btnReturnToLogin.Text = "Back to Login";
             this.btnReturnToLogin.UseVisualStyleBackColor = true;
             this.btnReturnToLogin.Click += new System.EventHandler(this.btnReturnToLogin_Click);

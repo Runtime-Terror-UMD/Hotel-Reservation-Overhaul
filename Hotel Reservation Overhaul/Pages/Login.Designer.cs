@@ -105,6 +105,7 @@
             this.btnLogin.TabIndex = 3;
             this.btnLogin.Text = "Log In";
             this.btnLogin.UseVisualStyleBackColor = false;
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // btnNew
             // 
@@ -129,6 +130,7 @@
             this.linklblUsername.TabStop = true;
             this.linklblUsername.Text = "Forgot Username";
             this.linklblUsername.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.linklblUsername.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linklblUsername_LinkClicked);
             // 
             // linklblPass
             // 
@@ -141,6 +143,7 @@
             this.linklblPass.TabStop = true;
             this.linklblPass.Text = "Forgot Password";
             this.linklblPass.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.linklblPass.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linklblPass_LinkClicked);
             // 
             // lblDescribe
             // 
@@ -168,6 +171,7 @@
             // 
             // Login
             // 
+            this.AcceptButton = this.btnLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1176, 863);
