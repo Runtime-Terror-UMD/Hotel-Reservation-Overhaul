@@ -37,6 +37,7 @@ namespace Hotel_Reservation_Overhaul
             }
         }
 
+        //DESCRIPTION: Unhides fields after initial verification process
         private void unhideFields()
         {
             lblQuest.Text = displaySecretQuestion(txtUser.Text);
