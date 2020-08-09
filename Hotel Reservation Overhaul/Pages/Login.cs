@@ -14,9 +14,12 @@ namespace Hotel_Reservation_Overhaul
 {
     public partial class Login : Form
     {
+        Utilities verifyCredentials = new Utilities();
+
         public Login()
         {
             InitializeComponent();
+
         }
         private void displayError(string errorMessage)
         {
@@ -100,7 +103,6 @@ namespace Hotel_Reservation_Overhaul
          // DESCRIPTION: Login process
          private void btnLogin_Click(object sender, EventArgs e)
         {
-            Utilities verifyCredentials = new Utilities();
 
             // reset error status
             lblError.Visible = false;
@@ -125,13 +127,13 @@ namespace Hotel_Reservation_Overhaul
                         if(isCustomer(txtUsername.Text))
                         {
                             // re-drecit to menu, hide hotel management button
-                            var menuScreen = new Menu(1);
+                            var menuScreen = new Menu(1, verifyCredentials.getUserIDFromUsername(txtUsername.Text) );
                             this.Hide();
                             menuScreen.Show();
                         }
                         else
                         {   // re-drecit to menu, show hotel management button
-                            var menuScreen = new Menu(0);
+                            var menuScreen = new Menu(0, verifyCredentials.getUserIDFromUsername(txtUsername.Text));
                             this.Hide();
                             menuScreen.Show();
                         }                       
