@@ -17,5 +17,12 @@ namespace Hotel_Reservation_Overhaul
             InitializeComponent();
         }
 
+        public Menu(int isCustomer)
+        {
+            InitializeComponent();
+            if (isCustomer == 1)
+                btnHotelManagement.Visible = false;
+        }
+
     }
 }

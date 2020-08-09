@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBConnect.cs" />
     <Compile Include="Pages\Account Settings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,6 +128,7 @@
     <Compile Include="Pages\Rewards.Designer.cs">
       <DependentUpon>Rewards.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="Pages\Account Settings.resx">
       <DependentUpon>Account Settings.cs</DependentUpon>
     </EmbeddedResource>
