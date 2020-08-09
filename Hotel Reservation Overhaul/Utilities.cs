@@ -75,7 +75,7 @@ namespace Hotel_Reservation_Overhaul
                 return false;
         }
 
-        // DESCRIPTION: Checks to see if user-entered username address is already in use
+        // DESCRIPTION: Checks to see if user-entered username is already in use
         public bool usernameExists(string username)
         {
             // query to run 
@@ -117,57 +117,66 @@ namespace Hotel_Reservation_Overhaul
                 return false;
         }
 
+        // DESCRIPTION: Gets userID based on email address
         public int getUserIDFromEmail(string email)
         {
             int userID = -1;
             DBConnect getUserIDFromEmailConn = new DBConnect();
 
+            // build query
             string getUserIDFromEmailQuery = "SELECT userid from dbo.user where email = @email";
             MySqlCommand cmd = new MySqlCommand(getUserIDFromEmailQuery);
             cmd.Parameters.Add("@email", MySqlDbType.VarChar, 45);
             cmd.Parameters["@email"].Value = email;
 
+            // assign value to variable
             userID = getUserIDFromEmailConn.intScalar(cmd);
 
-            // close connections
             getUserIDFromEmailConn.CloseConnection();
             return userID;
         }
 
+        // DESCRIPTION: Gets userID based on username
         public int getUserIDFromUsername(string username)
         {
             int userID = -1;
             DBConnect getUserIDFromUsernameConn = new DBConnect();
-
+           
+            // build query
             string getUserIDFromUsernameQuery = "SELECT userid from dbo.user where username = @username";
             MySqlCommand cmd = new MySqlCommand(getUserIDFromUsernameQuery);
             cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45);
             cmd.Parameters["@username"].Value = username;
 
+            // assign value to variable
             userID = getUserIDFromUsernameConn.intScalar(cmd);
 
-            // close connections
             getUserIDFromUsernameConn.CloseConnection();
             return userID;
         }
 
+        //  DESCRIPTION: Gets username based on userID
         public string getUsername(int userID)
         {
             string username;
             DBConnect getUsernameConn = new DBConnect();
 
+            // build query
             string getUsernameQuery = "SELECT username from dbo.user where userid = @userID";
             MySqlCommand cmd = new MySqlCommand(getUsernameQuery);
             cmd.Parameters.Add("@userID", MySqlDbType.Int32);
             cmd.Parameters["@userID"].Value = userID;
 
+            //assign value to variable
             username = getUsernameConn.stringScalar(cmd);
             getUsernameConn.CloseConnection();
             return username;
-
         }
+
+        //  DESCRIPTION: Updates account password
         public bool updatePassword(string username, string newPassword)
         {
+            // build query
             string updatePasswordQuery = "UPDATE `dbo`.`user` SET `password` = @newpassword WHERE `username` = @username";
             MySqlCommand cmd = new MySqlCommand(updatePasswordQuery);
             cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45);

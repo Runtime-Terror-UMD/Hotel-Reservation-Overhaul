@@ -20,7 +20,6 @@ namespace Hotel_Reservation_Overhaul
         private string password;
         public static string connectionString;
 
-        //Constructor
         public DBConnect()
         {
             Initialize();
@@ -53,7 +52,7 @@ namespace Hotel_Reservation_Overhaul
             return false;
         }
 
-        //DESCRIPTION: Closea connection to database
+        //DESCRIPTION: Closes connection to database
         public bool CloseConnection()
         {
             try
@@ -128,7 +127,7 @@ namespace Hotel_Reservation_Overhaul
             return -1;
         }
 
-        // DESCRIPTION: Runs COUNT command 
+        // DESCRIPTION: Executes scalar query of type integer
         public int intScalar(MySqlCommand cmd)
         {
             int returnInt = -1;
@@ -149,16 +148,16 @@ namespace Hotel_Reservation_Overhaul
             }
         }
 
+
+        // DESCRIPTION: Executes scalar query of type string
         public string stringScalar(MySqlCommand cmd)
         {
             string returnString = null;
 
-            //Open Connection
             if (this.OpenConnection() == true)
             {
                 cmd.Connection = connection;
 
-                //ExecuteScalar will return one value
                 returnString = cmd.ExecuteScalar().ToString();
                 this.CloseConnection();
                 return returnString;
