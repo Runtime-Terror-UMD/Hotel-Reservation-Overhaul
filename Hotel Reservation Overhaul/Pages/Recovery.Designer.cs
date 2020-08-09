@@ -41,6 +41,7 @@
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.lblPassword = new System.Windows.Forms.Label();
             this.btnVerifyAcct = new System.Windows.Forms.Button();
+            this.btnReturn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnRecover
@@ -191,12 +192,25 @@
             this.btnVerifyAcct.UseVisualStyleBackColor = true;
             this.btnVerifyAcct.Click += new System.EventHandler(this.btnVerifyAcct_Click);
             // 
+            // btnReturn
+            // 
+            this.btnReturn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReturn.Location = new System.Drawing.Point(13, 30);
+            this.btnReturn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnReturn.Name = "btnReturn";
+            this.btnReturn.Size = new System.Drawing.Size(225, 46);
+            this.btnReturn.TabIndex = 37;
+            this.btnReturn.Text = "Return to Login";
+            this.btnReturn.UseVisualStyleBackColor = true;
+            this.btnReturn.Click += new System.EventHandler(this.btnReturn_Click);
+            // 
             // Recovery
             // 
             this.AcceptButton = this.btnVerifyAcct;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1176, 863);
+            this.Controls.Add(this.btnReturn);
             this.Controls.Add(this.btnVerifyAcct);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.lblPassword);
@@ -233,5 +247,6 @@
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.Button btnVerifyAcct;
+        private System.Windows.Forms.Button btnReturn;
     }
 }

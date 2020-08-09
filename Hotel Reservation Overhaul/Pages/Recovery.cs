@@ -16,10 +16,10 @@ namespace Hotel_Reservation_Overhaul
         private int typeToRecover;
         public int userID;
 
-
         //DESCRIPTION: Displays different buttons/text depending on which recovery option was selected
         public Recovery(string recoveryType)
         {
+            this.AcceptButton = this.btnVerifyAcct;
             if (recoveryType == "password")
             {
                 typeToRecover = 1;
@@ -33,6 +33,7 @@ namespace Hotel_Reservation_Overhaul
                 lblUsername.Text = "Email";
                 btnRecover.Text = "Recover Username";
                 lblPassword.Text = "Username";
+                txtPassword.UseSystemPasswordChar = false;
             }
         }
 
@@ -95,8 +96,6 @@ namespace Hotel_Reservation_Overhaul
 
             // check that secret answer matches secret question
 
-            //FIXME: Need to change secretAnswerMatches query depending on typeToRecover
-
             if (recoveryVerification.secretAnswerMatches(userID, txtSAns.Text))
             {
 
@@ -136,6 +135,7 @@ namespace Hotel_Reservation_Overhaul
         {
             // reset error status
             lblError.Visible = false;
+            this.AcceptButton = this.btnRecover;
 
             // declare and initialize utlity object
             Utilities recoveryVerification = new Utilities();
@@ -175,6 +175,11 @@ namespace Hotel_Reservation_Overhaul
                     displayError("Invalid email format");
                 }
             }
+        }
+
+        private void btnReturn_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

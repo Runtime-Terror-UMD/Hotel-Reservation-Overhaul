@@ -156,7 +156,7 @@ namespace Hotel_Reservation_Overhaul
             string username;
             DBConnect getUsernameConn = new DBConnect();
 
-            string getUsernameQuery = "SELECT usernane from dbo.user where userid = @userID";
+            string getUsernameQuery = "SELECT username from dbo.user where userid = @userID";
             MySqlCommand cmd = new MySqlCommand(getUsernameQuery);
             cmd.Parameters.Add("@userID", MySqlDbType.Int32);
             cmd.Parameters["@userID"].Value = userID;

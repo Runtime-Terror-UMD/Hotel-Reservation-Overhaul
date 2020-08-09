@@ -34,6 +34,11 @@ namespace Hotel_Reservation_Overhaul
             this.Show();
         }
 
+        void recovery_FormClosed(object send, FormClosedEventArgs e)
+        {
+            this.Show();
+        }
+
         // DESCRIPTION: Display "account created" message
         public void accountCreated(string message)
         {
@@ -155,6 +160,7 @@ namespace Hotel_Reservation_Overhaul
         private void linklblUsername_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             var recoverUsername = new Recovery("username");
+            recoverUsername.FormClosed += new FormClosedEventHandler(recovery_FormClosed);
             this.Hide();
             recoverUsername.Show();
         }
@@ -163,6 +169,7 @@ namespace Hotel_Reservation_Overhaul
         private void linklblPass_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             var resetPassword = new Recovery("password");
+            resetPassword.FormClosed += new FormClosedEventHandler(recovery_FormClosed);
             this.Hide();
             resetPassword.Show();
         }

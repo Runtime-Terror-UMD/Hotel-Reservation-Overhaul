@@ -112,9 +112,13 @@ namespace Hotel_Reservation_Overhaul
             try
             {
                 int affected;
+                connection = new MySqlConnection(connectionString);
+                this.OpenConnection();
+                cmd.Connection = connection;
                 MySqlTransaction mytransaction = connection.BeginTransaction();
-               affected = cmd.ExecuteNonQuery();
+                affected = cmd.ExecuteNonQuery();
                 mytransaction.Commit();
+                this.CloseConnection();
                 return affected;
             }
             catch (Exception ex)
