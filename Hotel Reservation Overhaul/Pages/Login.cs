@@ -18,7 +18,12 @@ namespace Hotel_Reservation_Overhaul
         {
             InitializeComponent();
         }
-
+        private void displayError(string errorMessage)
+        {
+            lblError.ForeColor = System.Drawing.Color.Red;
+            lblError.Text = "Error: " + errorMessage;
+            lblError.Visible = true;
+        }
         //DESCRIPTION: opens NewAccount page
         private void btnNew_Click(object sender, EventArgs e)
         {
@@ -107,19 +112,16 @@ namespace Hotel_Reservation_Overhaul
 
             // reset error status
             lblError.Visible = false;
-            lblError.ForeColor = System.Drawing.Color.Red;
 
             // if username not entered
             if (string.IsNullOrWhiteSpace(txtUsername.Text))
             {
-                lblError.Text = "Error: Username is required";
-                lblError.Visible = true;
+                displayError("Username is required");
             }
             // if password not entered
             else if (string.IsNullOrWhiteSpace(txtPassword.Text))
             {
-                lblError.Text = "Error: Password is required";
-                lblError.Visible = true;
+                displayError("Password is required");
             }
 
             else
@@ -144,14 +146,12 @@ namespace Hotel_Reservation_Overhaul
                     }
                     else
                     {
-                        lblError.Text = "Error invalid password";
-                        lblError.Visible = true;
+                        displayError("Invalid password");
                     }    
                 }
                 else
                 {
-                    lblError.Text = "Error: Username does not exist";
-                    lblError.Visible = true;
+                    displayError("Username does not exist");
                 }
             }
         }

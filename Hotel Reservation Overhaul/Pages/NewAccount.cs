@@ -20,6 +20,12 @@ namespace Hotel_Reservation_Overhaul
             this.loginForm = loginScreen;
         }
 
+        private void displayError(string errorMessage)
+        {
+            lblError.Text = "Error: " + errorMessage;
+            lblError.Visible = true;
+        }
+
         // DESCRIPTION: Begins user account creation process
         private void btnNew_Click(object sender, EventArgs e)
         {
@@ -33,56 +39,47 @@ namespace Hotel_Reservation_Overhaul
             // if no account type selected
             if ((rbtnCustomer.Checked == false) && (rbtnEmployee.Checked == false))
             {
-                lblError.Text = "Error: Please select account type";
-                lblError.Visible = true;
+               displayError("Please select account type");
             }
             // if first name not entered
             else if (string.IsNullOrWhiteSpace(txtFirstName.Text))
             {
-                lblError.Text = "Error: First Name is required";
-                lblError.Visible = true;
+                displayError("First Name is required");
             }
             // if last name not entered
             else if (string.IsNullOrWhiteSpace(txtLastName.Text))
             {
-                lblError.Text = "Error: Last Name is required";
-                lblError.Visible = true;
+                displayError("Last Name is required");
             }
             // if username  not entered
             else if (string.IsNullOrWhiteSpace(txtUsername.Text))
             {
-                lblError.Text = "Error: Username is required";
-                lblError.Visible = true;
+                displayError("Username is required");
             }
             // if password  not entered
             else if (string.IsNullOrWhiteSpace(txtPassword.Text))
             {
-                lblError.Text = "Error: Password is required";
-                lblError.Visible = true;
+                displayError("Password is required");
             }
             // if email not entered
             else if (string.IsNullOrWhiteSpace(txtEmail.Text))
             {
-                lblError.Text = "Error: Email address is required";
-                lblError.Visible = true;
+                displayError("Email address is required");
             }
             // if email format is invalid
             else if (!(verifyNewAccount.isValidEmail(txtEmail.Text)))
             {
-                lblError.Text = "Error: Invalid email format";
-                lblError.Visible = true;
+                displayError("Invalid email format");
             }
             // if secret question not entered
             else if (string.IsNullOrWhiteSpace(txtSQuest.Text))
             {
-                lblError.Text = "Error: Secret Question is required";
-                lblError.Visible = true;
+                displayError("Secret Question is required");
             }
             // if secret answer  not entered
             else if (string.IsNullOrWhiteSpace(txtSAns.Text))
             {
-                lblError.Text = "Error: Secret Answer is required";
-                lblError.Visible = true;
+                displayError("Secret Answer is required");
             }
             else
             {
@@ -90,14 +87,12 @@ namespace Hotel_Reservation_Overhaul
                 // if email address already in use
                 if (verifyNewAccount.emailExists(txtEmail.Text))
                 {
-                    lblError.Text = "Error: Email address already in use";
-                    lblError.Visible = true;
+                    displayError("Email address already in use");
                 }
                 // if username already in use
                 else if (verifyNewAccount.usernameExists(txtUsername.Text))
                 {
-                    lblError.Text = "Error: Username already in use";
-                    lblError.Visible = true;
+                    displayError("Username already in use");
                 }
 
                 else
