@@ -48,6 +48,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBConnect.cs" />
+    <Compile Include="Entity Class Definitions\ActivityType.cs" />
+    <Compile Include="Entity Class Definitions\User.cs" />
+    <Compile Include="Entity Class Definitions\Employee.cs" />
+    <Compile Include="Entity Class Definitions\Location.cs" />
+    <Compile Include="Entity Class Definitions\LoggedActivity.cs" />
+    <Compile Include="Entity Class Definitions\Package.cs" />
+    <Compile Include="Entity Class Definitions\Payment.cs" />
+    <Compile Include="Entity Class Definitions\Reservation.cs" />
+    <Compile Include="Entity Class Definitions\Reward.cs" />
+    <Compile Include="Entity Class Definitions\Room.cs" />
+    <Compile Include="Entity Class Definitions\Waitlist.cs" />
     <Compile Include="Pages\Account Settings.cs">
       <SubType>Form</SubType>
     </Compile>

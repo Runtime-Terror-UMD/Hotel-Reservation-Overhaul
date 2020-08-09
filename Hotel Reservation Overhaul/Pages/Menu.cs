@@ -12,17 +12,24 @@ namespace Hotel_Reservation_Overhaul
 {
     public partial class Menu : Form
     {
+        private int UserID;
+
         public Menu()
         {
             InitializeComponent();
         }
 
-        public Menu(int isCustomer)
+        public Menu(int isCustomer, int userID)
         {
             InitializeComponent();
             if (isCustomer == 1)
                 btnHotelManagement.Visible = false;
+            UserID = userID;
         }
 
+        private void btnAccount_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
