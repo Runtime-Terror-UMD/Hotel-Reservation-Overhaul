@@ -65,10 +65,10 @@ namespace Hotel_Reservation_Overhaul
             cmd.Parameters["@password"].Value = password;
 
             // connect to database
-            DBConnect passwordMatches = new DBConnect();
+            DBConnect passwordMatchesConn = new DBConnect();
 
             // if records exist
-            if (passwordMatches.intScalar(cmd) > 0)
+            if (passwordMatchesConn.intScalar(cmd) > 0)
                 return true;
             else
                 return false;
@@ -88,18 +88,10 @@ namespace Hotel_Reservation_Overhaul
             cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45);
             cmd.Parameters["@username"].Value = username;
 
-            MySqlDataReader myReader;
-            myReader = isCustomerConn.ExecuteReader(cmd);
-
-            // pull data from record
-            while (myReader.Read())
-            {
-                string customer = myReader["isCustomer"].ToString();
-                if (customer == "1")
-                    customerAcct = true;
-            }
-            // close connections
-            myReader.Close();
+            int customer = isCustomerConn.intScalar(cmd);
+            if (customer == 1)
+            { customerAcct = true; }
+        
             isCustomerConn.CloseConnection();
             return customerAcct;
 
