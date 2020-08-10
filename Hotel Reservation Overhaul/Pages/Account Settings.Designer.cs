@@ -108,6 +108,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             this.btnLogOut.TabIndex = 13;
             this.btnLogOut.Text = "Log Out";
             this.btnLogOut.UseVisualStyleBackColor = true;
+            this.btnLogOut.Click += new System.EventHandler(this.btnLogOut_Click);
             // 
             // txtPassword
             // 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,18 @@ namespace Hotel_Reservation_Overhaul
 {
     public partial class ReservationList : Form
     {
-        public ReservationList()
+        private MySqlDataAdapter mySqlDataAdapter;
+
+        public ReservationList(int userID)
         {
             InitializeComponent();
+            User userinfo = new User(userID);
+            if (userinfo.isCustomer == 1)
+            {
+
+                DBConnect reservationListConn = new DBConnect();
+
+            }
         }
     }
 }
