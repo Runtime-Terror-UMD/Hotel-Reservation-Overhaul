@@ -64,6 +64,11 @@
     <Compile Include="Entity Class Definitions\Reward.cs" />
     <Compile Include="Entity Class Definitions\Room.cs" />
     <Compile Include="Entity Class Definitions\Waitlist.cs" />
+    <Compile Include="hotelmgmt.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>hotelmgmt.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Account Settings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -203,6 +208,17 @@
     </None>
     <None Include="dboDataSet1.xss">
       <DependentUpon>dboDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="hotelmgmt.xsc">
+      <DependentUpon>hotelmgmt.xsd</DependentUpon>
+    </None>
+    <None Include="hotelmgmt.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>hotelmgmt.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="hotelmgmt.xss">
+      <DependentUpon>hotelmgmt.xsd</DependentUpon>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

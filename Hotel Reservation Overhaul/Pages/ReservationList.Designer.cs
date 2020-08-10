@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.dboDataSetBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.dboDataSet = new Hotel_Reservation_Overhaul.dboDataSet();
             this.lblDescribe = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
             this.btnLogOut = new System.Windows.Forms.Button();
@@ -47,29 +45,25 @@
             this.StartDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EndDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Location = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dboDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.locationBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.locationTableAdapter = new Hotel_Reservation_Overhaul.dboDataSetTableAdapters.locationTableAdapter();
-            this.reservationBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.reservationTableAdapter = new Hotel_Reservation_Overhaul.dboDataSetTableAdapters.reservationTableAdapter();
+            this.hotelmgmtBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.hotelmgmt = new Hotel_Reservation_Overhaul.hotelmgmt();
             this.lblError = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dboDataSetBindingSource1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dboDataSet)).BeginInit();
+            this.reservationBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.reservationTableAdapter = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.reservationTableAdapter();
+            this.dboDataSet = new Hotel_Reservation_Overhaul.dboDataSet();
+            this.dboDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.reservationBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.locationBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.locationTableAdapter = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.locationTableAdapter();
             ((System.ComponentModel.ISupportInitialize)(this.resListDataGrid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dboDataSetBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmtBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.reservationBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dboDataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dboDataSetBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.reservationBindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).BeginInit();
             this.SuspendLayout();
-            // 
-            // dboDataSetBindingSource1
-            // 
-            this.dboDataSetBindingSource1.DataSource = this.dboDataSet;
-            this.dboDataSetBindingSource1.Position = 0;
-            // 
-            // dboDataSet
-            // 
-            this.dboDataSet.DataSetName = "dboDataSet";
-            this.dboDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // lblDescribe
             // 
@@ -114,6 +108,7 @@
             this.btnNew.TabIndex = 1;
             this.btnNew.Text = "Book New Reservation";
             this.btnNew.UseVisualStyleBackColor = true;
+            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
             // 
             // btnModify
             // 
@@ -125,6 +120,7 @@
             this.btnModify.TabIndex = 2;
             this.btnModify.Text = "View/Modify Reservation";
             this.btnModify.UseVisualStyleBackColor = true;
+            this.btnModify.Click += new System.EventHandler(this.btnModify_Click);
             // 
             // btnCancel
             // 
@@ -158,6 +154,7 @@
             this.btnPay.TabIndex = 3;
             this.btnPay.Text = "Pay for Reservation";
             this.btnPay.UseVisualStyleBackColor = true;
+            this.btnPay.Click += new System.EventHandler(this.btnPay_Click);
             // 
             // lblCustDesc
             // 
@@ -203,7 +200,7 @@
             this.StartDate,
             this.EndDate,
             this.Location});
-            this.resListDataGrid.DataSource = this.dboDataSet;
+            this.resListDataGrid.DataSource = this.hotelmgmtBindingSource;
             this.resListDataGrid.Location = new System.Drawing.Point(75, 154);
             this.resListDataGrid.Name = "resListDataGrid";
             this.resListDataGrid.ReadOnly = true;
@@ -248,28 +245,15 @@
             this.Location.ReadOnly = true;
             this.Location.Width = 150;
             // 
-            // dboDataSetBindingSource
+            // hotelmgmtBindingSource
             // 
-            this.dboDataSetBindingSource.DataSource = this.dboDataSet;
-            this.dboDataSetBindingSource.Position = 0;
+            this.hotelmgmtBindingSource.DataSource = this.hotelmgmt;
+            this.hotelmgmtBindingSource.Position = 0;
             // 
-            // locationBindingSource
+            // hotelmgmt
             // 
-            this.locationBindingSource.DataMember = "location";
-            this.locationBindingSource.DataSource = this.dboDataSetBindingSource;
-            // 
-            // locationTableAdapter
-            // 
-            this.locationTableAdapter.ClearBeforeFill = true;
-            // 
-            // reservationBindingSource
-            // 
-            this.reservationBindingSource.DataMember = "reservation";
-            this.reservationBindingSource.DataSource = this.dboDataSetBindingSource;
-            // 
-            // reservationTableAdapter
-            // 
-            this.reservationTableAdapter.ClearBeforeFill = true;
+            this.hotelmgmt.DataSetName = "hotelmgmt";
+            this.hotelmgmt.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // lblError
             // 
@@ -281,6 +265,39 @@
             this.lblError.TabIndex = 11;
             this.lblError.Text = "Error:";
             this.lblError.Visible = false;
+            // 
+            // reservationBindingSource
+            // 
+            this.reservationBindingSource.DataMember = "reservation";
+            this.reservationBindingSource.DataSource = this.hotelmgmtBindingSource;
+            // 
+            // reservationTableAdapter
+            // 
+            this.reservationTableAdapter.ClearBeforeFill = true;
+            // 
+            // dboDataSet
+            // 
+            this.dboDataSet.DataSetName = "dboDataSet";
+            this.dboDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // dboDataSetBindingSource
+            // 
+            this.dboDataSetBindingSource.DataSource = this.dboDataSet;
+            this.dboDataSetBindingSource.Position = 0;
+            // 
+            // reservationBindingSource1
+            // 
+            this.reservationBindingSource1.DataMember = "reservation";
+            this.reservationBindingSource1.DataSource = this.hotelmgmtBindingSource;
+            // 
+            // locationBindingSource
+            // 
+            this.locationBindingSource.DataMember = "location";
+            this.locationBindingSource.DataSource = this.hotelmgmtBindingSource;
+            // 
+            // locationTableAdapter
+            // 
+            this.locationTableAdapter.ClearBeforeFill = true;
             // 
             // ReservationList
             // 
@@ -304,12 +321,14 @@
             this.Name = "ReservationList";
             this.Text = "Hotel Reservation: Reservation List";
             this.Load += new System.EventHandler(this.ReservationList_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dboDataSetBindingSource1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dboDataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.resListDataGrid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dboDataSetBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmtBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.reservationBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dboDataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dboDataSetBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.reservationBindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -328,17 +347,19 @@
         private System.Windows.Forms.TextBox txtCustomerSearch;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.DataGridView resListDataGrid;
-        private System.Windows.Forms.BindingSource dboDataSetBindingSource;
-        private dboDataSet dboDataSet;
-        private System.Windows.Forms.BindingSource locationBindingSource;
-        private dboDataSetTableAdapters.locationTableAdapter locationTableAdapter;
-        private System.Windows.Forms.BindingSource dboDataSetBindingSource1;
-        private System.Windows.Forms.BindingSource reservationBindingSource;
-        private dboDataSetTableAdapters.reservationTableAdapter reservationTableAdapter;
         private System.Windows.Forms.DataGridViewTextBoxColumn ConfirmationID;
         private System.Windows.Forms.DataGridViewTextBoxColumn StartDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn EndDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn Location;
         private System.Windows.Forms.Label lblError;
+        private hotelmgmt hotelmgmt;
+        private System.Windows.Forms.BindingSource hotelmgmtBindingSource;
+        private System.Windows.Forms.BindingSource reservationBindingSource;
+        private hotelmgmtTableAdapters.reservationTableAdapter reservationTableAdapter;
+        private System.Windows.Forms.BindingSource dboDataSetBindingSource;
+        private dboDataSet dboDataSet;
+        private System.Windows.Forms.BindingSource reservationBindingSource1;
+        private System.Windows.Forms.BindingSource locationBindingSource;
+        private hotelmgmtTableAdapters.locationTableAdapter locationTableAdapter;
     }
 }

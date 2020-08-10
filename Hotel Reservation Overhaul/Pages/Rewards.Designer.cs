@@ -53,9 +53,10 @@
             // 
             // btnReturn
             // 
-            this.btnReturn.Location = new System.Drawing.Point(12, 12);
+            this.btnReturn.Location = new System.Drawing.Point(18, 18);
+            this.btnReturn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnReturn.Name = "btnReturn";
-            this.btnReturn.Size = new System.Drawing.Size(75, 25);
+            this.btnReturn.Size = new System.Drawing.Size(112, 38);
             this.btnReturn.TabIndex = 10;
             this.btnReturn.Text = "Return";
             this.btnReturn.UseVisualStyleBackColor = true;
@@ -63,9 +64,10 @@
             // lblDescribe
             // 
             this.lblDescribe.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDescribe.Location = new System.Drawing.Point(200, 60);
+            this.lblDescribe.Location = new System.Drawing.Point(300, 85);
+            this.lblDescribe.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDescribe.Name = "lblDescribe";
-            this.lblDescribe.Size = new System.Drawing.Size(400, 20);
+            this.lblDescribe.Size = new System.Drawing.Size(600, 31);
             this.lblDescribe.TabIndex = 11;
             this.lblDescribe.Text = "View possible rewards at a hotel.";
             this.lblDescribe.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -73,18 +75,20 @@
             // lblTitle
             // 
             this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.Location = new System.Drawing.Point(200, 15);
+            this.lblTitle.Location = new System.Drawing.Point(300, 23);
+            this.lblTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(400, 40);
+            this.lblTitle.Size = new System.Drawing.Size(600, 62);
             this.lblTitle.TabIndex = 12;
             this.lblTitle.Text = "Hotel Reservation System";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // btnLogOut
             // 
-            this.btnLogOut.Location = new System.Drawing.Point(697, 12);
+            this.btnLogOut.Location = new System.Drawing.Point(1046, 18);
+            this.btnLogOut.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnLogOut.Name = "btnLogOut";
-            this.btnLogOut.Size = new System.Drawing.Size(75, 25);
+            this.btnLogOut.Size = new System.Drawing.Size(112, 38);
             this.btnLogOut.TabIndex = 13;
             this.btnLogOut.Text = "Log Out";
             this.btnLogOut.UseVisualStyleBackColor = true;
@@ -93,18 +97,20 @@
             // 
             this.lstReservations.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstReservations.FormattingEnabled = true;
-            this.lstReservations.ItemHeight = 16;
-            this.lstReservations.Location = new System.Drawing.Point(50, 144);
+            this.lstReservations.ItemHeight = 25;
+            this.lstReservations.Location = new System.Drawing.Point(75, 222);
+            this.lstReservations.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lstReservations.Name = "lstReservations";
-            this.lstReservations.Size = new System.Drawing.Size(500, 324);
+            this.lstReservations.Size = new System.Drawing.Size(748, 479);
             this.lstReservations.TabIndex = 2;
             // 
             // lblHotel
             // 
             this.lblHotel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHotel.Location = new System.Drawing.Point(12, 100);
+            this.lblHotel.Location = new System.Drawing.Point(18, 154);
+            this.lblHotel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblHotel.Name = "lblHotel";
-            this.lblHotel.Size = new System.Drawing.Size(125, 20);
+            this.lblHotel.Size = new System.Drawing.Size(188, 31);
             this.lblHotel.TabIndex = 20;
             this.lblHotel.Text = "Hotel:";
             this.lblHotel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -112,9 +118,10 @@
             // cboxHotel
             // 
             this.cboxHotel.FormattingEnabled = true;
-            this.cboxHotel.Location = new System.Drawing.Point(152, 100);
+            this.cboxHotel.Location = new System.Drawing.Point(228, 154);
+            this.cboxHotel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cboxHotel.Name = "cboxHotel";
-            this.cboxHotel.Size = new System.Drawing.Size(227, 21);
+            this.cboxHotel.Size = new System.Drawing.Size(338, 28);
             this.cboxHotel.TabIndex = 1;
             // 
             // lblPoints
@@ -122,18 +129,20 @@
             this.lblPoints.BackColor = System.Drawing.SystemColors.Window;
             this.lblPoints.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPoints.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPoints.Location = new System.Drawing.Point(465, 99);
+            this.lblPoints.Location = new System.Drawing.Point(698, 152);
+            this.lblPoints.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPoints.Name = "lblPoints";
-            this.lblPoints.Size = new System.Drawing.Size(85, 20);
+            this.lblPoints.Size = new System.Drawing.Size(126, 30);
             this.lblPoints.TabIndex = 0;
             this.lblPoints.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblPointDesc
             // 
             this.lblPointDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPointDesc.Location = new System.Drawing.Point(399, 99);
+            this.lblPointDesc.Location = new System.Drawing.Point(598, 152);
+            this.lblPointDesc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPointDesc.Name = "lblPointDesc";
-            this.lblPointDesc.Size = new System.Drawing.Size(60, 20);
+            this.lblPointDesc.Size = new System.Drawing.Size(90, 31);
             this.lblPointDesc.TabIndex = 22;
             this.lblPointDesc.Text = "Points:";
             this.lblPointDesc.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -141,9 +150,10 @@
             // lblRewardDesc
             // 
             this.lblRewardDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRewardDesc.Location = new System.Drawing.Point(580, 195);
+            this.lblRewardDesc.Location = new System.Drawing.Point(870, 300);
+            this.lblRewardDesc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblRewardDesc.Name = "lblRewardDesc";
-            this.lblRewardDesc.Size = new System.Drawing.Size(150, 20);
+            this.lblRewardDesc.Size = new System.Drawing.Size(225, 31);
             this.lblRewardDesc.TabIndex = 0;
             this.lblRewardDesc.Text = "Reward Description:";
             this.lblRewardDesc.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -153,17 +163,19 @@
             this.lblRewardDescription.BackColor = System.Drawing.SystemColors.Window;
             this.lblRewardDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblRewardDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRewardDescription.Location = new System.Drawing.Point(580, 215);
+            this.lblRewardDescription.Location = new System.Drawing.Point(870, 331);
+            this.lblRewardDescription.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblRewardDescription.Name = "lblRewardDescription";
-            this.lblRewardDescription.Size = new System.Drawing.Size(150, 250);
+            this.lblRewardDescription.Size = new System.Drawing.Size(224, 384);
             this.lblRewardDescription.TabIndex = 0;
             // 
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(580, 144);
+            this.label2.Location = new System.Drawing.Point(870, 222);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 20);
+            this.label2.Size = new System.Drawing.Size(72, 31);
             this.label2.TabIndex = 0;
             this.label2.Text = "Price:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -173,17 +185,19 @@
             this.lblPointPrice.BackColor = System.Drawing.SystemColors.Window;
             this.lblPointPrice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPointPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPointPrice.Location = new System.Drawing.Point(634, 144);
+            this.lblPointPrice.Location = new System.Drawing.Point(951, 222);
+            this.lblPointPrice.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPointPrice.Name = "lblPointPrice";
-            this.lblPointPrice.Size = new System.Drawing.Size(85, 20);
+            this.lblPointPrice.Size = new System.Drawing.Size(126, 30);
             this.lblPointPrice.TabIndex = 0;
             this.lblPointPrice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnNewReward
             // 
-            this.btnNewReward.Location = new System.Drawing.Point(580, 519);
+            this.btnNewReward.Location = new System.Drawing.Point(870, 798);
+            this.btnNewReward.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnNewReward.Name = "btnNewReward";
-            this.btnNewReward.Size = new System.Drawing.Size(150, 30);
+            this.btnNewReward.Size = new System.Drawing.Size(225, 46);
             this.btnNewReward.TabIndex = 3;
             this.btnNewReward.Text = "Create New Reward";
             this.btnNewReward.UseVisualStyleBackColor = true;
@@ -191,9 +205,10 @@
             // 
             // btnEditReward
             // 
-            this.btnEditReward.Location = new System.Drawing.Point(580, 480);
+            this.btnEditReward.Location = new System.Drawing.Point(870, 738);
+            this.btnEditReward.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnEditReward.Name = "btnEditReward";
-            this.btnEditReward.Size = new System.Drawing.Size(150, 30);
+            this.btnEditReward.Size = new System.Drawing.Size(225, 46);
             this.btnEditReward.TabIndex = 4;
             this.btnEditReward.Text = "Edit Reward";
             this.btnEditReward.UseVisualStyleBackColor = true;
@@ -201,9 +216,10 @@
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(410, 480);
+            this.btnSearch.Location = new System.Drawing.Point(615, 738);
+            this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(75, 20);
+            this.btnSearch.Size = new System.Drawing.Size(112, 31);
             this.btnSearch.TabIndex = 6;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -211,18 +227,20 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(205, 480);
+            this.textBox1.Location = new System.Drawing.Point(308, 738);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(200, 20);
+            this.textBox1.Size = new System.Drawing.Size(298, 26);
             this.textBox1.TabIndex = 5;
             this.textBox1.Visible = false;
             // 
             // lblCustDesc
             // 
             this.lblCustDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCustDesc.Location = new System.Drawing.Point(50, 480);
+            this.lblCustDesc.Location = new System.Drawing.Point(75, 738);
+            this.lblCustDesc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCustDesc.Name = "lblCustDesc";
-            this.lblCustDesc.Size = new System.Drawing.Size(145, 20);
+            this.lblCustDesc.Size = new System.Drawing.Size(218, 31);
             this.lblCustDesc.TabIndex = 23;
             this.lblCustDesc.Text = "Seach Customer:";
             this.lblCustDesc.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -230,19 +248,21 @@
             // 
             // txtPrice
             // 
-            this.txtPrice.Location = new System.Drawing.Point(205, 520);
+            this.txtPrice.Location = new System.Drawing.Point(308, 800);
+            this.txtPrice.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtPrice.MaxLength = 7;
             this.txtPrice.Name = "txtPrice";
-            this.txtPrice.Size = new System.Drawing.Size(100, 20);
+            this.txtPrice.Size = new System.Drawing.Size(148, 26);
             this.txtPrice.TabIndex = 7;
             this.txtPrice.Visible = false;
             // 
             // lblEditDesc
             // 
             this.lblEditDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEditDesc.Location = new System.Drawing.Point(95, 520);
+            this.lblEditDesc.Location = new System.Drawing.Point(142, 800);
+            this.lblEditDesc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblEditDesc.Name = "lblEditDesc";
-            this.lblEditDesc.Size = new System.Drawing.Size(100, 20);
+            this.lblEditDesc.Size = new System.Drawing.Size(150, 31);
             this.lblEditDesc.TabIndex = 26;
             this.lblEditDesc.Text = "Edit Points:";
             this.lblEditDesc.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -250,9 +270,10 @@
             // 
             // btnEditPoints
             // 
-            this.btnEditPoints.Location = new System.Drawing.Point(410, 520);
+            this.btnEditPoints.Location = new System.Drawing.Point(615, 800);
+            this.btnEditPoints.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnEditPoints.Name = "btnEditPoints";
-            this.btnEditPoints.Size = new System.Drawing.Size(75, 20);
+            this.btnEditPoints.Size = new System.Drawing.Size(112, 31);
             this.btnEditPoints.TabIndex = 8;
             this.btnEditPoints.Text = "Edit Points";
             this.btnEditPoints.UseVisualStyleBackColor = true;
@@ -260,9 +281,9 @@
             // 
             // Rewards
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.ClientSize = new System.Drawing.Size(1176, 863);
             this.Controls.Add(this.btnEditPoints);
             this.Controls.Add(this.txtPrice);
             this.Controls.Add(this.lblEditDesc);
@@ -284,6 +305,7 @@
             this.Controls.Add(this.lblDescribe);
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.btnLogOut);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Rewards";
             this.Text = "Hotel Reservation: Rewards";
             this.ResumeLayout(false);

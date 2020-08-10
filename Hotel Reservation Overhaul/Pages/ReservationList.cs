@@ -21,14 +21,15 @@ namespace Hotel_Reservation_Overhaul
         public ReservationList(int userID)
         {
             InitializeComponent();
-            resUserID = userID;
-            
+            resListDataGrid.MultiSelect = false;
+
             // gets user info
             userInfo = new User(userID);
 
             // shows or hides customer search bar based on isCustomer value
             if (userInfo.isCustomer == true)
             {
+                resUserID = userID;
                 GetData();
             }
             else
@@ -108,12 +109,52 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Loads the reservation report
         private void ReservationList_Load(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'dboDataSet.reservation' table. You can move, or remove it, as needed.
-            this.reservationTableAdapter.Fill(this.dboDataSet.reservation);
-            // TODO: This line of code loads data into the 'dboDataSet.location' table. You can move, or remove it, as needed.
-            this.locationTableAdapter.Fill(this.dboDataSet.location);
+            // TODO: This line of code loads data into the 'hotelmgmt.location' table. You can move, or remove it, as needed.
+            this.locationTableAdapter.Fill(this.hotelmgmt.location);
+            // TODO: This line of code loads data into the 'hotelmgmt.reservation' table. You can move, or remove it, as needed.
+            this.reservationTableAdapter.Fill(this.hotelmgmt.reservation);
+          
+        }
+
+      
+        // DESCRIPTION: Re-directs user to payment page, passes confirmation ID of selected reservation and userID of user
+        private void btnPay_Click(object sender, EventArgs e)
+        {
+            if (resListDataGrid.SelectedRows.Count > 0)
+
+            {
+                // Pulls out confirmation ID from selected row
+                int selectedrowindex = resListDataGrid.SelectedCells[0].RowIndex;
+                DataGridViewRow selectedRow = resListDataGrid.Rows[selectedrowindex];
+                int confirmationID = Convert.ToInt32(selectedRow.Cells["ConfirmationID"].Value);
+                
+                // Passes confirmation ID and user ID to payment page
+                var makePayment = new Payment(confirmationID, resUserID);
+                this.Hide();
+                makePayment.Show();
+
+            }
+            else
+            {
+                lblError.Visible = true;
+                lblError.Text = "Error: No reservation selected";
+            }
 
         }
+
+        private void btnNew_Click(object sender, EventArgs e)
+        {
+            var newReservation = new Reservation(resUserID);
+            this.Hide();
+            newReservation.Show();
+        }
+
+        private void btnModify_Click(object sender, EventArgs e)
+        {
+
+        }
+
+      
     }
 
 }
