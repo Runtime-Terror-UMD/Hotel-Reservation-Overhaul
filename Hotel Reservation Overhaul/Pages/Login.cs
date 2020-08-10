@@ -19,8 +19,9 @@ namespace Hotel_Reservation_Overhaul
         public Login()
         {
             InitializeComponent();
-
         }
+
+        // DESCRIPTION: Utility function for error display
         private void displayError(string errorMessage)
         {
             lblError.ForeColor = System.Drawing.Color.Red;
@@ -80,25 +81,17 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: checks if user is customer account
         private bool isCustomer(string username)
         {
+            Utilities getUserID = new Utilities();
+            int userID = getUserID.getUserIDFromUsername(username);
+            User isCustomerCheck = new User(userID);
             bool customerAcct = false;
 
-            // connect to database
-            DBConnect isCustomerConn = new DBConnect();
-        
-            // construct query
-            string iCustomerQuery = "SELECT isCustomer from dbo.user where username = @username";
-            MySqlCommand cmd = new MySqlCommand(iCustomerQuery);
-            cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@username"].Value = username;
-
-            int customer = isCustomerConn.intScalar(cmd);
-            if (customer == 1)
+            if(isCustomerCheck.isCustomer == true)
+            
             { customerAcct = true; }
         
-            isCustomerConn.CloseConnection();
             return customerAcct;
-
-            }
+        }
         
          // DESCRIPTION: Login process
          private void btnLogin_Click(object sender, EventArgs e)
@@ -127,13 +120,13 @@ namespace Hotel_Reservation_Overhaul
                         if(isCustomer(txtUsername.Text))
                         {
                             // re-drecit to menu, hide hotel management button
-                            var menuScreen = new Menu(1, verifyCredentials.getUserIDFromUsername(txtUsername.Text) );
+                            var menuScreen = new Menu(true, verifyCredentials.getUserIDFromUsername(txtUsername.Text) );
                             this.Hide();
                             menuScreen.Show();
                         }
                         else
                         {   // re-drecit to menu, show hotel management button
-                            var menuScreen = new Menu(0, verifyCredentials.getUserIDFromUsername(txtUsername.Text));
+                            var menuScreen = new Menu(false, verifyCredentials.getUserIDFromUsername(txtUsername.Text));
                             this.Hide();
                             menuScreen.Show();
                         }                       

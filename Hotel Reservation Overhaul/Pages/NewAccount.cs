@@ -103,26 +103,17 @@ namespace Hotel_Reservation_Overhaul
                     MySqlCommand cmd = new MySqlCommand(createUser);
 
                     // add parameters to command
-
-                    cmd.Parameters.Add("@firstName", MySqlDbType.VarChar, 45);
-                    cmd.Parameters.Add("@lastName", MySqlDbType.VarChar, 45);
-                    cmd.Parameters.Add("@email", MySqlDbType.VarChar, 45);
-                    cmd.Parameters.Add("@secretQuestion", MySqlDbType.VarChar, 250);
-                    cmd.Parameters.Add("@secretAnswer", MySqlDbType.VarChar, 250);
-                    cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45);
-                    cmd.Parameters.Add("@password", MySqlDbType.VarChar, 45);
-                    cmd.Parameters.Add("@isCustomer", MySqlDbType.Bit);
+               
 
                     // assign parameter values 
-
-                    cmd.Parameters["@firstName"].Value = txtFirstName.Text;
-                    cmd.Parameters["@lastName"].Value = txtLastName.Text;
-                    cmd.Parameters["@email"].Value = txtEmail.Text;
-                    cmd.Parameters["@secretQuestion"].Value = txtSQuest.Text;
-                    cmd.Parameters["@secretAnswer"].Value = txtSAns.Text;
-                    cmd.Parameters["@username"].Value = txtUsername.Text;
-                    cmd.Parameters["@password"].Value = txtPassword.Text;
-
+                    cmd.Parameters.AddWithValue("@firstName", txtFirstName.Text);
+                    cmd.Parameters.AddWithValue("@lastName", txtLastName.Text);
+                    cmd.Parameters.AddWithValue("@email", txtEmail.Text);
+                    cmd.Parameters.AddWithValue("@secretQuestion", txtSQuest.Text);
+                    cmd.Parameters.AddWithValue("@secretAnswer", txtSAns.Text);
+                    cmd.Parameters.AddWithValue("@username", txtUsername.Text);
+                    cmd.Parameters.AddWithValue("@password", txtPassword.Text);
+                    cmd.Parameters.Add("@isCustomer", MySqlDbType.Bit);
                     // set user type
 
                     if (rbtnCustomer.Checked == true)

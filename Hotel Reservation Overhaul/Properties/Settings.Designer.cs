@@ -33,5 +33,16 @@ namespace Hotel_Reservation_Overhaul.Properties {
                 return ((string)(this["dboConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("server=localhost;user id=root;password=hotelmgmt;persistsecurityinfo=True;databas" +
+            "e=dbo")]
+        public string dboConnectionString1 {
+            get {
+                return ((string)(this["dboConnectionString1"]));
+            }
+        }
     }
 }

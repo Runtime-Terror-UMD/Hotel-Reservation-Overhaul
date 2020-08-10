@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lstReservations = new System.Windows.Forms.ListBox();
+            this.components = new System.ComponentModel.Container();
+            this.dboDataSetBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.dboDataSet = new Hotel_Reservation_Overhaul.dboDataSet();
             this.lblDescribe = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
             this.btnLogOut = new System.Windows.Forms.Button();
@@ -40,20 +42,34 @@
             this.lblCustDesc = new System.Windows.Forms.Label();
             this.txtCustomerSearch = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.resListDataGrid = new System.Windows.Forms.DataGridView();
+            this.ConfirmationID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StartDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EndDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Location = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dboDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.locationBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.locationTableAdapter = new Hotel_Reservation_Overhaul.dboDataSetTableAdapters.locationTableAdapter();
+            this.reservationBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.reservationTableAdapter = new Hotel_Reservation_Overhaul.dboDataSetTableAdapters.reservationTableAdapter();
+            this.lblError = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.dboDataSetBindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dboDataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.resListDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dboDataSetBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.reservationBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
-            // lstReservations
+            // dboDataSetBindingSource1
             // 
-            this.lstReservations.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lstReservations.FormattingEnabled = true;
-            this.lstReservations.ItemHeight = 25;
-            this.lstReservations.Location = new System.Drawing.Point(75, 154);
-            this.lstReservations.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.lstReservations.Name = "lstReservations";
-            this.lstReservations.Size = new System.Drawing.Size(748, 579);
-            this.lstReservations.TabIndex = 0;
+            this.dboDataSetBindingSource1.DataSource = this.dboDataSet;
+            this.dboDataSetBindingSource1.Position = 0;
+            // 
+            // dboDataSet
+            // 
+            this.dboDataSet.DataSetName = "dboDataSet";
+            this.dboDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // lblDescribe
             // 
@@ -86,6 +102,7 @@
             this.btnLogOut.TabIndex = 9;
             this.btnLogOut.Text = "Log Out";
             this.btnLogOut.UseVisualStyleBackColor = true;
+            this.btnLogOut.Click += new System.EventHandler(this.btnLogOut_Click);
             // 
             // btnNew
             // 
@@ -129,6 +146,7 @@
             this.btnReturn.TabIndex = 5;
             this.btnReturn.Text = "Return";
             this.btnReturn.UseVisualStyleBackColor = true;
+            this.btnReturn.Click += new System.EventHandler(this.btnReturn_Click);
             // 
             // btnPay
             // 
@@ -172,23 +190,105 @@
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Visible = false;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
-            // dataGridView1
+            // resListDataGrid
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(135, 236);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 62;
-            this.dataGridView1.RowTemplate.Height = 28;
-            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
-            this.dataGridView1.TabIndex = 10;
+            this.resListDataGrid.AllowUserToAddRows = false;
+            this.resListDataGrid.AllowUserToDeleteRows = false;
+            this.resListDataGrid.AutoGenerateColumns = false;
+            this.resListDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.resListDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ConfirmationID,
+            this.StartDate,
+            this.EndDate,
+            this.Location});
+            this.resListDataGrid.DataSource = this.dboDataSet;
+            this.resListDataGrid.Location = new System.Drawing.Point(75, 154);
+            this.resListDataGrid.Name = "resListDataGrid";
+            this.resListDataGrid.ReadOnly = true;
+            this.resListDataGrid.RowHeadersWidth = 62;
+            this.resListDataGrid.RowTemplate.Height = 28;
+            this.resListDataGrid.Size = new System.Drawing.Size(794, 559);
+            this.resListDataGrid.TabIndex = 10;
+            // 
+            // ConfirmationID
+            // 
+            this.ConfirmationID.DataPropertyName = "confirmationID";
+            this.ConfirmationID.HeaderText = "Confirmation ID";
+            this.ConfirmationID.MinimumWidth = 8;
+            this.ConfirmationID.Name = "ConfirmationID";
+            this.ConfirmationID.ReadOnly = true;
+            this.ConfirmationID.Width = 150;
+            // 
+            // StartDate
+            // 
+            this.StartDate.DataPropertyName = "startDate";
+            this.StartDate.HeaderText = "Start Date";
+            this.StartDate.MinimumWidth = 8;
+            this.StartDate.Name = "StartDate";
+            this.StartDate.ReadOnly = true;
+            this.StartDate.Width = 150;
+            // 
+            // EndDate
+            // 
+            this.EndDate.DataPropertyName = "endDate";
+            this.EndDate.HeaderText = "End Date";
+            this.EndDate.MinimumWidth = 8;
+            this.EndDate.Name = "EndDate";
+            this.EndDate.ReadOnly = true;
+            this.EndDate.Width = 150;
+            // 
+            // Location
+            // 
+            this.Location.DataPropertyName = "locationName";
+            this.Location.HeaderText = "Location";
+            this.Location.MinimumWidth = 8;
+            this.Location.Name = "Location";
+            this.Location.ReadOnly = true;
+            this.Location.Width = 150;
+            // 
+            // dboDataSetBindingSource
+            // 
+            this.dboDataSetBindingSource.DataSource = this.dboDataSet;
+            this.dboDataSetBindingSource.Position = 0;
+            // 
+            // locationBindingSource
+            // 
+            this.locationBindingSource.DataMember = "location";
+            this.locationBindingSource.DataSource = this.dboDataSetBindingSource;
+            // 
+            // locationTableAdapter
+            // 
+            this.locationTableAdapter.ClearBeforeFill = true;
+            // 
+            // reservationBindingSource
+            // 
+            this.reservationBindingSource.DataMember = "reservation";
+            this.reservationBindingSource.DataSource = this.dboDataSetBindingSource;
+            // 
+            // reservationTableAdapter
+            // 
+            this.reservationTableAdapter.ClearBeforeFill = true;
+            // 
+            // lblError
+            // 
+            this.lblError.AutoSize = true;
+            this.lblError.ForeColor = System.Drawing.Color.Red;
+            this.lblError.Location = new System.Drawing.Point(371, 816);
+            this.lblError.Name = "lblError";
+            this.lblError.Size = new System.Drawing.Size(48, 20);
+            this.lblError.TabIndex = 11;
+            this.lblError.Text = "Error:";
+            this.lblError.Visible = false;
             // 
             // ReservationList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1176, 863);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.lblError);
+            this.Controls.Add(this.resListDataGrid);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtCustomerSearch);
             this.Controls.Add(this.lblCustDesc);
@@ -200,19 +300,22 @@
             this.Controls.Add(this.lblDescribe);
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.btnLogOut);
-            this.Controls.Add(this.lstReservations);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "ReservationList";
             this.Text = "Hotel Reservation: Reservation List";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.Load += new System.EventHandler(this.ReservationList_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dboDataSetBindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dboDataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.resListDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dboDataSetBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.reservationBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.ListBox lstReservations;
         private System.Windows.Forms.Label lblDescribe;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Button btnLogOut;
@@ -224,6 +327,18 @@
         private System.Windows.Forms.Label lblCustDesc;
         private System.Windows.Forms.TextBox txtCustomerSearch;
         private System.Windows.Forms.Button btnSearch;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView resListDataGrid;
+        private System.Windows.Forms.BindingSource dboDataSetBindingSource;
+        private dboDataSet dboDataSet;
+        private System.Windows.Forms.BindingSource locationBindingSource;
+        private dboDataSetTableAdapters.locationTableAdapter locationTableAdapter;
+        private System.Windows.Forms.BindingSource dboDataSetBindingSource1;
+        private System.Windows.Forms.BindingSource reservationBindingSource;
+        private dboDataSetTableAdapters.reservationTableAdapter reservationTableAdapter;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ConfirmationID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StartDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn EndDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Location;
+        private System.Windows.Forms.Label lblError;
     }
 }
