@@ -12,9 +12,14 @@ namespace Hotel_Reservation_Overhaul
 {
     public partial class Reservation : Form
     {
-        public Reservation()
+        public Reservation(int userID)
         {
             InitializeComponent();
+        }
+
+        private void btnLogOut_Click(object sender, EventArgs e)
+        {
+
         }
 
     }

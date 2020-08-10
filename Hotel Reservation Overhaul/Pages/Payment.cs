@@ -12,9 +12,18 @@ namespace Hotel_Reservation_Overhaul
 {
     public partial class Payment : Form
     {
-        public Payment()
+        User userInfo;
+        Reservation resInfo;
+        public Payment(int confirmationID, int userID)
         {
             InitializeComponent();
+            resInfo = new Reservation(confirmationID);
+            userInfo = new User(userID);
+        }
+
+        private void btnLogOut_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

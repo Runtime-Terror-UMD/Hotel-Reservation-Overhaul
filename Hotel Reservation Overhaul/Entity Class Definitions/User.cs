@@ -17,12 +17,12 @@ public class User
     public string secretQuestion { get; set; }
     public string secretAnswer { get; set; }
     public bool isCustomer { get; set; }
-
+    public int pointsBalance { get; set; }
     public User(int userID)
     {
 
         // query to run 
-        string UserProfileQuery = "SELECT `user`.`userID`, `user`.`firstName`, `user`.`lastName`, `user`.`email`, `user`.`secretQuestion`, `user`.`secretAnswer`, `user`.`username`,    `user`.`password`, `user`.`isCustomer` FROM `dbo`.`user` where userID = @userID";
+        string UserProfileQuery = "SELECT `user`.`userID`, `user`.`firstName`, `user`.`lastName`, `user`.`email`, `user`.`secretQuestion`, `user`.`secretAnswer`, `user`.`username`, `user`.`pointsBalance`, `user`.`password`, `user`.`isCustomer` FROM `dbo`.`user` where userID = @userID";
 
         // declare and parameterize mySQL Command
 
@@ -48,6 +48,7 @@ public class User
             secretAnswer = dataReader["secretAnswer"].ToString();
             username = dataReader["username"].ToString();
             isCustomer = Convert.ToBoolean(dataReader["isCustomer"]);
+            pointsBalance = Convert.ToInt32(dataReader["pointsBalance"]);
         }
 
         //close Data Reader
