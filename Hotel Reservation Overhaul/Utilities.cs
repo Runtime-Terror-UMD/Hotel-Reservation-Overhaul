@@ -96,6 +96,27 @@ namespace Hotel_Reservation_Overhaul
                 return false;
         }
 
+        // DESCRIPTION: Checks to see if user ID exists
+        public bool userIDExists(int userID)
+        {
+            // query to run 
+            string userIDExistsQuery = "SELECT Count(*) from dbo.user where userID = @userID";
+
+            // declare and parameterize mySQL Command
+            MySqlCommand cmd = new MySqlCommand(userIDExistsQuery);
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32);
+            cmd.Parameters["@userID"].Value = userID;
+
+            // connect to database
+            DBConnect userIDExistsConn = new DBConnect();
+
+            // if records exist
+            if (userIDExistsConn.intScalar(cmd) > 0)
+                return true;
+            else
+                return false;
+        }
+
         // DESCRIPTION: Checks if entered password matches specified username
         public bool secretAnswerMatches(int userid, string secretAnswer)
         {

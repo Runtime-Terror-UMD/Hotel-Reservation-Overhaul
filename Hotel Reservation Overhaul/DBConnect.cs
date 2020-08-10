@@ -68,12 +68,13 @@ namespace Hotel_Reservation_Overhaul
             }
         }
 
-        public DataSet ExecuteDataSet(string sql)
+        public DataSet ExecuteDataSet(MySqlCommand cmd)
         {
             try
             {
                 DataSet ds = new DataSet();
-                MySqlDataAdapter da = new MySqlDataAdapter(sql, connection);
+                cmd.Connection = connection;
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
                 da.Fill(ds, "result");
                 return ds;
             }

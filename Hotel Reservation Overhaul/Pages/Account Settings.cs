@@ -15,11 +15,7 @@ namespace Hotel_Reservation_Overhaul.Pages
         public AccountSettings(int userID)
         {
             InitializeComponent();
-            User userInfo = new User(userID);
-            if(userInfo.isCustomer == 1)
-            {
-
-            }
+          
         }
 
         private void btnLogOut_Click(object sender, EventArgs e)
