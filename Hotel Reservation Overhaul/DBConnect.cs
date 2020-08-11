@@ -85,6 +85,23 @@ namespace Hotel_Reservation_Overhaul
             return null;
         }
 
+        public DataTable ExecuteDataTable(MySqlCommand cmd)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                cmd.Connection = connection;
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                da.Fill(dt);
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            return null;
+        }
+
         // DESCRIPTION: Executes SELECT statements
         public MySqlDataReader ExecuteReader(MySqlCommand cmd)
         {

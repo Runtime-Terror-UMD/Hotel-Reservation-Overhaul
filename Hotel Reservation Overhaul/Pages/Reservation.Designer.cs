@@ -38,10 +38,17 @@
             this.monthStart = new System.Windows.Forms.MonthCalendar();
             this.monthEnd = new System.Windows.Forms.MonthCalendar();
             this.cboxHotel = new System.Windows.Forms.ComboBox();
+            this.locationBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
+            this.hotelmgmt = new Hotel_Reservation_Overhaul.hotelmgmt();
+            this.locationBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.dboDataSet = new Hotel_Reservation_Overhaul.dboDataSet();
             this.cboxRoomType = new System.Windows.Forms.ComboBox();
-            this.lblRoomType = new System.Windows.Forms.Label();
+            this.lblGuests = new System.Windows.Forms.Label();
             this.lblHotel = new System.Windows.Forms.Label();
-            this.checkAddOn = new System.Windows.Forms.CheckedListBox();
+            this.checkPackages = new System.Windows.Forms.CheckedListBox();
+            this.packageBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.hotelmgmt1 = new Hotel_Reservation_Overhaul.hotelmgmt();
+            this.packageBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.lblAddOn = new System.Windows.Forms.Label();
             this.btnSubmit = new System.Windows.Forms.Button();
             this.lblWaitlist = new System.Windows.Forms.Label();
@@ -50,19 +57,26 @@
             this.lblRoomDesc = new System.Windows.Forms.Label();
             this.lblSubTotalDesc = new System.Windows.Forms.Label();
             this.lblSubTotal = new System.Windows.Forms.Label();
-            this.lblTax = new System.Windows.Forms.Label();
-            this.lblTaxDesc = new System.Windows.Forms.Label();
-            this.lblBalance = new System.Windows.Forms.Label();
-            this.lblBalanceDesc = new System.Windows.Forms.Label();
             this.lblDeposit = new System.Windows.Forms.Label();
             this.lblDepositDesc = new System.Windows.Forms.Label();
-            this.dboDataSet = new Hotel_Reservation_Overhaul.dboDataSet();
-            this.locationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.locationTableAdapter = new Hotel_Reservation_Overhaul.dboDataSetTableAdapters.locationTableAdapter();
             this.dboDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.dboDataSet)).BeginInit();
+            this.locationBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.locationTableAdapter1 = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.locationTableAdapter();
+            this.packageTableAdapter = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.packageTableAdapter();
+            this.tableAdapterManager = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.TableAdapterManager();
+            this.lblError = new System.Windows.Forms.Label();
+            this.lblStartDate = new System.Windows.Forms.Label();
+            this.lblEndDate = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dboDataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.packageBindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.packageBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dboDataSetBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnReturn
@@ -133,53 +147,79 @@
             // monthStart
             // 
             this.monthStart.Location = new System.Drawing.Point(225, 138);
-            this.monthStart.Margin = new System.Windows.Forms.Padding(14, 14, 14, 14);
+            this.monthStart.Margin = new System.Windows.Forms.Padding(14);
+            this.monthStart.MaxSelectionCount = 1;
             this.monthStart.Name = "monthStart";
+            this.monthStart.ShowToday = false;
             this.monthStart.TabIndex = 14;
+            this.monthStart.DateSelected += new System.Windows.Forms.DateRangeEventHandler(this.monthStart_DateSelected);
             // 
             // monthEnd
             // 
             this.monthEnd.Location = new System.Drawing.Point(765, 138);
-            this.monthEnd.Margin = new System.Windows.Forms.Padding(14, 14, 14, 14);
+            this.monthEnd.Margin = new System.Windows.Forms.Padding(14);
+            this.monthEnd.MaxSelectionCount = 1;
             this.monthEnd.Name = "monthEnd";
+            this.monthEnd.ShowToday = false;
             this.monthEnd.TabIndex = 15;
+            this.monthEnd.DateSelected += new System.Windows.Forms.DateRangeEventHandler(this.monthend_dateSelected);
             // 
             // cboxHotel
             // 
-            this.cboxHotel.DataSource = this.locationBindingSource;
+            this.cboxHotel.DataSource = this.locationBindingSource2;
             this.cboxHotel.DisplayMember = "locationName";
             this.cboxHotel.FormattingEnabled = true;
-            this.cboxHotel.Location = new System.Drawing.Point(225, 431);
+            this.cboxHotel.Location = new System.Drawing.Point(245, 489);
             this.cboxHotel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cboxHotel.Name = "cboxHotel";
             this.cboxHotel.Size = new System.Drawing.Size(338, 28);
             this.cboxHotel.TabIndex = 3;
-            this.cboxHotel.ValueMember = "locationName";
+            this.cboxHotel.ValueMember = "locationID";
+            // 
+            // locationBindingSource2
+            // 
+            this.locationBindingSource2.DataMember = "location";
+            this.locationBindingSource2.DataSource = this.hotelmgmt;
+            // 
+            // hotelmgmt
+            // 
+            this.hotelmgmt.DataSetName = "hotelmgmt";
+            this.hotelmgmt.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // locationBindingSource
+            // 
+            this.locationBindingSource.DataMember = "location";
+            this.locationBindingSource.DataSource = this.dboDataSet;
+            // 
+            // dboDataSet
+            // 
+            this.dboDataSet.DataSetName = "dboDataSet";
+            this.dboDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // cboxRoomType
             // 
             this.cboxRoomType.FormattingEnabled = true;
-            this.cboxRoomType.Location = new System.Drawing.Point(765, 431);
+            this.cboxRoomType.Location = new System.Drawing.Point(785, 489);
             this.cboxRoomType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cboxRoomType.Name = "cboxRoomType";
             this.cboxRoomType.Size = new System.Drawing.Size(338, 28);
             this.cboxRoomType.TabIndex = 16;
             // 
-            // lblRoomType
+            // lblGuests
             // 
-            this.lblRoomType.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRoomType.Location = new System.Drawing.Point(570, 431);
-            this.lblRoomType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblRoomType.Name = "lblRoomType";
-            this.lblRoomType.Size = new System.Drawing.Size(188, 31);
-            this.lblRoomType.TabIndex = 17;
-            this.lblRoomType.Text = "Room Type:";
-            this.lblRoomType.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblGuests.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGuests.Location = new System.Drawing.Point(590, 489);
+            this.lblGuests.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblGuests.Name = "lblGuests";
+            this.lblGuests.Size = new System.Drawing.Size(188, 31);
+            this.lblGuests.TabIndex = 17;
+            this.lblGuests.Text = "Number of Guests:";
+            this.lblGuests.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblHotel
             // 
             this.lblHotel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHotel.Location = new System.Drawing.Point(15, 431);
+            this.lblHotel.Location = new System.Drawing.Point(35, 489);
             this.lblHotel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblHotel.Name = "lblHotel";
             this.lblHotel.Size = new System.Drawing.Size(188, 31);
@@ -187,31 +227,48 @@
             this.lblHotel.Text = "Hotel:";
             this.lblHotel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // checkAddOn
+            // checkPackages
             // 
-            this.checkAddOn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkAddOn.FormattingEnabled = true;
-            this.checkAddOn.Location = new System.Drawing.Point(225, 508);
-            this.checkAddOn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.checkAddOn.Name = "checkAddOn";
-            this.checkAddOn.Size = new System.Drawing.Size(338, 112);
-            this.checkAddOn.TabIndex = 5;
+            this.checkPackages.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItem", this.packageBindingSource1, "packageName", true));
+            this.checkPackages.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.packageBindingSource, "packageID", true));
+            this.checkPackages.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkPackages.FormattingEnabled = true;
+            this.checkPackages.Location = new System.Drawing.Point(245, 566);
+            this.checkPackages.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.checkPackages.Name = "checkPackages";
+            this.checkPackages.Size = new System.Drawing.Size(338, 112);
+            this.checkPackages.TabIndex = 5;
+            // 
+            // packageBindingSource1
+            // 
+            this.packageBindingSource1.DataMember = "package";
+            this.packageBindingSource1.DataSource = this.hotelmgmt1;
+            // 
+            // hotelmgmt1
+            // 
+            this.hotelmgmt1.DataSetName = "hotelmgmt";
+            this.hotelmgmt1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // packageBindingSource
+            // 
+            this.packageBindingSource.DataMember = "package";
+            this.packageBindingSource.DataSource = this.hotelmgmt;
             // 
             // lblAddOn
             // 
             this.lblAddOn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAddOn.Location = new System.Drawing.Point(15, 508);
+            this.lblAddOn.Location = new System.Drawing.Point(35, 566);
             this.lblAddOn.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAddOn.Name = "lblAddOn";
             this.lblAddOn.Size = new System.Drawing.Size(188, 31);
             this.lblAddOn.TabIndex = 0;
-            this.lblAddOn.Text = "Add-ons:";
+            this.lblAddOn.Text = "Packages:";
             this.lblAddOn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btnSubmit
             // 
             this.btnSubmit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSubmit.Location = new System.Drawing.Point(930, 723);
+            this.btnSubmit.Location = new System.Drawing.Point(930, 731);
             this.btnSubmit.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(195, 46);
@@ -248,7 +305,7 @@
             this.lblRoomDetails.BackColor = System.Drawing.SystemColors.Window;
             this.lblRoomDetails.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblRoomDetails.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRoomDetails.Location = new System.Drawing.Point(765, 508);
+            this.lblRoomDetails.Location = new System.Drawing.Point(785, 566);
             this.lblRoomDetails.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblRoomDetails.Name = "lblRoomDetails";
             this.lblRoomDetails.Size = new System.Drawing.Size(340, 144);
@@ -257,7 +314,7 @@
             // lblRoomDesc
             // 
             this.lblRoomDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRoomDesc.Location = new System.Drawing.Point(570, 508);
+            this.lblRoomDesc.Location = new System.Drawing.Point(590, 566);
             this.lblRoomDesc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblRoomDesc.Name = "lblRoomDesc";
             this.lblRoomDesc.Size = new System.Drawing.Size(188, 31);
@@ -268,7 +325,7 @@
             // lblSubTotalDesc
             // 
             this.lblSubTotalDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSubTotalDesc.Location = new System.Drawing.Point(609, 731);
+            this.lblSubTotalDesc.Location = new System.Drawing.Point(609, 803);
             this.lblSubTotalDesc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSubTotalDesc.Name = "lblSubTotalDesc";
             this.lblSubTotalDesc.Size = new System.Drawing.Size(148, 31);
@@ -281,65 +338,19 @@
             this.lblSubTotal.BackColor = System.Drawing.SystemColors.Window;
             this.lblSubTotal.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblSubTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSubTotal.Location = new System.Drawing.Point(765, 731);
+            this.lblSubTotal.Location = new System.Drawing.Point(765, 803);
             this.lblSubTotal.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSubTotal.Name = "lblSubTotal";
             this.lblSubTotal.Size = new System.Drawing.Size(150, 31);
             this.lblSubTotal.TabIndex = 0;
             this.lblSubTotal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // lblTax
-            // 
-            this.lblTax.BackColor = System.Drawing.SystemColors.Window;
-            this.lblTax.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblTax.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTax.Location = new System.Drawing.Point(765, 769);
-            this.lblTax.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblTax.Name = "lblTax";
-            this.lblTax.Size = new System.Drawing.Size(150, 31);
-            this.lblTax.TabIndex = 0;
-            this.lblTax.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblTaxDesc
-            // 
-            this.lblTaxDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTaxDesc.Location = new System.Drawing.Point(609, 769);
-            this.lblTaxDesc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblTaxDesc.Name = "lblTaxDesc";
-            this.lblTaxDesc.Size = new System.Drawing.Size(148, 31);
-            this.lblTaxDesc.TabIndex = 0;
-            this.lblTaxDesc.Text = "Tax:";
-            this.lblTaxDesc.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblBalance
-            // 
-            this.lblBalance.BackColor = System.Drawing.SystemColors.Window;
-            this.lblBalance.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblBalance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBalance.Location = new System.Drawing.Point(765, 808);
-            this.lblBalance.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblBalance.Name = "lblBalance";
-            this.lblBalance.Size = new System.Drawing.Size(150, 31);
-            this.lblBalance.TabIndex = 0;
-            this.lblBalance.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblBalanceDesc
-            // 
-            this.lblBalanceDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBalanceDesc.Location = new System.Drawing.Point(609, 808);
-            this.lblBalanceDesc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblBalanceDesc.Name = "lblBalanceDesc";
-            this.lblBalanceDesc.Size = new System.Drawing.Size(148, 31);
-            this.lblBalanceDesc.TabIndex = 0;
-            this.lblBalanceDesc.Text = "Balance:";
-            this.lblBalanceDesc.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // lblDeposit
             // 
             this.lblDeposit.BackColor = System.Drawing.SystemColors.Window;
             this.lblDeposit.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblDeposit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDeposit.Location = new System.Drawing.Point(765, 692);
+            this.lblDeposit.Location = new System.Drawing.Point(765, 746);
             this.lblDeposit.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDeposit.Name = "lblDeposit";
             this.lblDeposit.Size = new System.Drawing.Size(150, 31);
@@ -349,23 +360,13 @@
             // lblDepositDesc
             // 
             this.lblDepositDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDepositDesc.Location = new System.Drawing.Point(609, 692);
+            this.lblDepositDesc.Location = new System.Drawing.Point(609, 746);
             this.lblDepositDesc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDepositDesc.Name = "lblDepositDesc";
             this.lblDepositDesc.Size = new System.Drawing.Size(148, 31);
             this.lblDepositDesc.TabIndex = 0;
             this.lblDepositDesc.Text = "Deposit:";
             this.lblDepositDesc.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // dboDataSet
-            // 
-            this.dboDataSet.DataSetName = "dboDataSet";
-            this.dboDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // locationBindingSource
-            // 
-            this.locationBindingSource.DataMember = "location";
-            this.locationBindingSource.DataSource = this.dboDataSet;
             // 
             // locationTableAdapter
             // 
@@ -376,17 +377,83 @@
             this.dboDataSetBindingSource.DataSource = this.dboDataSet;
             this.dboDataSetBindingSource.Position = 0;
             // 
+            // locationBindingSource1
+            // 
+            this.locationBindingSource1.DataMember = "location";
+            this.locationBindingSource1.DataSource = this.hotelmgmt;
+            // 
+            // locationTableAdapter1
+            // 
+            this.locationTableAdapter1.ClearBeforeFill = true;
+            // 
+            // packageTableAdapter
+            // 
+            this.packageTableAdapter.ClearBeforeFill = true;
+            // 
+            // tableAdapterManager
+            // 
+            this.tableAdapterManager.activitylogTableAdapter = null;
+            this.tableAdapterManager.activitytypeTableAdapter = null;
+            this.tableAdapterManager.BackupDataSetBeforeUpdate = false;
+            this.tableAdapterManager.bookingmethodTableAdapter = null;
+            this.tableAdapterManager.locationTableAdapter = this.locationTableAdapter1;
+            this.tableAdapterManager.maintenanceTableAdapter = null;
+            this.tableAdapterManager.packageTableAdapter = this.packageTableAdapter;
+            this.tableAdapterManager.paymentmethodTableAdapter = null;
+            this.tableAdapterManager.paymentTableAdapter = null;
+            this.tableAdapterManager.reservationstatusTableAdapter = null;
+            this.tableAdapterManager.reservationTableAdapter = null;
+            this.tableAdapterManager.rewardofferTableAdapter = null;
+            this.tableAdapterManager.roomTableAdapter = null;
+            this.tableAdapterManager.UpdateOrder = Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.TableAdapterManager.UpdateOrderOption.InsertUpdateDelete;
+            this.tableAdapterManager.userTableAdapter = null;
+            this.tableAdapterManager.waitlistTableAdapter = null;
+            // 
+            // lblError
+            // 
+            this.lblError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblError.ForeColor = System.Drawing.Color.Red;
+            this.lblError.Location = new System.Drawing.Point(378, 446);
+            this.lblError.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblError.Name = "lblError";
+            this.lblError.Size = new System.Drawing.Size(600, 31);
+            this.lblError.TabIndex = 22;
+            this.lblError.Text = "Error: Start date later than end date or no start date selected";
+            this.lblError.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lblError.Visible = false;
+            // 
+            // lblStartDate
+            // 
+            this.lblStartDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStartDate.Location = new System.Drawing.Point(220, 402);
+            this.lblStartDate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblStartDate.Name = "lblStartDate";
+            this.lblStartDate.Size = new System.Drawing.Size(317, 31);
+            this.lblStartDate.TabIndex = 23;
+            this.lblStartDate.Text = "Start Date:";
+            this.lblStartDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblEndDate
+            // 
+            this.lblEndDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEndDate.Location = new System.Drawing.Point(760, 402);
+            this.lblEndDate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblEndDate.Name = "lblEndDate";
+            this.lblEndDate.Size = new System.Drawing.Size(317, 31);
+            this.lblEndDate.TabIndex = 24;
+            this.lblEndDate.Text = "End Date:";
+            this.lblEndDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Reservation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1176, 863);
-            this.Controls.Add(this.lblBalance);
-            this.Controls.Add(this.lblBalanceDesc);
+            this.ClientSize = new System.Drawing.Size(1178, 863);
+            this.Controls.Add(this.lblEndDate);
+            this.Controls.Add(this.lblStartDate);
+            this.Controls.Add(this.lblError);
             this.Controls.Add(this.lblDeposit);
             this.Controls.Add(this.lblDepositDesc);
-            this.Controls.Add(this.lblTax);
-            this.Controls.Add(this.lblTaxDesc);
             this.Controls.Add(this.lblSubTotal);
             this.Controls.Add(this.lblSubTotalDesc);
             this.Controls.Add(this.lblRoomDesc);
@@ -395,8 +462,8 @@
             this.Controls.Add(this.lblWaitlist);
             this.Controls.Add(this.btnSubmit);
             this.Controls.Add(this.lblAddOn);
-            this.Controls.Add(this.checkAddOn);
-            this.Controls.Add(this.lblRoomType);
+            this.Controls.Add(this.checkPackages);
+            this.Controls.Add(this.lblGuests);
             this.Controls.Add(this.lblHotel);
             this.Controls.Add(this.cboxRoomType);
             this.Controls.Add(this.cboxHotel);
@@ -411,9 +478,16 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Reservation";
             this.Text = "Hotel Reservation: Reservation";
-            ((System.ComponentModel.ISupportInitialize)(this.dboDataSet)).EndInit();
+            this.Load += new System.EventHandler(this.Reservation_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dboDataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.packageBindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.packageBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dboDataSetBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -430,9 +504,8 @@
         private System.Windows.Forms.MonthCalendar monthEnd;
         private System.Windows.Forms.ComboBox cboxHotel;
         private System.Windows.Forms.ComboBox cboxRoomType;
-        private System.Windows.Forms.Label lblRoomType;
         private System.Windows.Forms.Label lblHotel;
-        private System.Windows.Forms.CheckedListBox checkAddOn;
+        private System.Windows.Forms.CheckedListBox checkPackages;
         private System.Windows.Forms.Label lblAddOn;
         private System.Windows.Forms.Button btnSubmit;
         private System.Windows.Forms.Label lblWaitlist;
@@ -441,15 +514,24 @@
         private System.Windows.Forms.Label lblRoomDesc;
         private System.Windows.Forms.Label lblSubTotalDesc;
         private System.Windows.Forms.Label lblSubTotal;
-        private System.Windows.Forms.Label lblTax;
-        private System.Windows.Forms.Label lblTaxDesc;
-        private System.Windows.Forms.Label lblBalance;
-        private System.Windows.Forms.Label lblBalanceDesc;
         private System.Windows.Forms.Label lblDeposit;
         private System.Windows.Forms.Label lblDepositDesc;
         private dboDataSet dboDataSet;
         private System.Windows.Forms.BindingSource locationBindingSource;
         private dboDataSetTableAdapters.locationTableAdapter locationTableAdapter;
         private System.Windows.Forms.BindingSource dboDataSetBindingSource;
+        private hotelmgmt hotelmgmt;
+        private System.Windows.Forms.BindingSource locationBindingSource1;
+        private hotelmgmtTableAdapters.locationTableAdapter locationTableAdapter1;
+        private System.Windows.Forms.BindingSource locationBindingSource2;
+        private System.Windows.Forms.BindingSource packageBindingSource;
+        private hotelmgmtTableAdapters.packageTableAdapter packageTableAdapter;
+        private hotelmgmtTableAdapters.TableAdapterManager tableAdapterManager;
+        private hotelmgmt hotelmgmt1;
+        private System.Windows.Forms.BindingSource packageBindingSource1;
+        private System.Windows.Forms.Label lblGuests;
+        private System.Windows.Forms.Label lblError;
+        private System.Windows.Forms.Label lblStartDate;
+        private System.Windows.Forms.Label lblEndDate;
     }
 }
