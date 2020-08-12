@@ -146,7 +146,6 @@ namespace Hotel_Reservation_Overhaul
                 // Select available rooms at location not in maintenance
                 MySqlCommand cmd = new MySqlCommand("SELECT roomNum, pricePerNight FROM dbo.room r where r.locationID = @locationID and r.hasPackage2 = @hasPackage2 and r.hasPackage3 = @hasPackage3 and r.hasPackage4 = @hasPackage4 and r.occupancy >= @numGuests and r.roomNum not in (select roomNum from dbo.reservation where @startDate between startDate and endDate and reservationStatus <> 3) and r.roomNum not in (select roomNum from dbo.maintenance where @startDate between startDate and endDate) LIMIT 1");
                 cmd.Parameters.Add("@startDate", MySqlDbType.DateTime).Value = startDate;
-                //   cmd.Parameters.Add("@hasPackage1", MySqlDbType.Bit).Value = 1;
                 cmd.Parameters.Add("@hasPackage2", MySqlDbType.Bit).Value = 0;
                 cmd.Parameters.Add("@hasPackage3", MySqlDbType.Bit).Value = 0;
                 cmd.Parameters.Add("@hasPackage4", MySqlDbType.Bit).Value = 0;
@@ -160,26 +159,39 @@ namespace Hotel_Reservation_Overhaul
 
                 MySqlDataReader dataReader = checkAvailabilityConn.ExecuteReader(cmd);
 
-
                 while (dataReader.Read())
                 {
                     roomNum = Convert.ToInt32(dataReader["roomNum"]);
                     pricePerNight = Convert.ToDouble(dataReader["pricePerNight"]);
                 }
                 dataReader.Close();
-                checkAvailabilityConn.CloseConnection();
 
                 if (roomNum == -1)
                 {
-                    displayError("No room with those criteria are available. Your reservation will be added to the waitlist");
-                    waitlist = true;
-
+                    cmd.CommandText = "SELECT pricePerNight FROM dbo.room r where r.locationID = @locationID and r.hasPackage2 = @hasPackage2 and r.hasPackage3 = @hasPackage3 and r.hasPackage4 = @hasPackage4 and r.occupancy >= @numGuests LIMIT 1";
+                    MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
+                    while (nonAvailableDR.Read())
+                    {
+                        pricePerNight = Convert.ToDouble(nonAvailableDR["pricePerNight"]);
+                    }
+                    nonAvailableDR.Close();
+                    if (pricePerNight == 0)
+                    {
+                        displayError("No room with those criteria exists");
+                        return;
+                    }
+                    else
+                    {   displayError("No room with those criteria are available. Your reservation will be added to the waitlist");
+                        waitlist = true;
+                    }
                 }
 
-                // calculate price
-                double days = (endDate.Value - startDate.Value).TotalDays;
-                price = pricePerNight * days;
-                points = Convert.ToInt32(days * 25);
+                checkAvailabilityConn.CloseConnection();
+
+                // calculate price and rewards
+                Utilities calcPrice = new Utilities();
+                price = calcPrice.calculatePrice(((endDate.Value - startDate.Value).TotalDays), pricePerNight);
+                points = Convert.ToInt32(calcPrice.calculatePoints(((endDate.Value - startDate.Value).TotalDays)));
 
                 // fill fields
                 lblDeposit.Text = "50.00";

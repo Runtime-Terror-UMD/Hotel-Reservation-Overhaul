@@ -220,5 +220,16 @@ namespace Hotel_Reservation_Overhaul
                 return false;
         }
 
+        public double calculatePrice(double days, double pricePerNight)
+        {
+            double price =pricePerNight * days;
+            return price;
+        }
+
+        public double calculatePoints(double days)
+        {
+            double points = days * 25;
+            return points;
+        }
     }
 }

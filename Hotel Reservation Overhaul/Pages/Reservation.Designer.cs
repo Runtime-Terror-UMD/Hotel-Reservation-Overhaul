@@ -49,7 +49,7 @@
             this.packageBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.lblAddOn = new System.Windows.Forms.Label();
             this.btnSubmit = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnReset = new System.Windows.Forms.Button();
             this.lblSubTotalDesc = new System.Windows.Forms.Label();
             this.lblSubTotal = new System.Windows.Forms.Label();
             this.lblDeposit = new System.Windows.Forms.Label();
@@ -262,17 +262,16 @@
             this.btnSubmit.UseVisualStyleBackColor = true;
             this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
             // 
-            // btnCancel
+            // btnReset
             // 
-            this.btnCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.Location = new System.Drawing.Point(928, 656);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(195, 46);
-            this.btnCancel.TabIndex = 7;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            // 
+            this.btnReset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReset.Location = new System.Drawing.Point(928, 656);
+            this.btnReset.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(195, 46);
+            this.btnReset.TabIndex = 7;
+            this.btnReset.Text = "Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
             // lblSubTotalDesc
             // 
             this.lblSubTotalDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -444,7 +443,7 @@
             this.Controls.Add(this.lblDepositDesc);
             this.Controls.Add(this.lblSubTotal);
             this.Controls.Add(this.lblSubTotalDesc);
-            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnReset);
             this.Controls.Add(this.btnSubmit);
             this.Controls.Add(this.lblAddOn);
             this.Controls.Add(this.checkPackages);
@@ -489,7 +488,7 @@
         private System.Windows.Forms.CheckedListBox checkPackages;
         private System.Windows.Forms.Label lblAddOn;
         private System.Windows.Forms.Button btnSubmit;
-        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.Label lblSubTotalDesc;
         private System.Windows.Forms.Label lblSubTotal;
         private System.Windows.Forms.Label lblDeposit;
