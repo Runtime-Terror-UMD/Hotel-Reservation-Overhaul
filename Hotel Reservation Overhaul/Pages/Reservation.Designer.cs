@@ -95,7 +95,7 @@
             this.lblDescribe.Name = "lblDescribe";
             this.lblDescribe.Size = new System.Drawing.Size(600, 31);
             this.lblDescribe.TabIndex = 11;
-            this.lblDescribe.Text = "Make your reservation.";
+            this.lblDescribe.Text = "Make a reservation.";
             this.lblDescribe.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // lblTitle
@@ -253,7 +253,7 @@
             // btnSubmit
             // 
             this.btnSubmit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSubmit.Location = new System.Drawing.Point(928, 537);
+            this.btnSubmit.Location = new System.Drawing.Point(928, 544);
             this.btnSubmit.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(195, 46);
@@ -397,7 +397,7 @@
             // btnMakeRes
             // 
             this.btnMakeRes.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMakeRes.Location = new System.Drawing.Point(928, 593);
+            this.btnMakeRes.Location = new System.Drawing.Point(928, 600);
             this.btnMakeRes.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnMakeRes.Name = "btnMakeRes";
             this.btnMakeRes.Size = new System.Drawing.Size(195, 46);

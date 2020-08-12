@@ -146,7 +146,7 @@ namespace Hotel_Reservation_Overhaul
                 // Select available rooms at location not in maintenance
                 MySqlCommand cmd = new MySqlCommand("SELECT roomNum, pricePerNight FROM dbo.room r where r.locationID = @locationID and r.hasPackage2 = @hasPackage2 and r.hasPackage3 = @hasPackage3 and r.hasPackage4 = @hasPackage4 and r.occupancy >= @numGuests and r.roomNum not in (select roomNum from dbo.reservation where @startDate between startDate and endDate and reservationStatus <> 3) and r.roomNum not in (select roomNum from dbo.maintenance where @startDate between startDate and endDate) LIMIT 1");
                 cmd.Parameters.Add("@startDate", MySqlDbType.DateTime).Value = startDate;
-             //   cmd.Parameters.Add("@hasPackage1", MySqlDbType.Bit).Value = 1;
+                //   cmd.Parameters.Add("@hasPackage1", MySqlDbType.Bit).Value = 1;
                 cmd.Parameters.Add("@hasPackage2", MySqlDbType.Bit).Value = 0;
                 cmd.Parameters.Add("@hasPackage3", MySqlDbType.Bit).Value = 0;
                 cmd.Parameters.Add("@hasPackage4", MySqlDbType.Bit).Value = 0;
@@ -175,7 +175,6 @@ namespace Hotel_Reservation_Overhaul
                     waitlist = true;
 
                 }
-                //close Data Reader
 
                 // calculate price
                 double days = (endDate.Value - startDate.Value).TotalDays;
@@ -186,11 +185,10 @@ namespace Hotel_Reservation_Overhaul
                 lblDeposit.Text = "50.00";
                 txtCostNightly.Text = pricePerNight.ToString();
                 lblSubTotal.Text = (price + 50).ToString();
-                        }
+            }
         }
 
-        //Read the data and store them in the list
-
+        // DESCRIPTION: Creates reservation or adds to waitlist depending on availability
         private void btnMakeRes_Click(object sender, EventArgs e)
         {
             //Build base command
@@ -206,6 +204,7 @@ namespace Hotel_Reservation_Overhaul
             // If adding to waitlist
             if (waitlist == true)
             {
+                // add to waitlist table 
                 createResCmd.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = Convert.ToInt32(cboxNumGuests.SelectedItem);
                 createResCmd.Parameters.Add("@package2", MySqlDbType.Bit).Value = 0;
                 createResCmd.Parameters.Add("@package3", MySqlDbType.Bit).Value = 0;
@@ -224,6 +223,7 @@ namespace Hotel_Reservation_Overhaul
                 MySqlCommand cmd = new MySqlCommand(getNextConfID);
                 int comfirmationID = createResConn.intScalar(cmd) + 1;
 
+                // add to reservation table
                 createResCmd.CommandText = "INSERT INTO `dbo`.`reservation`(`confirmationID`,`userID`,`locationID`,`roomNum`,`startDate`,`endDate`,`bookingMethod`,`pointsAccumulated`,`price`,`amountDue`,`amountPaid`,`reservationStatus`)VALUES(@confirmationID,@userID,@locationID,@roomNum,@startDate,@endDate,@bookingMethod,@points,@price,@price,@amountPaid,@status)";
                 createResCmd.Parameters.Add("@confirmationID", MySqlDbType.Int32, 10).Value = comfirmationID;
                 createResCmd.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = roomNum;
@@ -234,6 +234,7 @@ namespace Hotel_Reservation_Overhaul
                 createResCmd.Parameters.Add("@amountPaid", MySqlDbType.Decimal).Value = 0;
                 createResConn.NonQuery(createResCmd);
 
+                // add to activity log
                 MySqlCommand logActivity = new MySqlCommand("INSERT INTO `dbo`.`activitylog`(`userID`,`activityTypeID`,`refID`,`created`)VALUES(@userID, 1, @confirmationID, @date)");
                 logActivity.Parameters.Add("@confirmationID", MySqlDbType.Int32, 10).Value = comfirmationID;
                 logActivity.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = resUserID;

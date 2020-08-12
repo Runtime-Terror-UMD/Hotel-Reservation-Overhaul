@@ -210,13 +210,11 @@ namespace Hotel_Reservation_Overhaul
             // build query
             string updatePasswordQuery = "UPDATE `dbo`.`user` SET `password` = @newpassword WHERE `username` = @username";
             MySqlCommand cmd = new MySqlCommand(updatePasswordQuery);
-            cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@username"].Value = username;
-            cmd.Parameters.Add("@newpassword", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@newpassword"].Value = newPassword;
+            cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45).Value = username;
+            cmd.Parameters.Add("@newpassword", MySqlDbType.VarChar, 45).Value = newPassword;
 
             DBConnect updatePassword = new DBConnect();
-            if ((updatePassword.NonQuery(cmd)) > -1)
+            if ((updatePassword.NonQuery(cmd)) > 0)
                 return true;
             else
                 return false;

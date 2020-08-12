@@ -40,11 +40,11 @@ public class Reservation
 
         //Read the data and store them in the list
         while (dataReader.Read())
-            {
+        {
             reservationID = Convert.ToInt32(dataReader["reservationID"]);
             confirmatonID = Convert.ToInt32(dataReader["confirmatonID"]);
-            locationID = Convert.ToInt32(dataReader["roomTypeID"]);
-            startDate = Convert.ToDateTime(dataReader["StartDate"]);
+            locationID = Convert.ToInt32(dataReader["locationID"]);
+            startDate = Convert.ToDateTime(dataReader["startDate"]);
             endDate = Convert.ToDateTime(dataReader["endDate"]);
             duration = (endDate - startDate).TotalDays;
             totalPrice = Convert.ToDecimal(dataReader["price"]);
