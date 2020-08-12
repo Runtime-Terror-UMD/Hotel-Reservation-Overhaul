@@ -50,13 +50,13 @@
             this.txtPrice = new System.Windows.Forms.TextBox();
             this.lblDeposit = new System.Windows.Forms.Label();
             this.lblDepDue = new System.Windows.Forms.Label();
-            this.txtTip = new System.Windows.Forms.TextBox();
-            this.lblTip = new System.Windows.Forms.Label();
             this.lblBalance = new System.Windows.Forms.Label();
             this.lblBalDue = new System.Windows.Forms.Label();
             this.groupPaymentDetails = new System.Windows.Forms.GroupBox();
             this.lblPoints = new System.Windows.Forms.Label();
             this.lblPointDesc = new System.Windows.Forms.Label();
+            this.lblTip = new System.Windows.Forms.Label();
+            this.txtTip = new System.Windows.Forms.TextBox();
             this.groupPaymentDetails.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -314,26 +314,6 @@
             this.lblDepDue.Text = "Deposit Due:";
             this.lblDepDue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // txtTip
-            // 
-            this.txtTip.Location = new System.Drawing.Point(975, 538);
-            this.txtTip.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtTip.MaxLength = 7;
-            this.txtTip.Name = "txtTip";
-            this.txtTip.Size = new System.Drawing.Size(148, 26);
-            this.txtTip.TabIndex = 8;
-            // 
-            // lblTip
-            // 
-            this.lblTip.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTip.Location = new System.Drawing.Point(818, 538);
-            this.lblTip.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblTip.Name = "lblTip";
-            this.lblTip.Size = new System.Drawing.Size(150, 31);
-            this.lblTip.TabIndex = 23;
-            this.lblTip.Text = "Tip:";
-            this.lblTip.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // lblBalance
             // 
             this.lblBalance.BackColor = System.Drawing.SystemColors.Window;
@@ -406,6 +386,26 @@
             this.lblPointDesc.Text = "Points:";
             this.lblPointDesc.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // lblTip
+            // 
+            this.lblTip.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTip.Location = new System.Drawing.Point(818, 538);
+            this.lblTip.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTip.Name = "lblTip";
+            this.lblTip.Size = new System.Drawing.Size(150, 31);
+            this.lblTip.TabIndex = 23;
+            this.lblTip.Text = "Tip:";
+            this.lblTip.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtTip
+            // 
+            this.txtTip.Location = new System.Drawing.Point(975, 538);
+            this.txtTip.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtTip.MaxLength = 7;
+            this.txtTip.Name = "txtTip";
+            this.txtTip.Size = new System.Drawing.Size(148, 26);
+            this.txtTip.TabIndex = 8;
+            // 
             // Payment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -459,12 +459,12 @@
         private System.Windows.Forms.TextBox txtPrice;
         private System.Windows.Forms.Label lblDeposit;
         private System.Windows.Forms.Label lblDepDue;
-        private System.Windows.Forms.TextBox txtTip;
-        private System.Windows.Forms.Label lblTip;
         private System.Windows.Forms.Label lblBalance;
         private System.Windows.Forms.Label lblBalDue;
         private System.Windows.Forms.GroupBox groupPaymentDetails;
         private System.Windows.Forms.Label lblPoints;
         private System.Windows.Forms.Label lblPointDesc;
+        private System.Windows.Forms.Label lblTip;
+        private System.Windows.Forms.TextBox txtTip;
     }
 }

@@ -147,14 +147,24 @@ namespace Hotel_Reservation_Overhaul
             // build query
             string getUserIDFromEmailQuery = "SELECT userid from dbo.user where email = @email";
             MySqlCommand cmd = new MySqlCommand(getUserIDFromEmailQuery);
-            cmd.Parameters.Add("@email", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@email"].Value = email;
-
+            cmd.Parameters.AddWithValue("@email", email);
+            
             // assign value to variable
             userID = getUserIDFromEmailConn.intScalar(cmd);
 
             getUserIDFromEmailConn.CloseConnection();
             return userID;
+        }
+
+        public bool isCustomer(int userID)
+        {
+            DBConnect isCustomerConn = new DBConnect();
+            string isCustomerQuery = "SELECT isCustomer from dbo.user where userid = @userID";
+            MySqlCommand cmd = new MySqlCommand(isCustomerQuery);
+            cmd.Parameters.AddWithValue("@userID", userID);
+            if (isCustomerConn.intScalar(cmd) == 0)
+                return false;
+            return true;
         }
 
         // DESCRIPTION: Gets userID based on username
