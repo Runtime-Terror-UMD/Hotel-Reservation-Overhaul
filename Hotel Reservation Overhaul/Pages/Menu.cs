@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Hotel_Reservation_Overhaul.Pages;
 
 namespace Hotel_Reservation_Overhaul
 {
@@ -43,6 +44,19 @@ namespace Hotel_Reservation_Overhaul
             reservationMgmt.FormClosed += new FormClosedEventHandler(resMgmt_FormClosed);
             this.Hide();
             reservationMgmt.Show();
+        }
+
+        private void btnHotelManagement_Click(object sender, EventArgs e)
+        {
+            var hotelMgmt = new HotelManagement(UserID);
+            hotelMgmt.FormClosed += new FormClosedEventHandler(hotMgmt_FormClosed);
+            this.Hide();
+            hotelMgmt.Show();
+        }
+
+        void hotMgmt_FormClosed(object send, FormClosedEventArgs e)
+        {
+            this.Show();
         }
     }
 }

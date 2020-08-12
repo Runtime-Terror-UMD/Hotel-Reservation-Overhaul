@@ -33,22 +33,25 @@
             this.lblTitle = new System.Windows.Forms.Label();
             this.btnLogOut = new System.Windows.Forms.Button();
             this.grpReports = new System.Windows.Forms.GroupBox();
-            this.grpHotelSettings = new System.Windows.Forms.GroupBox();
-            this.btnWaitlist = new System.Windows.Forms.Button();
-            this.btnAccountDetails = new System.Windows.Forms.Button();
-            this.btnReport = new System.Windows.Forms.Button();
-            this.lstReports = new System.Windows.Forms.ListBox();
-            this.dateStart = new System.Windows.Forms.DateTimePicker();
-            this.txtUser = new System.Windows.Forms.TextBox();
-            this.lblStartDate = new System.Windows.Forms.Label();
+            this.lblUsername = new System.Windows.Forms.Label();
+            this.lblHotel = new System.Windows.Forms.Label();
+            this.cboxHotel = new System.Windows.Forms.ComboBox();
             this.lblEndDate = new System.Windows.Forms.Label();
             this.dateEnd = new System.Windows.Forms.DateTimePicker();
-            this.cboxHotel = new System.Windows.Forms.ComboBox();
-            this.lblHotel = new System.Windows.Forms.Label();
-            this.lblUsername = new System.Windows.Forms.Label();
-            this.btnEditHotels = new System.Windows.Forms.Button();
-            this.btnEditRewards = new System.Windows.Forms.Button();
+            this.lblStartDate = new System.Windows.Forms.Label();
+            this.txtUser = new System.Windows.Forms.TextBox();
+            this.dateStart = new System.Windows.Forms.DateTimePicker();
+            this.lstReports = new System.Windows.Forms.ListBox();
+            this.btnReport = new System.Windows.Forms.Button();
+            this.grpHotelSettings = new System.Windows.Forms.GroupBox();
             this.btnThirdParty = new System.Windows.Forms.Button();
+            this.btnAccountDetails = new System.Windows.Forms.Button();
+            this.btnWaitlist = new System.Windows.Forms.Button();
+            this.btnNewPackages = new System.Windows.Forms.Button();
+            this.btnNewHotel = new System.Windows.Forms.Button();
+            this.btnNewMaintenance = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.lblFileStatus = new System.Windows.Forms.Label();
             this.grpReports.SuspendLayout();
             this.grpHotelSettings.SuspendLayout();
             this.SuspendLayout();
@@ -110,81 +113,33 @@
             this.grpReports.TabStop = false;
             this.grpReports.Text = "Reports";
             // 
-            // grpHotelSettings
+            // lblUsername
             // 
-            this.grpHotelSettings.Controls.Add(this.btnThirdParty);
-            this.grpHotelSettings.Controls.Add(this.btnEditRewards);
-            this.grpHotelSettings.Controls.Add(this.btnEditHotels);
-            this.grpHotelSettings.Controls.Add(this.btnAccountDetails);
-            this.grpHotelSettings.Controls.Add(this.btnWaitlist);
-            this.grpHotelSettings.Location = new System.Drawing.Point(50, 100);
-            this.grpHotelSettings.Name = "grpHotelSettings";
-            this.grpHotelSettings.Size = new System.Drawing.Size(700, 200);
-            this.grpHotelSettings.TabIndex = 20;
-            this.grpHotelSettings.TabStop = false;
-            this.grpHotelSettings.Text = "Hotel Settings";
+            this.lblUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUsername.Location = new System.Drawing.Point(235, 160);
+            this.lblUsername.Name = "lblUsername";
+            this.lblUsername.Size = new System.Drawing.Size(100, 20);
+            this.lblUsername.TabIndex = 0;
+            this.lblUsername.Text = "Username:";
+            this.lblUsername.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // btnWaitlist
+            // lblHotel
             // 
-            this.btnWaitlist.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnWaitlist.Location = new System.Drawing.Point(100, 120);
-            this.btnWaitlist.Name = "btnWaitlist";
-            this.btnWaitlist.Size = new System.Drawing.Size(150, 50);
-            this.btnWaitlist.TabIndex = 3;
-            this.btnWaitlist.Text = "Edit Waitlist Settings";
-            this.btnWaitlist.UseVisualStyleBackColor = true;
+            this.lblHotel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblHotel.Location = new System.Drawing.Point(235, 115);
+            this.lblHotel.Name = "lblHotel";
+            this.lblHotel.Size = new System.Drawing.Size(100, 20);
+            this.lblHotel.TabIndex = 0;
+            this.lblHotel.Text = "Hotel:";
+            this.lblHotel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // btnAccountDetails
+            // cboxHotel
             // 
-            this.btnAccountDetails.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAccountDetails.Location = new System.Drawing.Point(450, 120);
-            this.btnAccountDetails.Name = "btnAccountDetails";
-            this.btnAccountDetails.Size = new System.Drawing.Size(150, 50);
-            this.btnAccountDetails.TabIndex = 4;
-            this.btnAccountDetails.Text = "Change Account Details";
-            this.btnAccountDetails.UseVisualStyleBackColor = true;
-            // 
-            // btnReport
-            // 
-            this.btnReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReport.Location = new System.Drawing.Point(580, 80);
-            this.btnReport.Name = "btnReport";
-            this.btnReport.Size = new System.Drawing.Size(100, 40);
-            this.btnReport.TabIndex = 11;
-            this.btnReport.Text = "Create Report";
-            this.btnReport.UseVisualStyleBackColor = true;
-            // 
-            // lstReports
-            // 
-            this.lstReports.FormattingEnabled = true;
-            this.lstReports.Location = new System.Drawing.Point(25, 25);
-            this.lstReports.Name = "lstReports";
-            this.lstReports.Size = new System.Drawing.Size(200, 160);
-            this.lstReports.TabIndex = 6;
-            // 
-            // dateStart
-            // 
-            this.dateStart.Location = new System.Drawing.Point(335, 25);
-            this.dateStart.Name = "dateStart";
-            this.dateStart.Size = new System.Drawing.Size(200, 20);
-            this.dateStart.TabIndex = 7;
-            // 
-            // txtUser
-            // 
-            this.txtUser.Location = new System.Drawing.Point(335, 160);
-            this.txtUser.Name = "txtUser";
-            this.txtUser.Size = new System.Drawing.Size(200, 20);
-            this.txtUser.TabIndex = 10;
-            // 
-            // lblStartDate
-            // 
-            this.lblStartDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStartDate.Location = new System.Drawing.Point(235, 25);
-            this.lblStartDate.Name = "lblStartDate";
-            this.lblStartDate.Size = new System.Drawing.Size(100, 20);
-            this.lblStartDate.TabIndex = 0;
-            this.lblStartDate.Text = "Start Date:";
-            this.lblStartDate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cboxHotel.FormattingEnabled = true;
+            this.cboxHotel.Location = new System.Drawing.Point(335, 115);
+            this.cboxHotel.Name = "cboxHotel";
+            this.cboxHotel.Size = new System.Drawing.Size(200, 21);
+            this.cboxHotel.TabIndex = 9;
             // 
             // lblEndDate
             // 
@@ -203,69 +158,143 @@
             this.dateEnd.Size = new System.Drawing.Size(200, 20);
             this.dateEnd.TabIndex = 8;
             // 
-            // cboxHotel
+            // lblStartDate
             // 
-            this.cboxHotel.FormattingEnabled = true;
-            this.cboxHotel.Location = new System.Drawing.Point(335, 115);
-            this.cboxHotel.Name = "cboxHotel";
-            this.cboxHotel.Size = new System.Drawing.Size(200, 21);
-            this.cboxHotel.TabIndex = 9;
+            this.lblStartDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStartDate.Location = new System.Drawing.Point(235, 25);
+            this.lblStartDate.Name = "lblStartDate";
+            this.lblStartDate.Size = new System.Drawing.Size(100, 20);
+            this.lblStartDate.TabIndex = 0;
+            this.lblStartDate.Text = "Start Date:";
+            this.lblStartDate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // lblHotel
+            // txtUser
             // 
-            this.lblHotel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHotel.Location = new System.Drawing.Point(235, 115);
-            this.lblHotel.Name = "lblHotel";
-            this.lblHotel.Size = new System.Drawing.Size(100, 20);
-            this.lblHotel.TabIndex = 0;
-            this.lblHotel.Text = "Hotel:";
-            this.lblHotel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.txtUser.Location = new System.Drawing.Point(335, 160);
+            this.txtUser.Name = "txtUser";
+            this.txtUser.Size = new System.Drawing.Size(200, 20);
+            this.txtUser.TabIndex = 10;
             // 
-            // lblUsername
+            // dateStart
             // 
-            this.lblUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUsername.Location = new System.Drawing.Point(235, 160);
-            this.lblUsername.Name = "lblUsername";
-            this.lblUsername.Size = new System.Drawing.Size(100, 20);
-            this.lblUsername.TabIndex = 0;
-            this.lblUsername.Text = "Username:";
-            this.lblUsername.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.dateStart.Location = new System.Drawing.Point(335, 25);
+            this.dateStart.Name = "dateStart";
+            this.dateStart.Size = new System.Drawing.Size(200, 20);
+            this.dateStart.TabIndex = 7;
             // 
-            // btnEditHotels
+            // lstReports
             // 
-            this.btnEditHotels.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEditHotels.Location = new System.Drawing.Point(100, 40);
-            this.btnEditHotels.Name = "btnEditHotels";
-            this.btnEditHotels.Size = new System.Drawing.Size(150, 50);
-            this.btnEditHotels.TabIndex = 1;
-            this.btnEditHotels.Text = "Edit Hotels";
-            this.btnEditHotels.UseVisualStyleBackColor = true;
+            this.lstReports.FormattingEnabled = true;
+            this.lstReports.Location = new System.Drawing.Point(25, 25);
+            this.lstReports.Name = "lstReports";
+            this.lstReports.Size = new System.Drawing.Size(200, 160);
+            this.lstReports.TabIndex = 6;
             // 
-            // btnEditRewards
+            // btnReport
             // 
-            this.btnEditRewards.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEditRewards.Location = new System.Drawing.Point(450, 40);
-            this.btnEditRewards.Name = "btnEditRewards";
-            this.btnEditRewards.Size = new System.Drawing.Size(150, 50);
-            this.btnEditRewards.TabIndex = 2;
-            this.btnEditRewards.Text = "Edit Rewards Settings";
-            this.btnEditRewards.UseVisualStyleBackColor = true;
+            this.btnReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReport.Location = new System.Drawing.Point(580, 80);
+            this.btnReport.Name = "btnReport";
+            this.btnReport.Size = new System.Drawing.Size(100, 40);
+            this.btnReport.TabIndex = 11;
+            this.btnReport.Text = "Create Report";
+            this.btnReport.UseVisualStyleBackColor = true;
+            // 
+            // grpHotelSettings
+            // 
+            this.grpHotelSettings.Controls.Add(this.btnNewMaintenance);
+            this.grpHotelSettings.Controls.Add(this.btnNewHotel);
+            this.grpHotelSettings.Controls.Add(this.btnNewPackages);
+            this.grpHotelSettings.Controls.Add(this.btnThirdParty);
+            this.grpHotelSettings.Controls.Add(this.btnAccountDetails);
+            this.grpHotelSettings.Controls.Add(this.btnWaitlist);
+            this.grpHotelSettings.Location = new System.Drawing.Point(50, 100);
+            this.grpHotelSettings.Name = "grpHotelSettings";
+            this.grpHotelSettings.Size = new System.Drawing.Size(700, 200);
+            this.grpHotelSettings.TabIndex = 20;
+            this.grpHotelSettings.TabStop = false;
+            this.grpHotelSettings.Text = "Hotel Settings";
             // 
             // btnThirdParty
             // 
             this.btnThirdParty.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnThirdParty.Location = new System.Drawing.Point(275, 75);
+            this.btnThirdParty.Location = new System.Drawing.Point(100, 44);
             this.btnThirdParty.Name = "btnThirdParty";
             this.btnThirdParty.Size = new System.Drawing.Size(150, 50);
             this.btnThirdParty.TabIndex = 5;
-            this.btnThirdParty.Text = "Run Third-Party Files";
+            this.btnThirdParty.Text = "Third-Party Reservation File";
             this.btnThirdParty.UseVisualStyleBackColor = true;
+            this.btnThirdParty.Click += new System.EventHandler(this.btnThirdParty_Click);
+            // 
+            // btnAccountDetails
+            // 
+            this.btnAccountDetails.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAccountDetails.Location = new System.Drawing.Point(450, 120);
+            this.btnAccountDetails.Name = "btnAccountDetails";
+            this.btnAccountDetails.Size = new System.Drawing.Size(150, 50);
+            this.btnAccountDetails.TabIndex = 4;
+            this.btnAccountDetails.Text = "Change Account Details";
+            this.btnAccountDetails.UseVisualStyleBackColor = true;
+            // 
+            // btnWaitlist
+            // 
+            this.btnWaitlist.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnWaitlist.Location = new System.Drawing.Point(275, 120);
+            this.btnWaitlist.Name = "btnWaitlist";
+            this.btnWaitlist.Size = new System.Drawing.Size(150, 50);
+            this.btnWaitlist.TabIndex = 3;
+            this.btnWaitlist.Text = "Edit Waitlist Settings";
+            this.btnWaitlist.UseVisualStyleBackColor = true;
+            // 
+            // btnNewPackages
+            // 
+            this.btnNewPackages.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNewPackages.Location = new System.Drawing.Point(450, 44);
+            this.btnNewPackages.Name = "btnNewPackages";
+            this.btnNewPackages.Size = new System.Drawing.Size(150, 50);
+            this.btnNewPackages.TabIndex = 6;
+            this.btnNewPackages.Text = "New Packages";
+            this.btnNewPackages.UseVisualStyleBackColor = true;
+            // 
+            // btnNewHotel
+            // 
+            this.btnNewHotel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNewHotel.Location = new System.Drawing.Point(275, 44);
+            this.btnNewHotel.Name = "btnNewHotel";
+            this.btnNewHotel.Size = new System.Drawing.Size(150, 50);
+            this.btnNewHotel.TabIndex = 7;
+            this.btnNewHotel.Text = "New Hotel File";
+            this.btnNewHotel.UseVisualStyleBackColor = true;
+            // 
+            // btnNewMaintenance
+            // 
+            this.btnNewMaintenance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNewMaintenance.Location = new System.Drawing.Point(100, 120);
+            this.btnNewMaintenance.Name = "btnNewMaintenance";
+            this.btnNewMaintenance.Size = new System.Drawing.Size(150, 50);
+            this.btnNewMaintenance.TabIndex = 8;
+            this.btnNewMaintenance.Text = "New Maintainance File";
+            this.btnNewMaintenance.UseVisualStyleBackColor = true;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // lblFileStatus
+            // 
+            this.lblFileStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFileStatus.Location = new System.Drawing.Point(203, 80);
+            this.lblFileStatus.Name = "lblFileStatus";
+            this.lblFileStatus.Size = new System.Drawing.Size(400, 20);
+            this.lblFileStatus.TabIndex = 21;
+            this.lblFileStatus.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // HotelManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.lblFileStatus);
             this.Controls.Add(this.grpHotelSettings);
             this.Controls.Add(this.grpReports);
             this.Controls.Add(this.btnReturn);
@@ -301,8 +330,11 @@
         private System.Windows.Forms.ListBox lstReports;
         private System.Windows.Forms.Button btnReport;
         private System.Windows.Forms.Button btnAccountDetails;
-        private System.Windows.Forms.Button btnEditHotels;
-        private System.Windows.Forms.Button btnEditRewards;
         private System.Windows.Forms.Button btnThirdParty;
+        private System.Windows.Forms.Button btnNewMaintenance;
+        private System.Windows.Forms.Button btnNewHotel;
+        private System.Windows.Forms.Button btnNewPackages;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Label lblFileStatus;
     }
 }

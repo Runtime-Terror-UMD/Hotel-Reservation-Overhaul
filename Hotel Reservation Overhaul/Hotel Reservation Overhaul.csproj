@@ -111,12 +111,6 @@
     <Compile Include="Pages\NewAccount.Designer.cs">
       <DependentUpon>NewAccount.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\NewReward.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Pages\NewReward.Designer.cs">
-      <DependentUpon>NewReward.cs</DependentUpon>
-    </Compile>
     <Compile Include="Pages\Payment.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,12 +137,6 @@
     <Compile Include="Pages\ReservationList.Designer.cs">
       <DependentUpon>ReservationList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Rewards.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Pages\Rewards.Designer.cs">
-      <DependentUpon>Rewards.cs</DependentUpon>
-    </Compile>
     <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="Pages\Account Settings.resx">
       <DependentUpon>Account Settings.cs</DependentUpon>
@@ -171,9 +159,6 @@
     <EmbeddedResource Include="Pages\NewAccount.resx">
       <DependentUpon>NewAccount.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\NewReward.resx">
-      <DependentUpon>NewReward.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Pages\Payment.resx">
       <DependentUpon>Payment.cs</DependentUpon>
     </EmbeddedResource>
@@ -194,9 +179,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\ReservationList.resx">
       <DependentUpon>ReservationList.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Rewards.resx">
-      <DependentUpon>Rewards.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="dboDataSet1.xsc">
       <DependentUpon>dboDataSet1.xsd</DependentUpon>
