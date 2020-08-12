@@ -252,6 +252,11 @@ namespace Hotel_Reservation_Overhaul
                 logActivity.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = resUserID;
                 logActivity.Parameters.Add("@date", MySqlDbType.Date).Value = DateTime.Today;      // FIXME: Replace with date variable
                 createResConn.NonQuery(logActivity);
+
+                // opens payment screen for user to pay deposit
+                var makePayment = new Payment(comfirmationID, resUserID);
+                this.Hide();
+                makePayment.Show();
             }
         }
     }

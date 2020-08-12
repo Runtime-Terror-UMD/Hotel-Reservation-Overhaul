@@ -270,6 +270,7 @@
             this.btnSubmit.TabIndex = 9;
             this.btnSubmit.Text = "Submit Payment";
             this.btnSubmit.UseVisualStyleBackColor = true;
+            this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
             // 
             // lblPriceAmount
             // 
