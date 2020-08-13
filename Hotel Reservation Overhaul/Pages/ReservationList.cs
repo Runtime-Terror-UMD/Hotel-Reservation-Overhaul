@@ -53,7 +53,7 @@ namespace Hotel_Reservation_Overhaul
                 // build and execute query
                 DBConnect reservationListConn = new DBConnect();
                 reservationListConn.OpenConnection();
-                string reservationListQuery = "SELECT r.confirmationID, r.startDate, r.endDate, r.bookingMethod, loc.locationName  FROM dbo.reservation r join location loc on loc.locationID = r.locationID where r.userID = @userID";
+                string reservationListQuery = "SELECT r.confirmationID, r.startDate, r.endDate, loc.locationName  FROM dbo.reservation r join location loc on loc.locationID = r.locationID where r.userID = @userID";
                 MySqlCommand cmd = new MySqlCommand(reservationListQuery);
                 cmd.Parameters.AddWithValue("@userID", resUserID);
                 DataSet resReport = reservationListConn.ExecuteDataSet(cmd);
@@ -126,17 +126,21 @@ namespace Hotel_Reservation_Overhaul
         }
 
       
+        private int getConfirmationID()
+        {
+             int selectedrowindex = resListDataGrid.SelectedCells[0].RowIndex;
+             DataGridViewRow selectedRow = resListDataGrid.Rows[selectedrowindex];
+             int confirmationID = Convert.ToInt32(selectedRow.Cells["ConfirmationID"].Value);
+             return confirmationID;
+    }
         // DESCRIPTION: Re-directs user to payment page, passes confirmation ID of selected reservation and userID of user
         private void btnPay_Click(object sender, EventArgs e)
         {
             if (resListDataGrid.SelectedRows.Count > 0)
-
             {
                 // Pulls out confirmation ID from selected row
-                int selectedrowindex = resListDataGrid.SelectedCells[0].RowIndex;
-                DataGridViewRow selectedRow = resListDataGrid.Rows[selectedrowindex];
-                int confirmationID = Convert.ToInt32(selectedRow.Cells["ConfirmationID"].Value);
-                
+                int confirmationID = getConfirmationID();
+
                 // Passes confirmation ID and user ID to payment page
                 var makePayment = new Payment(confirmationID, resUserID);
                 this.Hide();
@@ -153,7 +157,9 @@ namespace Hotel_Reservation_Overhaul
         private void btnNew_Click(object sender, EventArgs e)
         {
             if (userInfo.isCustomer == false && resUserID == -1)
-            { displayError("Please enter a customer ID"); }
+            { 
+                displayError("Please enter a customer ID"); 
+            }
             else
             {
                 var newReservation = new CreateReservation(resUserID);
@@ -167,7 +173,33 @@ namespace Hotel_Reservation_Overhaul
 
         }
 
-      
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            if (resListDataGrid.SelectedRows.Count > 0)
+            {
+                int confirmationID = getConfirmationID();
+                Reservation resInfo = new Reservation(confirmationID);
+
+                // check if reservation can be cancelled
+                if(resInfo.status == "cancelled")
+                {
+                    displayError("This reservation has already been cancelled");
+                }
+                else if(resInfo.status == "checked-out")
+                {
+                    displayError("This reservation has already been completed");
+                }
+                else if(resInfo.status == "checked-in")
+                {
+                    Utilities recalc = new Utilities();
+                    DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
+                    double newPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNum));
+                    double newPoints = recalc.calculatePoints((newEndDate - resInfo.endDate).TotalDays);
+                    resInfo.totalPrice = newPrice;
+                   // resInfo.
+                }
+            }
+        }
     }
 
 }

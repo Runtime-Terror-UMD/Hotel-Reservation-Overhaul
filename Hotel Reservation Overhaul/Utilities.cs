@@ -231,5 +231,15 @@ namespace Hotel_Reservation_Overhaul
             double points = days * 25;
             return points;
         }
+
+        public double getPricePerNight(int locationID, int roomNum)
+        {
+            DBConnect getPricePerNightConn = new DBConnect();
+            MySqlCommand getPricePerNight = new MySqlCommand("SELECT pricePerNight from dbo.room WHERE locationID = @locationID and roomNum = @roomNum");
+            getPricePerNight.Parameters.Add("@locationID", MySqlDbType.Int32).Value = locationID;
+            getPricePerNight.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = roomNum;
+            double pricePerNight = getPricePerNightConn.doubleScalar(getPricePerNight);
+            return pricePerNight;
+        }
     }
 }

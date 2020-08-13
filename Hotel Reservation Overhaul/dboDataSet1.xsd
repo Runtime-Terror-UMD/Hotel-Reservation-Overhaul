@@ -48,7 +48,7 @@
               <DbSource ConnectionRef="dboConnectionString1 (Settings)" DbObjectName="dbo.reservation" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
                 <SelectCommand>
                   <DbCommand CommandType="Text" ModifiedByUser="false">
-                    <CommandText>SELECT `confirmationID`, `userID`, `locationID`, `startDate`, `endDate`, `bookingMethod` FROM `reservation`</CommandText>
+                    <CommandText>SELECT confirmationID, userID, locationID, startDate, endDate FROM reservation</CommandText>
                     <Parameters />
                   </DbCommand>
                 </SelectCommand>
@@ -60,7 +60,6 @@
               <Mapping SourceColumn="locationID" DataSetColumn="locationID" />
               <Mapping SourceColumn="startDate" DataSetColumn="startDate" />
               <Mapping SourceColumn="endDate" DataSetColumn="endDate" />
-              <Mapping SourceColumn="bookingMethod" DataSetColumn="bookingMethod" />
             </Mappings>
             <Sources />
           </TableAdapter>
@@ -72,7 +71,7 @@
   <xs:element name="dboDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_DataSetName="dboDataSet" msprop:Generator_UserDSName="dboDataSet">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="location" msprop:Generator_TableClassName="locationDataTable" msprop:Generator_TableVarName="tablelocation" msprop:Generator_TablePropName="location" msprop:Generator_RowDeletingName="locationRowDeleting" msprop:Generator_RowChangingName="locationRowChanging" msprop:Generator_RowEvHandlerName="locationRowChangeEventHandler" msprop:Generator_RowDeletedName="locationRowDeleted" msprop:Generator_UserTableName="location" msprop:Generator_RowChangedName="locationRowChanged" msprop:Generator_RowEvArgName="locationRowChangeEvent" msprop:Generator_RowClassName="locationRow">
+        <xs:element name="location" msprop:Generator_TableClassName="locationDataTable" msprop:Generator_TableVarName="tablelocation" msprop:Generator_RowChangedName="locationRowChanged" msprop:Generator_TablePropName="location" msprop:Generator_RowDeletingName="locationRowDeleting" msprop:Generator_RowChangingName="locationRowChanging" msprop:Generator_RowEvHandlerName="locationRowChangeEventHandler" msprop:Generator_RowDeletedName="locationRowDeleted" msprop:Generator_RowClassName="locationRow" msprop:Generator_UserTableName="location" msprop:Generator_RowEvArgName="locationRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="locationID" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnlocationID" msprop:Generator_ColumnPropNameInRow="locationID" msprop:Generator_ColumnPropNameInTable="locationIDColumn" msprop:Generator_UserColumnName="locationID" type="xs:int" />
@@ -86,7 +85,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="reservation" msprop:Generator_TableClassName="reservationDataTable" msprop:Generator_TableVarName="tablereservation" msprop:Generator_TablePropName="reservation" msprop:Generator_RowDeletingName="reservationRowDeleting" msprop:Generator_RowChangingName="reservationRowChanging" msprop:Generator_RowEvHandlerName="reservationRowChangeEventHandler" msprop:Generator_RowDeletedName="reservationRowDeleted" msprop:Generator_UserTableName="reservation" msprop:Generator_RowChangedName="reservationRowChanged" msprop:Generator_RowEvArgName="reservationRowChangeEvent" msprop:Generator_RowClassName="reservationRow">
+        <xs:element name="reservation" msprop:Generator_TableClassName="reservationDataTable" msprop:Generator_TableVarName="tablereservation" msprop:Generator_RowChangedName="reservationRowChanged" msprop:Generator_TablePropName="reservation" msprop:Generator_RowDeletingName="reservationRowDeleting" msprop:Generator_RowChangingName="reservationRowChanging" msprop:Generator_RowEvHandlerName="reservationRowChangeEventHandler" msprop:Generator_RowDeletedName="reservationRowDeleted" msprop:Generator_RowClassName="reservationRow" msprop:Generator_UserTableName="reservation" msprop:Generator_RowEvArgName="reservationRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="confirmationID" msprop:Generator_ColumnVarNameInTable="columnconfirmationID" msprop:Generator_ColumnPropNameInRow="confirmationID" msprop:Generator_ColumnPropNameInTable="confirmationIDColumn" msprop:Generator_UserColumnName="confirmationID" type="xs:unsignedInt" />
@@ -94,13 +93,6 @@
               <xs:element name="locationID" msprop:Generator_ColumnVarNameInTable="columnlocationID" msprop:Generator_ColumnPropNameInRow="locationID" msprop:Generator_ColumnPropNameInTable="locationIDColumn" msprop:Generator_UserColumnName="locationID" type="xs:int" />
               <xs:element name="startDate" msprop:Generator_ColumnVarNameInTable="columnstartDate" msprop:Generator_ColumnPropNameInRow="startDate" msprop:Generator_ColumnPropNameInTable="startDateColumn" msprop:Generator_UserColumnName="startDate" type="xs:dateTime" />
               <xs:element name="endDate" msprop:Generator_ColumnVarNameInTable="columnendDate" msprop:Generator_ColumnPropNameInRow="endDate" msprop:Generator_ColumnPropNameInTable="endDateColumn" msprop:Generator_UserColumnName="endDate" type="xs:dateTime" />
-              <xs:element name="bookingMethod" msprop:Generator_ColumnVarNameInTable="columnbookingMethod" msprop:Generator_ColumnPropNameInRow="bookingMethod" msprop:Generator_ColumnPropNameInTable="bookingMethodColumn" msprop:Generator_UserColumnName="bookingMethod">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="45" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -113,7 +105,7 @@
   </xs:element>
   <xs:annotation>
     <xs:appinfo>
-      <msdata:Relationship name="Reservation_locationID_FK" msdata:parent="location" msdata:child="reservation" msdata:parentkey="locationID" msdata:childkey="locationID" msprop:Generator_UserChildTable="reservation" msprop:Generator_ChildPropName="GetreservationRows" msprop:Generator_UserRelationName="Reservation_locationID_FK" msprop:Generator_ParentPropName="locationRow" msprop:Generator_RelationVarName="relationReservation_locationID_FK" msprop:Generator_UserParentTable="location" />
+      <msdata:Relationship name="Reservation_locationID_FK" msdata:parent="location" msdata:child="reservation" msdata:parentkey="locationID" msdata:childkey="locationID" msprop:Generator_UserChildTable="reservation" msprop:Generator_ChildPropName="GetreservationRows" msprop:Generator_UserRelationName="Reservation_locationID_FK" msprop:Generator_RelationVarName="relationReservation_locationID_FK" msprop:Generator_UserParentTable="location" msprop:Generator_ParentPropName="locationRow" />
     </xs:appinfo>
   </xs:annotation>
 </xs:schema>

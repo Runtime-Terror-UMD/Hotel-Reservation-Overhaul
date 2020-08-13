@@ -608,8 +608,6 @@ namespace Hotel_Reservation_Overhaul {
             
             private global::System.Data.DataColumn columnendDate;
             
-            private global::System.Data.DataColumn columnbookingMethod;
-            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public reservationDataTable() {
@@ -685,14 +683,6 @@ namespace Hotel_Reservation_Overhaul {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn bookingMethodColumn {
-                get {
-                    return this.columnbookingMethod;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -728,15 +718,14 @@ namespace Hotel_Reservation_Overhaul {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public reservationRow AddreservationRow(uint confirmationID, uint userID, locationRow parentlocationRowByReservation_locationID_FK, System.DateTime startDate, System.DateTime endDate, string bookingMethod) {
+            public reservationRow AddreservationRow(uint confirmationID, uint userID, locationRow parentlocationRowByReservation_locationID_FK, System.DateTime startDate, System.DateTime endDate) {
                 reservationRow rowreservationRow = ((reservationRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         confirmationID,
                         userID,
                         null,
                         startDate,
-                        endDate,
-                        bookingMethod};
+                        endDate};
                 if ((parentlocationRowByReservation_locationID_FK != null)) {
                     columnValuesArray[2] = parentlocationRowByReservation_locationID_FK[0];
                 }
@@ -767,7 +756,6 @@ namespace Hotel_Reservation_Overhaul {
                 this.columnlocationID = base.Columns["locationID"];
                 this.columnstartDate = base.Columns["startDate"];
                 this.columnendDate = base.Columns["endDate"];
-                this.columnbookingMethod = base.Columns["bookingMethod"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -783,15 +771,11 @@ namespace Hotel_Reservation_Overhaul {
                 base.Columns.Add(this.columnstartDate);
                 this.columnendDate = new global::System.Data.DataColumn("endDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnendDate);
-                this.columnbookingMethod = new global::System.Data.DataColumn("bookingMethod", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnbookingMethod);
                 this.columnconfirmationID.AllowDBNull = false;
                 this.columnuserID.AllowDBNull = false;
                 this.columnlocationID.AllowDBNull = false;
                 this.columnstartDate.AllowDBNull = false;
                 this.columnendDate.AllowDBNull = false;
-                this.columnbookingMethod.AllowDBNull = false;
-                this.columnbookingMethod.MaxLength = 45;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1032,17 +1016,6 @@ namespace Hotel_Reservation_Overhaul {
                 }
                 set {
                     this[this.tablereservation.endDateColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string bookingMethod {
-                get {
-                    return ((string)(this[this.tablereservation.bookingMethodColumn]));
-                }
-                set {
-                    this[this.tablereservation.bookingMethodColumn] = value;
                 }
             }
             
@@ -1564,7 +1537,6 @@ namespace Hotel_Reservation_Overhaul.dboDataSetTableAdapters {
             tableMapping.ColumnMappings.Add("locationID", "locationID");
             tableMapping.ColumnMappings.Add("startDate", "startDate");
             tableMapping.ColumnMappings.Add("endDate", "endDate");
-            tableMapping.ColumnMappings.Add("bookingMethod", "bookingMethod");
             this._adapter.TableMappings.Add(tableMapping);
         }
         
@@ -1581,8 +1553,7 @@ namespace Hotel_Reservation_Overhaul.dboDataSetTableAdapters {
             this._commandCollection = new global::MySql.Data.MySqlClient.MySqlCommand[1];
             this._commandCollection[0] = new global::MySql.Data.MySqlClient.MySqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT `confirmationID`, `userID`, `locationID`, `startDate`, `endDate`, `booking" +
-                "Method` FROM `reservation`";
+            this._commandCollection[0].CommandText = "SELECT confirmationID, userID, locationID, startDate, endDate FROM reservation";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         

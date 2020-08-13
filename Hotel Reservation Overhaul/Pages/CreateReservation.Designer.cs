@@ -146,6 +146,7 @@
             // 
             this.cboxHotel.DataSource = this.locationBindingSource2;
             this.cboxHotel.DisplayMember = "locationName";
+            this.cboxHotel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboxHotel.FormattingEnabled = true;
             this.cboxHotel.Location = new System.Drawing.Point(245, 489);
             this.cboxHotel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -176,6 +177,7 @@
             // 
             // cboxNumGuests
             // 
+            this.cboxNumGuests.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboxNumGuests.FormattingEnabled = true;
             this.cboxNumGuests.Items.AddRange(new object[] {
             "1",
@@ -253,7 +255,7 @@
             // btnSubmit
             // 
             this.btnSubmit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSubmit.Location = new System.Drawing.Point(928, 544);
+            this.btnSubmit.Location = new System.Drawing.Point(928, 600);
             this.btnSubmit.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(195, 46);
@@ -345,8 +347,8 @@
             // 
             this.tableAdapterManager.activitylogTableAdapter = null;
             this.tableAdapterManager.activitytypeTableAdapter = null;
+            this.tableAdapterManager.amenityTableAdapter = null;
             this.tableAdapterManager.BackupDataSetBeforeUpdate = false;
-            this.tableAdapterManager.bookingmethodTableAdapter = null;
             this.tableAdapterManager.locationTableAdapter = this.locationTableAdapter1;
             this.tableAdapterManager.maintenanceTableAdapter = null;
             this.tableAdapterManager.packageTableAdapter = this.packageTableAdapter;
@@ -404,6 +406,7 @@
             this.btnMakeRes.TabIndex = 25;
             this.btnMakeRes.Text = "Book Reservation";
             this.btnMakeRes.UseVisualStyleBackColor = true;
+            this.btnMakeRes.Visible = false;
             this.btnMakeRes.Click += new System.EventHandler(this.btnMakeRes_Click);
             // 
             // txtCostNightly
@@ -429,7 +432,7 @@
             this.lblCost.Text = "Cost Per Night:";
             this.lblCost.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // Reservation
+            // CreateReservation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -459,7 +462,7 @@
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.btnLogOut);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.Name = "Reservation";
+            this.Name = "CreateReservation";
             this.Text = "Hotel Reservation: Reservation";
             this.Load += new System.EventHandler(this.Reservation_Load);
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource2)).EndInit();
