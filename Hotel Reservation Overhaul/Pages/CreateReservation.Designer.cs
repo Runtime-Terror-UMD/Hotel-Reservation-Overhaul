@@ -243,7 +243,6 @@
             // btnSubmit
             // 
             this.btnSubmit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSubmit.Location = new System.Drawing.Point(619, 354);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(130, 30);
             this.btnSubmit.TabIndex = 6;
@@ -329,8 +328,8 @@
             // 
             this.tableAdapterManager.activitylogTableAdapter = null;
             this.tableAdapterManager.activitytypeTableAdapter = null;
+            this.tableAdapterManager.amenityTableAdapter = null;
             this.tableAdapterManager.BackupDataSetBeforeUpdate = false;
-            this.tableAdapterManager.bookingmethodTableAdapter = null;
             this.tableAdapterManager.locationTableAdapter = this.locationTableAdapter1;
             this.tableAdapterManager.maintenanceTableAdapter = null;
             this.tableAdapterManager.packageTableAdapter = this.packageTableAdapter;
@@ -384,6 +383,7 @@
             this.btnMakeRes.TabIndex = 25;
             this.btnMakeRes.Text = "Book Reservation";
             this.btnMakeRes.UseVisualStyleBackColor = true;
+            this.btnMakeRes.Visible = false;
             this.btnMakeRes.Click += new System.EventHandler(this.btnMakeRes_Click);
             // 
             // txtCostNightly

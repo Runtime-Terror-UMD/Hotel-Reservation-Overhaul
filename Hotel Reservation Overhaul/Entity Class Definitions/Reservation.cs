@@ -8,6 +8,7 @@ public class Reservation
     public int confirmatonID { get; set; }
     public int locationID { get; set; }
   
+    public int roomNum { get; set; }
     public int userID { get; set; }
     public DateTime startDate { get; set; }
     public DateTime endDate { get; set; }
@@ -16,6 +17,7 @@ public class Reservation
     public double amountPaid { get; set; }
     public double amountDue { get; set; }
 
+    public int points { get; set; }
     public string status { get; set; }
 
     public Reservation(int confirmationID)
@@ -41,8 +43,10 @@ public class Reservation
         {
             reservationID = Convert.ToInt32(dataReader["reservationID"]);
             confirmatonID = Convert.ToInt32(dataReader["confirmatonID"]);
+            roomNum = Convert.ToInt32(dataReader["roomNum"]);
             userID = Convert.ToInt32(dataReader["customerID"]);
             locationID = Convert.ToInt32(dataReader["locationID"]);
+            points = Convert.ToInt32(dataReader["pointsAccumulated"]);
             startDate = Convert.ToDateTime(dataReader["startDate"]);
             endDate = Convert.ToDateTime(dataReader["endDate"]);
             duration = (endDate - startDate).TotalDays;
@@ -57,4 +61,16 @@ public class Reservation
         ReservationConn.CloseConnection();
     }
 
+    //public bool updateReservation(this)
+    //{
+    //    string updateResQuery = "Update dbo.reservation"
+    //}
+    //public bool cancelReservation()
+    //{
+    //    if(this.status == "cancelled" || this.status == "checked-in")
+    //    {
+    //        return false;
+    //    }
+    //    return false;
+    //}
 }
