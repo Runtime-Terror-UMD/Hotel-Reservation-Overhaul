@@ -147,14 +147,24 @@ namespace Hotel_Reservation_Overhaul
             // build query
             string getUserIDFromEmailQuery = "SELECT userid from dbo.user where email = @email";
             MySqlCommand cmd = new MySqlCommand(getUserIDFromEmailQuery);
-            cmd.Parameters.Add("@email", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@email"].Value = email;
-
+            cmd.Parameters.AddWithValue("@email", email);
+            
             // assign value to variable
             userID = getUserIDFromEmailConn.intScalar(cmd);
 
             getUserIDFromEmailConn.CloseConnection();
             return userID;
+        }
+
+        public bool isCustomer(int userID)
+        {
+            DBConnect isCustomerConn = new DBConnect();
+            string isCustomerQuery = "SELECT isCustomer from dbo.user where userid = @userID";
+            MySqlCommand cmd = new MySqlCommand(isCustomerQuery);
+            cmd.Parameters.AddWithValue("@userID", userID);
+            if (isCustomerConn.intScalar(cmd) == 0)
+                return false;
+            return true;
         }
 
         // DESCRIPTION: Gets userID based on username
@@ -200,17 +210,26 @@ namespace Hotel_Reservation_Overhaul
             // build query
             string updatePasswordQuery = "UPDATE `dbo`.`user` SET `password` = @newpassword WHERE `username` = @username";
             MySqlCommand cmd = new MySqlCommand(updatePasswordQuery);
-            cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@username"].Value = username;
-            cmd.Parameters.Add("@newpassword", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@newpassword"].Value = newPassword;
+            cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45).Value = username;
+            cmd.Parameters.Add("@newpassword", MySqlDbType.VarChar, 45).Value = newPassword;
 
             DBConnect updatePassword = new DBConnect();
-            if ((updatePassword.NonQuery(cmd)) > -1)
+            if ((updatePassword.NonQuery(cmd)) > 0)
                 return true;
             else
                 return false;
         }
 
+        public double calculatePrice(double days, double pricePerNight)
+        {
+            double price =pricePerNight * days;
+            return price;
+        }
+
+        public double calculatePoints(double days)
+        {
+            double points = days * 25;
+            return points;
+        }
     }
 }

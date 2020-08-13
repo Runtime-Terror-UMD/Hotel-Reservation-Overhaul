@@ -16,8 +16,13 @@ namespace Hotel_Reservation_Overhaul
     public partial class ReservationList : Form
     {
         User userInfo;
-        public int resUserID;
+        public int resUserID = -1;
 
+        public void displayError(string errorMessage)
+        {
+            lblError.Visible = true;
+            lblError.Text = "Error: " + errorMessage;
+        }
         public ReservationList(int userID)
         {
             InitializeComponent();
@@ -50,8 +55,7 @@ namespace Hotel_Reservation_Overhaul
                 reservationListConn.OpenConnection();
                 string reservationListQuery = "SELECT r.confirmationID, r.startDate, r.endDate, r.bookingMethod, loc.locationName  FROM dbo.reservation r join location loc on loc.locationID = r.locationID where r.userID = @userID";
                 MySqlCommand cmd = new MySqlCommand(reservationListQuery);
-                cmd.Parameters.Add("@userID", MySqlDbType.Int32);
-                cmd.Parameters["@userID"].Value = resUserID;
+                cmd.Parameters.AddWithValue("@userID", resUserID);
                 DataSet resReport = reservationListConn.ExecuteDataSet(cmd);
 
                 // pipe dataset to report
@@ -80,23 +84,28 @@ namespace Hotel_Reservation_Overhaul
             // if no customer ID entered
             if (string.IsNullOrEmpty(txtCustomerSearch.Text))
             {
-                lblError.Text = "Error: Customer ID not entered";
-                lblError.Visible = true;
+              displayError("Customer ID not entered");
             }
             else
             {
                 // check that customer ID exists
                 resUserID = Convert.ToInt32(txtCustomerSearch.Text);
                 Utilities checkForUser = new Utilities();
+
+                // check that user exists
                 if (!(checkForUser.userIDExists(resUserID)))
                 {
-                    lblError.Text = "Error: Customer ID does not exist";
-                    lblError.Visible = true;
+                   displayError("Error: Customer ID does not exist");
                 }
-
-                else
+                // ensure entered user ID is customer
+                else if(!(checkForUser.isCustomer(resUserID)))
+                {
+                    displayError("Entered user ID is not customer");
+                }
                 // customer ID exists, pull report
-                { GetData(); }
+                {
+                    GetData(); 
+                }
             }
         }
 
@@ -136,17 +145,21 @@ namespace Hotel_Reservation_Overhaul
             }
             else
             {
-                lblError.Visible = true;
-                lblError.Text = "Error: No reservation selected";
+                displayError("No reservation selected");
             }
 
         }
 
         private void btnNew_Click(object sender, EventArgs e)
         {
-            var newReservation = new Reservation(resUserID);
-            this.Hide();
-            newReservation.Show();
+            if (userInfo.isCustomer == false && resUserID == -1)
+            { displayError("Please enter a customer ID"); }
+            else
+            {
+                var newReservation = new CreateReservation(resUserID);
+                this.Hide();
+                newReservation.Show();
+            }
         }
 
         private void btnModify_Click(object sender, EventArgs e)

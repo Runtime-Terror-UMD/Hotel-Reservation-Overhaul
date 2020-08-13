@@ -125,11 +125,11 @@
     <Compile Include="Pages\Recovery.Designer.cs">
       <DependentUpon>Recovery.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Reservation.cs">
+    <Compile Include="Pages\CreateReservation.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Pages\Reservation.Designer.cs">
-      <DependentUpon>Reservation.cs</DependentUpon>
+    <Compile Include="Pages\CreateReservation.Designer.cs">
+      <DependentUpon>CreateReservation.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\ReservationList.cs">
       <SubType>Form</SubType>
@@ -174,8 +174,8 @@
     <EmbeddedResource Include="Pages\Recovery.resx">
       <DependentUpon>Recovery.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Reservation.resx">
-      <DependentUpon>Reservation.cs</DependentUpon>
+    <EmbeddedResource Include="Pages\CreateReservation.resx">
+      <DependentUpon>CreateReservation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\ReservationList.resx">
       <DependentUpon>ReservationList.cs</DependentUpon>

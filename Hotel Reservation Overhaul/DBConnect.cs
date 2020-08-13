@@ -72,6 +72,7 @@ namespace Hotel_Reservation_Overhaul
         {
             try
             {
+                this.OpenConnection();
                 DataSet ds = new DataSet();
                 cmd.Connection = connection;
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
@@ -85,13 +86,32 @@ namespace Hotel_Reservation_Overhaul
             return null;
         }
 
+        public DataTable ExecuteDataTable(MySqlCommand cmd)
+        {
+            try
+            {
+                this.OpenConnection();
+                DataTable dt = new DataTable();
+                cmd.Connection = connection;
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                da.Fill(dt);
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            return null;
+        }
+
         // DESCRIPTION: Executes SELECT statements
         public MySqlDataReader ExecuteReader(MySqlCommand cmd)
         {
+            this.OpenConnection();
             if (this.OpenConnection() == true)
             {
                 try
-                {
+                { 
                     MySqlDataReader reader;
                     cmd.Connection = connection;
                     reader = cmd.ExecuteReader();
@@ -131,6 +151,7 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Executes scalar query of type integer
         public int intScalar(MySqlCommand cmd)
         {
+            this.OpenConnection();
             int returnInt = -1;
 
             //Open Connection
@@ -149,12 +170,11 @@ namespace Hotel_Reservation_Overhaul
             }
         }
 
-
         // DESCRIPTION: Executes scalar query of type string
         public string stringScalar(MySqlCommand cmd)
         {
             string returnString = null;
-
+            this.OpenConnection();
             if (this.OpenConnection() == true)
             {
                 cmd.Connection = connection;
