@@ -27,10 +27,17 @@ namespace Hotel_Reservation_Overhaul
             if (isCustomer == true)
                 btnHotelManagement.Visible = false;
         }
-
+        //DESCRIPTION: Opens account settings page
         private void btnAccount_Click(object sender, EventArgs e)
         {
-
+            var accountSettings = new AccountSettings(UserID);
+            accountSettings.FormClosed += new FormClosedEventHandler(accountSettings_FormClosed);
+            this.Hide();
+            accountSettings.Show();
+        }
+        void accountSettings_FormClosed(object send, FormClosedEventArgs e)
+        {
+            this.Show();
         }
         void resMgmt_FormClosed(object send, FormClosedEventArgs e)
         {

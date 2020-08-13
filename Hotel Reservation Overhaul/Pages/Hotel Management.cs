@@ -217,6 +217,10 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 
                                 //VERIFY RESERVATION DETAILS AND ADD RESERVATION TO DATABASE
                             }
+                            else
+                            {
+                                throw new Exception("Invalid file format.");
+                            }
                         }
                     }//end of file
 
@@ -226,7 +230,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                     MessageBox.Show("Error: Could not read file. " + ex.Message);
                 }
                 //display date of file and number of reservations read
-                lblFileStatus.Text = "Date: " + fileDate + "Number of reservations: " + numReserv;
+                lblFileStatus.Text = "Date: " + fileDate + " Number of reservations: " + numReserv;
             }
         }
 
@@ -239,6 +243,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             if (resFile.ShowDialog() == DialogResult.OK)
             {
                 DateTime fileDate = new DateTime(2020, 1, 1);
+                int hotelCount = 0;
                 try
                 {
                     string fileName = resFile.FileName;
@@ -292,6 +297,7 @@ namespace Hotel_Reservation_Overhaul.Pages
 
                                 //INSERT CODE TO VERIFY HOTELID DOES NOT EXIST AND ADD TO DATABASE
                                 //IF HOTEL ID EXISTS, CHANGE HOTEL ID TO 0
+                                hotelCount++;
                             }
                             else if (startCode == "R") //get line for room information
                             {
@@ -363,7 +369,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                             successPack = int.TryParse(fileLines[i].Substring(start), out pack);
                                             successPack = false;
                                         }
-                                        if (pack < 1)
+                                        if (pack > 0)
                                         {
                                             //IF PACK IS NOT IN DB, DO NOT ADD
                                             roomPackages.Add(pack);
@@ -382,6 +388,10 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 //ADD ROOM TO HOTEL IN DB
 
                             }
+                            else
+                            {
+                                throw new Exception("Invalid file format.");
+                            }
                         }
                     }//end of file
                 }
@@ -389,6 +399,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                 {
                     MessageBox.Show("Error: Could not read file. " + ex.Message);
                 }
+                lblFileStatus.Text = "Date: " + fileDate + " Number of hotels: " + hotelCount;
             }
 
         }
@@ -402,6 +413,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             if (resFile.ShowDialog() == DialogResult.OK)
             {
                 DateTime fileDate = new DateTime(2020, 1, 1);
+                int packageCount = 0;
                 try
                 {
                     string fileName = resFile.FileName;
@@ -456,6 +468,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                     throw new Exception("Invalid package cost.");
                                 }
                                 //ADD PACKAGE TO DATABASE
+                                packageCount++;
                             }
                             else if (startCode == "A") //get line for package information
                             {
@@ -467,14 +480,18 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 amenity = fileLines[i].Substring(position).Trim();
                                 //ADD AMENITY PACKAGE IN DATABASE
                             }
+                            else
+                            {
+                                throw new Exception("Invalid file format.");
+                            }
                         }
                     }//end of file
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error: Could not read file. " + ex.Message);
-
                 }
+                lblFileStatus.Text = "Date: " + fileDate + " Number of packages: " + packageCount;
             }
         }
 
@@ -487,6 +504,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             if (resFile.ShowDialog() == DialogResult.OK)
             {
                 DateTime fileDate = new DateTime(2020, 1, 1);
+                int maintainCount = 0;
                 try
                 {
                     string fileName = resFile.FileName;
@@ -554,6 +572,11 @@ namespace Hotel_Reservation_Overhaul.Pages
                                     throw new Exception("Unable to retrieve room number.");
                                 }
                                 //SET ROOMNUM IN HOTELID TO UNAVAILABLE ON MAINTAINDATE
+                                maintainCount++;
+                            }
+                            else
+                            {
+                                throw new Exception("Invalid file format.");
                             }
                         }
                     }//end of file
@@ -561,8 +584,8 @@ namespace Hotel_Reservation_Overhaul.Pages
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error: Could not read file. " + ex.Message);
-
                 }
+                lblFileStatus.Text = "Date: " + fileDate + " Number of unavailable rooms: " + maintainCount;
             }
         }
     }
