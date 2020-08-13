@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hotel_Reservation_Overhaul.Pages;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -43,6 +44,13 @@ namespace Hotel_Reservation_Overhaul
             reservationMgmt.FormClosed += new FormClosedEventHandler(resMgmt_FormClosed);
             this.Hide();
             reservationMgmt.Show();
+        }
+
+        private void btnHotelManagement_Click(object sender, EventArgs e)
+        {
+            var hotelMgmt = new HotelManagement();
+            hotelMgmt.Show();
+            this.Hide();
         }
     }
 }

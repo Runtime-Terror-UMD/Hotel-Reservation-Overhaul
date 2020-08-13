@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace Hotel_Reservation_Overhaul
 {
-    public partial class Reservation : Form
+    public partial class CreateReservation : Form
     {
         public DateTime? startDate = null;
         public DateTime? endDate = null;
@@ -23,11 +23,24 @@ namespace Hotel_Reservation_Overhaul
         public double price;
         public int points;
 
-        public Reservation(int userID)
+        public CreateReservation(int userID)
         {
             InitializeComponent();
             PopulateCheckBoxes();
             resUserID = userID;
+
+        }
+
+        public CreateReservation(int userID, int confirmationID)
+        {
+            InitializeComponent();
+            PopulateCheckBoxes();
+            resUserID = userID;
+            Reservation resInfo = new Reservation(confirmationID);
+            monthStart.SelectionRange.Start = resInfo.startDate;
+            monthEnd.SelectionRange.Start = resInfo.endDate;
+            lblCost.Text = resInfo.totalPrice.ToString();
+            cboxHotel.SelectedIndex = resInfo.locationID + 1;
 
         }
 
@@ -144,13 +157,13 @@ namespace Hotel_Reservation_Overhaul
             {
                 DBConnect checkAvailabilityConn = new DBConnect();
                 // Select available rooms at location not in maintenance
-                MySqlCommand cmd = new MySqlCommand("SELECT roomNum, pricePerNight FROM dbo.room r where r.locationID = @locationID and r.hasPackage2 = @hasPackage2 and r.hasPackage3 = @hasPackage3 and r.hasPackage4 = @hasPackage4 and r.occupancy >= @numGuests and r.roomNum not in (select roomNum from dbo.reservation where @startDate between startDate and endDate and reservationStatus <> 3) and r.roomNum not in (select roomNum from dbo.maintenance where @startDate between startDate and endDate) LIMIT 1");
+                MySqlCommand cmd = new MySqlCommand("SELECT roomNum, pricePerNight FROM dbo.room r where r.locationID = @locationID and r.hasPackage2 = @hasPackage2 and r.hasPackage3 = @hasPackage3 and r.hasPackage4 = @hasPackage4 and r.occupancy >= @numGuests and r.roomNum not in (select roomNum from dbo.reservation where @startDate between startDate and endDate and reservationStatus <> 'cancelled') and r.roomNum not in (select roomNum from dbo.maintenance where locationID = @locationID and @startDate between startDate and endDate) LIMIT 1");
                 cmd.Parameters.Add("@startDate", MySqlDbType.DateTime).Value = startDate;
                 cmd.Parameters.Add("@hasPackage2", MySqlDbType.Bit).Value = 0;
                 cmd.Parameters.Add("@hasPackage3", MySqlDbType.Bit).Value = 0;
                 cmd.Parameters.Add("@hasPackage4", MySqlDbType.Bit).Value = 0;
                 cmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = Convert.ToInt32(cboxHotel.SelectedValue);
-                cmd.Parameters.Add("numGuests", MySqlDbType.Int32).Value = Convert.ToInt32(cboxNumGuests.SelectedItem);
+                cmd.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = Convert.ToInt32(cboxNumGuests.SelectedItem);
 
                 // updates parameter values based on checkboxes
                 if (checkPackages.GetItemCheckState(1) == CheckState.Checked) { cmd.Parameters["@hasPackage2"].Value = 1; }
@@ -165,9 +178,11 @@ namespace Hotel_Reservation_Overhaul
                     pricePerNight = Convert.ToDouble(dataReader["pricePerNight"]);
                 }
                 dataReader.Close();
+                checkAvailabilityConn.CloseConnection();
 
                 if (roomNum == -1)
                 {
+                    checkAvailabilityConn.OpenConnection();
                     cmd.CommandText = "SELECT pricePerNight FROM dbo.room r where r.locationID = @locationID and r.hasPackage2 = @hasPackage2 and r.hasPackage3 = @hasPackage3 and r.hasPackage4 = @hasPackage4 and r.occupancy >= @numGuests LIMIT 1";
                     MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
                     while (nonAvailableDR.Read())
@@ -236,7 +251,7 @@ namespace Hotel_Reservation_Overhaul
                 int comfirmationID = createResConn.intScalar(cmd) + 1;
 
                 // add to reservation table
-                createResCmd.CommandText = "INSERT INTO `dbo`.`reservation`(`confirmationID`,`userID`,`locationID`,`roomNum`,`startDate`,`endDate`,`bookingMethod`,`pointsAccumulated`,`price`,`amountDue`,`amountPaid`,`reservationStatus`)VALUES(@confirmationID,@userID,@locationID,@roomNum,@startDate,@endDate,@bookingMethod,@points,@price,@price,@amountPaid,@status)";
+                createResCmd.CommandText = "INSERT INTO `dbo`.`reservation`(`confirmationID`,`userID`,`locationID`,`roomNum`,`startDate`,`endDate`,`bookingMethod`,`pointsAccumulated`,`price`,`amountDue`,`amountPaid`,`reservationStatus`,`created`)VALUES(@confirmationID,@userID,@locationID,@roomNum,@startDate,@endDate,@bookingMethod,@points,@price,@price,@amountPaid,@status,@created)";
                 createResCmd.Parameters.Add("@confirmationID", MySqlDbType.Int32, 10).Value = comfirmationID;
                 createResCmd.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = roomNum;
                 createResCmd.Parameters.Add("@points", MySqlDbType.Int32).Value = points;
@@ -244,6 +259,7 @@ namespace Hotel_Reservation_Overhaul
                 createResCmd.Parameters.Add("@price", MySqlDbType.Decimal).Value = price;
                 createResCmd.Parameters.Add("@status", MySqlDbType.VarChar, 45).Value = "Upcoming";
                 createResCmd.Parameters.Add("@amountPaid", MySqlDbType.Decimal).Value = 0;
+                createResCmd.Parameters.Add("@created", MySqlDbType.Date).Value = DateTime.Today;
                 createResConn.NonQuery(createResCmd);
 
                 // add to activity log
@@ -252,6 +268,11 @@ namespace Hotel_Reservation_Overhaul
                 logActivity.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = resUserID;
                 logActivity.Parameters.Add("@date", MySqlDbType.Date).Value = DateTime.Today;      // FIXME: Replace with date variable
                 createResConn.NonQuery(logActivity);
+
+                // opens payment screen for user to pay deposit
+                var makePayment = new Payment(comfirmationID, resUserID);
+                this.Hide();
+                makePayment.Show();
             }
         }
     }
