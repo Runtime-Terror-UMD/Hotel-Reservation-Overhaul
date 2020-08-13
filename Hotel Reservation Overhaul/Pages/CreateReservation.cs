@@ -9,6 +9,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace Hotel_Reservation_Overhaul
 {
@@ -83,7 +84,7 @@ namespace Hotel_Reservation_Overhaul
              }
 
             checkPackages.SetItemChecked(0, true);
-            checkPackages.SetItemCheckState(0, CheckState.Indeterminate);
+            checkPackages.SetItemCheckState(0, CheckState.Checked);
         }
 
         // DESCRIPTION: Handles when the selected start date is changed
@@ -144,6 +145,11 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Checks for reservation availability
         private void btnSubmit_Click(object sender, EventArgs e)
         {
+            if (checkPackages.GetItemCheckState(0) == CheckState.Unchecked)
+            {
+                checkPackages.SetItemCheckState(0, CheckState.Checked);
+                lblError.Text = "All rooms contain basic package.";
+            }
             // reset error
             lblError.Visible = false;
 
@@ -164,8 +170,9 @@ namespace Hotel_Reservation_Overhaul
                         if (checkPackages.GetItemCheckState(indexChecked) == CheckState.Checked)
                         {
                             packages.Add(indexChecked + 1);
+                            lblError.Visible = true;
                         }
-                     }
+                    }
                 }
 
                 // put selected package IDs in list
@@ -238,6 +245,12 @@ namespace Hotel_Reservation_Overhaul
                 lblDeposit.Text = "50.00";
                 txtCostNightly.Text = pricePerNight.ToString();
                 lblSubTotal.Text = (price + 50).ToString();
+                lblError.Visible = false;
+                cboxHotel.Enabled = false;
+                cboxNumGuests.Enabled = false;
+                monthStart.Enabled = false;
+                monthEnd.Enabled = false;
+                checkPackages.Enabled = false;
                 btnSubmit.Visible = false;
                 btnMakeRes.Visible = true;
             }
@@ -304,6 +317,34 @@ namespace Hotel_Reservation_Overhaul
                     lblError.Text = "You have been added to the waitlist";
                 }
             }
+        }
+
+        private void checkPackages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (checkPackages.GetItemCheckState(0) == CheckState.Unchecked)
+            {
+                checkPackages.SetItemCheckState(0, CheckState.Checked);
+                lblError.Text = "All rooms contain basic package.";
+                lblError.Visible = true;
+            }
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            foreach (int indexChecked in checkPackages.CheckedIndices)
+            {
+                checkPackages.SetItemChecked(indexChecked, false);
+            }
+            checkPackages.SetItemChecked(0, true);
+            cboxHotel.SelectedIndex = 0;
+            cboxNumGuests.SelectedIndex = 0;
+            cboxHotel.Enabled = true;
+            cboxNumGuests.Enabled = true;
+            monthStart.Enabled = true;
+            monthEnd.Enabled = true;
+            checkPackages.Enabled = true;
+            btnSubmit.Visible = true;
+            btnMakeRes.Visible = false;
         }
     }
 }

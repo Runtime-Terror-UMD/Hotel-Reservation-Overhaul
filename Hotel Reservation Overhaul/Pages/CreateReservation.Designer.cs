@@ -214,6 +214,7 @@
             this.checkPackages.Name = "checkPackages";
             this.checkPackages.Size = new System.Drawing.Size(227, 89);
             this.checkPackages.TabIndex = 5;
+            this.checkPackages.SelectedIndexChanged += new System.EventHandler(this.checkPackages_SelectedIndexChanged);
             // 
             // packageBindingSource1
             // 
@@ -243,6 +244,7 @@
             // btnSubmit
             // 
             this.btnSubmit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSubmit.Location = new System.Drawing.Point(620, 354);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(130, 30);
             this.btnSubmit.TabIndex = 6;
@@ -259,6 +261,7 @@
             this.btnReset.TabIndex = 7;
             this.btnReset.Text = "Reset";
             this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
             // lblSubTotalDesc
             // 

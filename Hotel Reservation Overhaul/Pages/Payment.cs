@@ -19,6 +19,7 @@ namespace Hotel_Reservation_Overhaul
             InitializeComponent();
             resInfo = new CreateReservation(confirmationID);
             userInfo = new User(userID);
+            lblPoints.Text = "" + userInfo.rewardPoints;
         }
 
         private void btnLogOut_Click(object sender, EventArgs e)
