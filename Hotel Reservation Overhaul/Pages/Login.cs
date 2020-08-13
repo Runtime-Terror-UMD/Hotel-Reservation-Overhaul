@@ -57,26 +57,7 @@ namespace Hotel_Reservation_Overhaul
 
         }
 
-        // DESCRIPTION: Checks if entered password matches specified username
-        private bool passwordMatches(string username, string password)
-        {
-            // construct query
-            string passwordMatchesQuery = "SELECT Count(*) from dbo.user where username = @username AND password = @password";
-            MySqlCommand cmd = new MySqlCommand(passwordMatchesQuery);
-            cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@username"].Value = username;
-            cmd.Parameters.Add("@password", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@password"].Value = password;
-
-            // connect to database
-            DBConnect passwordMatchesConn = new DBConnect();
-
-            // if records exist
-            if (passwordMatchesConn.intScalar(cmd) > 0)
-                return true;
-            else
-                return false;
-        }
+        
 
         // DESCRIPTION: checks if user is customer account
         private bool isCustomer(string username)
@@ -96,7 +77,7 @@ namespace Hotel_Reservation_Overhaul
          // DESCRIPTION: Login process
          private void btnLogin_Click(object sender, EventArgs e)
         {
-
+            Utilities account = new Utilities();
             // reset error status
             lblError.Visible = false;
 
@@ -115,7 +96,7 @@ namespace Hotel_Reservation_Overhaul
             {
                 if(verifyCredentials.usernameExists(txtUsername.Text))
                 {
-                    if(passwordMatches(txtUsername.Text, txtPassword.Text))
+                    if(account.passwordMatches(txtUsername.Text, txtPassword.Text))
                     {
                         if(isCustomer(txtUsername.Text))
                         {

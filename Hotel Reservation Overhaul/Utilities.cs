@@ -204,6 +204,46 @@ namespace Hotel_Reservation_Overhaul
             return username;
         }
 
+        // DESCRIPTION: Checks if entered password matches specified username
+        public bool passwordMatches(string username, string password)
+        {
+            // construct query
+            string passwordMatchesQuery = "SELECT Count(*) from dbo.user where username = @username AND password = @password";
+            MySqlCommand cmd = new MySqlCommand(passwordMatchesQuery);
+            cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45);
+            cmd.Parameters["@username"].Value = username;
+            cmd.Parameters.Add("@password", MySqlDbType.VarChar, 45);
+            cmd.Parameters["@password"].Value = password;
+
+            // connect to database
+            DBConnect passwordMatchesConn = new DBConnect();
+
+            // if records exist
+            if (passwordMatchesConn.intScalar(cmd) > 0)
+                return true;
+            else
+                return false;
+        }
+        public bool passwordMatches(int userID, string password)
+        {
+            // construct query
+            string passwordMatchesQuery = "SELECT Count(*) from dbo.user where userID = @userID AND password = @password";
+            MySqlCommand cmd = new MySqlCommand(passwordMatchesQuery);
+            cmd.Parameters.Add("@userID", MySqlDbType.VarChar, 45);
+            cmd.Parameters["@userID"].Value = userID;
+            cmd.Parameters.Add("@password", MySqlDbType.VarChar, 45);
+            cmd.Parameters["@password"].Value = password;
+
+            // connect to database
+            DBConnect passwordMatchesConn = new DBConnect();
+
+            // if records exist
+            if (passwordMatchesConn.intScalar(cmd) > 0)
+                return true;
+            else
+                return false;
+        }
+
         //  DESCRIPTION: Updates account password
         public bool updatePassword(string username, string newPassword)
         {
@@ -215,6 +255,167 @@ namespace Hotel_Reservation_Overhaul
 
             DBConnect updatePassword = new DBConnect();
             if ((updatePassword.NonQuery(cmd)) > 0)
+                return true;
+            else
+                return false;
+        }
+        public bool updatePassword(int userID, string newPassword)
+        {
+            // build query
+            string updatePasswordQuery = "UPDATE `dbo`.`user` SET `password` = @newpassword WHERE `userID` = @userID";
+            MySqlCommand cmd = new MySqlCommand(updatePasswordQuery);
+            cmd.Parameters.Add("@userID", MySqlDbType.VarChar, 45).Value = userID;
+            cmd.Parameters.Add("@newpassword", MySqlDbType.VarChar, 45).Value = newPassword;
+
+            DBConnect updatePassword = new DBConnect();
+            if ((updatePassword.NonQuery(cmd)) > 0)
+                return true;
+            else
+                return false;
+        }
+
+        // DESCRIPTION: Gets userID based on username
+        public int getRewardsPoints(int userID)
+        {
+            int rewards;
+            DBConnect getPointsBalanceConn = new DBConnect();
+
+            // build query
+            string getPointsBalanceQuery = "SELECT pointsBalance from dbo.user where userid = @userID";
+            MySqlCommand cmd = new MySqlCommand(getPointsBalanceQuery);
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32);
+            cmd.Parameters["@userID"].Value = userID;
+
+            //assign value to variable
+            rewards = getPointsBalanceConn.intScalar(cmd);
+            getPointsBalanceConn.CloseConnection();
+            return rewards;
+        }
+
+        //  DESCRIPTION: Gets email based on userID
+        public string getEmail(int userID)
+        {
+            string email;
+            DBConnect getEmailConn = new DBConnect();
+
+            // build query
+            string getEmailQuery = "SELECT email from dbo.user where userid = @userID";
+            MySqlCommand cmd = new MySqlCommand(getEmailQuery);
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32);
+            cmd.Parameters["@userID"].Value = userID;
+
+            //assign value to variable
+            email = getEmailConn.stringScalar(cmd);
+            getEmailConn.CloseConnection();
+            return email;
+        }
+
+        //  DESCRIPTION: Gets secretQuestion based on userID
+        public string getSecretQuestion(int userID)
+        {
+            string secretQuestion;
+            DBConnect getSecretQuestionConn = new DBConnect();
+
+            // build query
+            string getEmailQuery = "SELECT secretQuestion from dbo.user where userid = @userID";
+            MySqlCommand cmd = new MySqlCommand(getEmailQuery);
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32);
+            cmd.Parameters["@userID"].Value = userID;
+
+            //assign value to variable
+            secretQuestion = getSecretQuestionConn.stringScalar(cmd);
+            getSecretQuestionConn.CloseConnection();
+            return secretQuestion;
+        }
+        //  DESCRIPTION: Gets first name based on userID
+        public string getFirstName(int userID)
+        {
+            string firstName;
+            DBConnect getFirstNameConn = new DBConnect();
+
+            // build query
+            string getEmailQuery = "SELECT firstName from dbo.user where userid = @userID";
+            MySqlCommand cmd = new MySqlCommand(getEmailQuery);
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32);
+            cmd.Parameters["@userID"].Value = userID;
+
+            //assign value to variable
+            firstName = getFirstNameConn.stringScalar(cmd);
+            getFirstNameConn.CloseConnection();
+            return firstName;
+        }
+        //  DESCRIPTION: Gets last name based on userID
+        public string getLastName(int userID)
+        {
+            string lastName;
+            DBConnect getLastNameConn = new DBConnect();
+
+            // build query
+            string getEmailQuery = "SELECT lastName from dbo.user where userid = @userID";
+            MySqlCommand cmd = new MySqlCommand(getEmailQuery);
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32);
+            cmd.Parameters["@userID"].Value = userID;
+
+            //assign value to variable
+            lastName = getLastNameConn.stringScalar(cmd);
+            getLastNameConn.CloseConnection();
+            return lastName;
+        }
+
+        public bool setFirstName(int userID, string firstName)
+        {
+            // build query
+            string updateFirstNameQuery = "UPDATE `dbo`.`user` SET `firstName` = @newfirstName WHERE `userID` = @userID";
+            MySqlCommand cmd = new MySqlCommand(updateFirstNameQuery);
+            cmd.Parameters.Add("@userID", MySqlDbType.VarChar, 45).Value = userID;
+            cmd.Parameters.Add("@newFirstName", MySqlDbType.VarChar, 45).Value = firstName;
+
+            DBConnect updateFirstName = new DBConnect();
+            if ((updateFirstName.NonQuery(cmd)) > 0)
+                return true;
+            else
+                return false;
+        }
+        public bool setLastName(int userID, string lastName)
+        {
+            // build query
+            string updateLastNameQuery = "UPDATE `dbo`.`user` SET `lastName` = @newLastName WHERE `userID` = @userID";
+            MySqlCommand cmd = new MySqlCommand(updateLastNameQuery);
+            cmd.Parameters.Add("@userID", MySqlDbType.VarChar, 45).Value = userID;
+            cmd.Parameters.Add("@newLastName", MySqlDbType.VarChar, 45).Value = lastName;
+
+            DBConnect updateLastName = new DBConnect();
+            if ((updateLastName.NonQuery(cmd)) > 0)
+                return true;
+            else
+                return false;
+        }
+        //DESCRIPTION: Change the secret question given the user id
+        public bool setSecretQuestion(int userID, string secretQuestion)
+        {
+            // build query
+            string updateLastNameQuery = "UPDATE `dbo`.`user` SET `secretQuestion` = @newQuestion WHERE `userID` = @userID";
+            MySqlCommand cmd = new MySqlCommand(updateLastNameQuery);
+            cmd.Parameters.Add("@userID", MySqlDbType.VarChar, 45).Value = userID;
+            cmd.Parameters.Add("@newQuestion", MySqlDbType.VarChar, 250).Value = secretQuestion;
+
+            DBConnect updatesecretQuestion = new DBConnect();
+            if ((updatesecretQuestion.NonQuery(cmd)) > 0)
+                return true;
+            else
+                return false;
+        }
+        //DESCRIPTION: Change the secret answer given the user id
+        public bool setSecretAnswer(int userID, string secretAnswer)
+        {
+            // build query
+            string updateLastNameQuery = "UPDATE `dbo`.`user` SET `secretAnswer` = @newAnswer WHERE `userID` = @userID";
+            MySqlCommand cmd = new MySqlCommand(updateLastNameQuery);
+            cmd.Parameters.Add("@userID", MySqlDbType.VarChar, 45).Value = userID;
+            cmd.Parameters.Add("@newAnswer", MySqlDbType.VarChar, 250).Value = secretAnswer;
+
+            DBConnect updatesecretAnswer = new DBConnect();
+            if ((updatesecretAnswer.NonQuery(cmd)) > 0)
                 return true;
             else
                 return false;
