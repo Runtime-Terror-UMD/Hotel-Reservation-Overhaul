@@ -127,6 +127,7 @@
             this.btnHotelManagement.TabIndex = 5;
             this.btnHotelManagement.Text = "Hotel Management";
             this.btnHotelManagement.UseVisualStyleBackColor = true;
+            this.btnHotelManagement.Click += new System.EventHandler(this.btnHotelManagement_Click);
             // 
             // lblNotification
             // 

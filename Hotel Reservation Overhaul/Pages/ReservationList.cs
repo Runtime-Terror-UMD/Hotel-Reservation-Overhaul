@@ -156,7 +156,7 @@ namespace Hotel_Reservation_Overhaul
             { displayError("Please enter a customer ID"); }
             else
             {
-                var newReservation = new Reservation(resUserID);
+                var newReservation = new CreateReservation(resUserID);
                 this.Hide();
                 newReservation.Show();
             }

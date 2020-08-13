@@ -3,23 +3,19 @@ using MySql.Data.MySqlClient;
 using System;
 public class Reservation
 {
-    public enum Status
-    {
-        WAITLISTED,
-        UPCOMING,
-        CHECKED_IN,
-        CHECKED_OUT,
-        CANCELLED
-    }
+
     public int reservationID { get; set; }
     public int confirmatonID { get; set; }
     public int locationID { get; set; }
-    
+  
     public int userID { get; set; }
     public DateTime startDate { get; set; }
     public DateTime endDate { get; set; }
     public double duration { get; set; }
-    public decimal totalPrice { get; set; }
+    public double totalPrice { get; set; }
+    public double amountPaid { get; set; }
+    public double amountDue { get; set; }
+
     public string status { get; set; }
 
     public Reservation(int confirmationID)
@@ -50,7 +46,9 @@ public class Reservation
             startDate = Convert.ToDateTime(dataReader["startDate"]);
             endDate = Convert.ToDateTime(dataReader["endDate"]);
             duration = (endDate - startDate).TotalDays;
-            totalPrice = Convert.ToDecimal(dataReader["price"]);
+            totalPrice = Convert.ToDouble(dataReader["price"]);
+            amountPaid = Convert.ToDouble(dataReader["amountPaid"]);
+            amountDue = Convert.ToDouble(dataReader["amountDue"]);
             status = dataReader["reservationStatus"].ToString();
         }
 
