@@ -44,12 +44,12 @@
             this.lstReports = new System.Windows.Forms.ListBox();
             this.btnReport = new System.Windows.Forms.Button();
             this.grpHotelSettings = new System.Windows.Forms.GroupBox();
+            this.btnNewMaintenance = new System.Windows.Forms.Button();
+            this.btnNewHotel = new System.Windows.Forms.Button();
+            this.btnNewPackages = new System.Windows.Forms.Button();
             this.btnThirdParty = new System.Windows.Forms.Button();
             this.btnAccountDetails = new System.Windows.Forms.Button();
             this.btnWaitlist = new System.Windows.Forms.Button();
-            this.btnNewPackages = new System.Windows.Forms.Button();
-            this.btnNewHotel = new System.Windows.Forms.Button();
-            this.btnNewMaintenance = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.lblFileStatus = new System.Windows.Forms.Label();
             this.grpReports.SuspendLayout();
@@ -215,6 +215,39 @@
             this.grpHotelSettings.TabStop = false;
             this.grpHotelSettings.Text = "Hotel Settings";
             // 
+            // btnNewMaintenance
+            // 
+            this.btnNewMaintenance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNewMaintenance.Location = new System.Drawing.Point(100, 120);
+            this.btnNewMaintenance.Name = "btnNewMaintenance";
+            this.btnNewMaintenance.Size = new System.Drawing.Size(150, 50);
+            this.btnNewMaintenance.TabIndex = 8;
+            this.btnNewMaintenance.Text = "New Maintainance File";
+            this.btnNewMaintenance.UseVisualStyleBackColor = true;
+            this.btnNewMaintenance.Click += new System.EventHandler(this.btnNewMaintenance_Click);
+            // 
+            // btnNewHotel
+            // 
+            this.btnNewHotel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNewHotel.Location = new System.Drawing.Point(275, 44);
+            this.btnNewHotel.Name = "btnNewHotel";
+            this.btnNewHotel.Size = new System.Drawing.Size(150, 50);
+            this.btnNewHotel.TabIndex = 7;
+            this.btnNewHotel.Text = "New Hotel File";
+            this.btnNewHotel.UseVisualStyleBackColor = true;
+            this.btnNewHotel.Click += new System.EventHandler(this.btnNewHotel_Click);
+            // 
+            // btnNewPackages
+            // 
+            this.btnNewPackages.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNewPackages.Location = new System.Drawing.Point(450, 44);
+            this.btnNewPackages.Name = "btnNewPackages";
+            this.btnNewPackages.Size = new System.Drawing.Size(150, 50);
+            this.btnNewPackages.TabIndex = 6;
+            this.btnNewPackages.Text = "New Packages";
+            this.btnNewPackages.UseVisualStyleBackColor = true;
+            this.btnNewPackages.Click += new System.EventHandler(this.btnNewPackages_Click);
+            // 
             // btnThirdParty
             // 
             this.btnThirdParty.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -245,36 +278,6 @@
             this.btnWaitlist.TabIndex = 3;
             this.btnWaitlist.Text = "Edit Waitlist Settings";
             this.btnWaitlist.UseVisualStyleBackColor = true;
-            // 
-            // btnNewPackages
-            // 
-            this.btnNewPackages.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNewPackages.Location = new System.Drawing.Point(450, 44);
-            this.btnNewPackages.Name = "btnNewPackages";
-            this.btnNewPackages.Size = new System.Drawing.Size(150, 50);
-            this.btnNewPackages.TabIndex = 6;
-            this.btnNewPackages.Text = "New Packages";
-            this.btnNewPackages.UseVisualStyleBackColor = true;
-            // 
-            // btnNewHotel
-            // 
-            this.btnNewHotel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNewHotel.Location = new System.Drawing.Point(275, 44);
-            this.btnNewHotel.Name = "btnNewHotel";
-            this.btnNewHotel.Size = new System.Drawing.Size(150, 50);
-            this.btnNewHotel.TabIndex = 7;
-            this.btnNewHotel.Text = "New Hotel File";
-            this.btnNewHotel.UseVisualStyleBackColor = true;
-            // 
-            // btnNewMaintenance
-            // 
-            this.btnNewMaintenance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNewMaintenance.Location = new System.Drawing.Point(100, 120);
-            this.btnNewMaintenance.Name = "btnNewMaintenance";
-            this.btnNewMaintenance.Size = new System.Drawing.Size(150, 50);
-            this.btnNewMaintenance.TabIndex = 8;
-            this.btnNewMaintenance.Text = "New Maintainance File";
-            this.btnNewMaintenance.UseVisualStyleBackColor = true;
             // 
             // openFileDialog1
             // 
