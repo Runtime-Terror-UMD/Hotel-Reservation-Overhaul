@@ -46,7 +46,9 @@ namespace Hotel_Reservation_Overhaul
 
         private void btnLogOut_Click(object sender, EventArgs e)
         {
-
+            this.Close();
+            Application.OpenForms["ReservationList"].Close();
+            Application.OpenForms["Menu"].Close();
         }
 
         // DESCRIPTION: 
@@ -345,6 +347,11 @@ namespace Hotel_Reservation_Overhaul
             checkPackages.Enabled = true;
             btnSubmit.Visible = true;
             btnMakeRes.Visible = false;
+        }
+
+        private void btnReturn_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

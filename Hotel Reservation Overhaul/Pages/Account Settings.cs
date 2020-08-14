@@ -29,6 +29,7 @@ namespace Hotel_Reservation_Overhaul.Pages
 
         private void btnReturn_Click(object sender, EventArgs e)
         {
+
             this.Close();
         }
 
@@ -112,6 +113,11 @@ namespace Hotel_Reservation_Overhaul.Pages
             txtNewAnswer.Clear();
             txtNewQuestion.Clear();
             lblCurrentQuestion.Text = accountInfo.getSecretQuestion(UserID);
+        }
+
+        private void btnLogOut_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

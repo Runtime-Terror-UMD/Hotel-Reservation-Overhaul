@@ -72,7 +72,9 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Logs out of system
         private void btnLogOut_Click(object sender, EventArgs e)
         {
-
+            //Application.OpenForms["Login"].Show();
+            this.Close();
+            Application.OpenForms["Menu"].Close();
         }
 
         // DESCRIPTION: Searches for specified customer ID reservations
@@ -143,6 +145,7 @@ namespace Hotel_Reservation_Overhaul
 
                 // Passes confirmation ID and user ID to payment page
                 var makePayment = new Payment(confirmationID, resUserID);
+                makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
                 this.Hide();
                 makePayment.Show();
 
@@ -154,6 +157,11 @@ namespace Hotel_Reservation_Overhaul
 
         }
 
+        private void makePayment_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Show();
+        }
+
         private void btnNew_Click(object sender, EventArgs e)
         {
             if (userInfo.isCustomer == false && resUserID == -1)
@@ -163,9 +171,15 @@ namespace Hotel_Reservation_Overhaul
             else
             {
                 var newReservation = new CreateReservation(resUserID);
+                newReservation.FormClosed += new FormClosedEventHandler(newReservation_FormClosed);
                 this.Hide();
                 newReservation.Show();
             }
+        }
+
+        private void newReservation_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Show();
         }
 
         private void btnModify_Click(object sender, EventArgs e)
