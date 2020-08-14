@@ -16,5 +16,13 @@ namespace Hotel_Reservation_Overhaul.Pages
         {
             InitializeComponent();
         }
+
+        private void lstReports_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(lstReports.SelectedItem.ToString() == "Customer History")
+            {
+                cboxHotel.Enabled = false;
+            }
+        }
     }
 }
