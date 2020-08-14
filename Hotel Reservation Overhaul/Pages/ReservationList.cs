@@ -52,7 +52,6 @@ namespace Hotel_Reservation_Overhaul
             {
                 // build and execute query
                 DBConnect reservationListConn = new DBConnect();
-                reservationListConn.OpenConnection();
                 string reservationListQuery = "SELECT r.confirmationID, r.startDate, r.endDate, loc.locationName  FROM dbo.reservation r join location loc on loc.locationID = r.locationID where r.userID = @userID";
                 MySqlCommand cmd = new MySqlCommand(reservationListQuery);
                 cmd.Parameters.AddWithValue("@userID", resUserID);
