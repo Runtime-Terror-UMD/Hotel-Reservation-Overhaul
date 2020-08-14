@@ -42,6 +42,7 @@ namespace Hotel_Reservation_Overhaul
                 lblCustDesc.Visible = true;
                 txtCustomerSearch.Visible = true;
                 btnSearch.Visible = true;
+                btnModify.Visible = true;
             }
         }
 
