@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.IO;
+using System.Windows.Forms;
 
 namespace Hotel_Reservation_Overhaul
 {
@@ -274,7 +276,7 @@ namespace Hotel_Reservation_Overhaul
                 return false;
         }
 
-        // DESCRIPTION: Gets userID based on username
+        // DESCRIPTION: Gets rewards points based on userid
         public int getRewardsPoints(int userID)
         {
             int rewards;
@@ -290,6 +292,21 @@ namespace Hotel_Reservation_Overhaul
             rewards = getPointsBalanceConn.intScalar(cmd);
             getPointsBalanceConn.CloseConnection();
             return rewards;
+        }
+        //DESCRIPTION: Sets rewards points based on userid
+        public bool setRewardsPoints(int userID, int points)
+        {
+            // build query
+            string updatePointsQuery = "UPDATE `dbo`.`user` SET `pointsBalance` = @newPoints WHERE `userID` = @userID";
+            MySqlCommand cmd = new MySqlCommand(updatePointsQuery);
+            cmd.Parameters.Add("@userID", MySqlDbType.VarChar, 45).Value = userID;
+            cmd.Parameters.Add("@newPoints", MySqlDbType.VarChar, 45).Value = points;
+
+            DBConnect updatePoints = new DBConnect();
+            if ((updatePoints.NonQuery(cmd)) > 0)
+                return true;
+            else
+                return false;
         }
 
         //  DESCRIPTION: Gets email based on userID
@@ -361,7 +378,7 @@ namespace Hotel_Reservation_Overhaul
             getLastNameConn.CloseConnection();
             return lastName;
         }
-
+        //  DESCRIPTION: sets first name based on userID
         public bool setFirstName(int userID, string firstName)
         {
             // build query
@@ -376,6 +393,7 @@ namespace Hotel_Reservation_Overhaul
             else
                 return false;
         }
+        //  DESCRIPTION: sets last name based on userID
         public bool setLastName(int userID, string lastName)
         {
             // build query
@@ -420,6 +438,81 @@ namespace Hotel_Reservation_Overhaul
             else
                 return false;
         }
+        //  DESCRIPTION: get minimum charge for a hotel stay from file
+        public decimal getMinCharge()
+        {
+            decimal minCharge;
+            string[] fileLines = File.ReadAllLines("HotelSettings.txt");
+            if(decimal.TryParse(fileLines[0].Substring(fileLines[0].IndexOf(' ')), out minCharge))
+            {
+                return minCharge;
+            }
+            else
+            {
+                MessageBox.Show("Unable to retrieve minimum charge. 0 will be used.");
+                return 0;
+            }
+        }
+        //  DESCRIPTION: get cancelation fee for a hotel stay from file
+        public decimal getCancelCharge()
+        {
+            decimal cancelCharge;
+            string[] fileLines = File.ReadAllLines("HotelSettings.txt");
+            if (decimal.TryParse(fileLines[1].Substring(fileLines[0].IndexOf(' ')), out cancelCharge))
+            {
+                return cancelCharge;
+            }
+            else
+            {
+                MessageBox.Show("Unable to retrieve cancelation charge. 0 will be used.");
+                return 0;
+            }
+        }
+        //  DESCRIPTION: get cancelation window from the file
+        public int getCancelWindow()
+        {
+            int cancelWindow;
+            string[] fileLines = File.ReadAllLines("HotelSettings.txt");
+            if (int.TryParse(fileLines[2].Substring(fileLines[0].IndexOf(' ')), out cancelWindow))
+            {
+                return cancelWindow;
+            }
+            else
+            {
+                MessageBox.Show("Unable to retrieve cancelation window. 0 will be used.");
+                return 0;
+            }
+        }
+        //  DESCRIPTION: get points per day for stay from the file
+        public int getDailyPointAmount()
+        {
+            int points;
+            string[] fileLines = File.ReadAllLines("HotelSettings.txt");
+            if (int.TryParse(fileLines[3].Substring(fileLines[0].IndexOf(' ')), out points))
+            {
+                return points;
+            }
+            else
+            {
+                MessageBox.Show("Unable to retrieve rewards points per night. 0 will be used.");
+                return 0;
+            }
+        }
+        //  DESCRIPTION: get notification window from the file
+        public int getNotificationWindow()
+        {
+            int notifDays;
+            string[] fileLines = File.ReadAllLines("HotelSettings.txt");
+            if (int.TryParse(fileLines[4].Substring(fileLines[0].IndexOf(' ')), out notifDays))
+            {
+                return notifDays;
+            }
+            else
+            {
+                MessageBox.Show("Unable to retrieve notification window. 0 will be used.");
+                return 0;
+            }
+        }
 
         public double calculatePrice(double days, double pricePerNight)
         {
@@ -429,7 +522,7 @@ namespace Hotel_Reservation_Overhaul
 
         public double calculatePoints(double days)
         {
-            double points = days * 25;
+            double points = days * getDailyPointAmount();
             return points;
         }
 

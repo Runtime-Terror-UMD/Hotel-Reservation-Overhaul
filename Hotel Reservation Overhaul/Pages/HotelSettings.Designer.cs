@@ -55,6 +55,8 @@
             this.txtCustomerID = new System.Windows.Forms.TextBox();
             this.lblCustomerID = new System.Windows.Forms.Label();
             this.btnCustomerID = new System.Windows.Forms.Button();
+            this.lblError = new System.Windows.Forms.Label();
+            this.btnReset = new System.Windows.Forms.Button();
             this.grpHotelSettings.SuspendLayout();
             this.grpRewards.SuspendLayout();
             this.SuspendLayout();
@@ -67,6 +69,7 @@
             this.btnReturn.TabIndex = 13;
             this.btnReturn.Text = "Return";
             this.btnReturn.UseVisualStyleBackColor = true;
+            this.btnReturn.Click += new System.EventHandler(this.btnReturn_Click);
             // 
             // lblDescribe
             // 
@@ -107,6 +110,7 @@
             this.btnMinCharge.TabIndex = 24;
             this.btnMinCharge.Text = "Set Minimum Charge";
             this.btnMinCharge.UseVisualStyleBackColor = true;
+            this.btnMinCharge.Click += new System.EventHandler(this.btnMinCharge_Click);
             // 
             // txtMinimumCharge
             // 
@@ -174,6 +178,7 @@
             this.btnNotifyDays.TabIndex = 36;
             this.btnNotifyDays.Text = "Set Notification Window";
             this.btnNotifyDays.UseVisualStyleBackColor = true;
+            this.btnNotifyDays.Click += new System.EventHandler(this.btnNotifyDays_Click);
             // 
             // txtPointsPerDay
             // 
@@ -201,6 +206,7 @@
             this.btnPointsPerDay.TabIndex = 33;
             this.btnPointsPerDay.Text = "Set Points Per Day";
             this.btnPointsPerDay.UseVisualStyleBackColor = true;
+            this.btnPointsPerDay.Click += new System.EventHandler(this.btnPointsPerDay_Click);
             // 
             // txtCancelationWindow
             // 
@@ -228,6 +234,7 @@
             this.btnCancelationWindow.TabIndex = 30;
             this.btnCancelationWindow.Text = "Set Cancelation Window";
             this.btnCancelationWindow.UseVisualStyleBackColor = true;
+            this.btnCancelationWindow.Click += new System.EventHandler(this.btnCancelationWindow_Click);
             // 
             // txtCancelationFee
             // 
@@ -255,9 +262,11 @@
             this.btnCancelationFee.TabIndex = 27;
             this.btnCancelationFee.Text = "Set Cancelation Fee";
             this.btnCancelationFee.UseVisualStyleBackColor = true;
+            this.btnCancelationFee.Click += new System.EventHandler(this.btnCancelationFee_Click);
             // 
             // grpRewards
             // 
+            this.grpRewards.Controls.Add(this.btnReset);
             this.grpRewards.Controls.Add(this.txtCustomerRewards);
             this.grpRewards.Controls.Add(this.label3);
             this.grpRewards.Controls.Add(this.btnCustomerRewards);
@@ -266,7 +275,7 @@
             this.grpRewards.Controls.Add(this.btnCustomerID);
             this.grpRewards.Location = new System.Drawing.Point(100, 350);
             this.grpRewards.Name = "grpRewards";
-            this.grpRewards.Size = new System.Drawing.Size(600, 150);
+            this.grpRewards.Size = new System.Drawing.Size(600, 140);
             this.grpRewards.TabIndex = 28;
             this.grpRewards.TabStop = false;
             this.grpRewards.Text = "Rewards Points";
@@ -293,13 +302,14 @@
             // 
             // btnCustomerRewards
             // 
-            this.btnCustomerRewards.Location = new System.Drawing.Point(385, 63);
+            this.btnCustomerRewards.Location = new System.Drawing.Point(385, 62);
             this.btnCustomerRewards.Name = "btnCustomerRewards";
             this.btnCustomerRewards.Size = new System.Drawing.Size(150, 25);
             this.btnCustomerRewards.TabIndex = 42;
             this.btnCustomerRewards.Text = "Set Rewards Points";
             this.btnCustomerRewards.UseVisualStyleBackColor = true;
             this.btnCustomerRewards.Visible = false;
+            this.btnCustomerRewards.Click += new System.EventHandler(this.btnCustomerRewards_Click);
             // 
             // txtCustomerID
             // 
@@ -327,12 +337,37 @@
             this.btnCustomerID.TabIndex = 39;
             this.btnCustomerID.Text = "Search";
             this.btnCustomerID.UseVisualStyleBackColor = true;
+            this.btnCustomerID.Click += new System.EventHandler(this.btnCustomerID_Click);
+            // 
+            // lblError
+            // 
+            this.lblError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblError.ForeColor = System.Drawing.Color.Red;
+            this.lblError.Location = new System.Drawing.Point(200, 505);
+            this.lblError.Name = "lblError";
+            this.lblError.Size = new System.Drawing.Size(400, 20);
+            this.lblError.TabIndex = 29;
+            this.lblError.Text = "Error: ";
+            this.lblError.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lblError.Visible = false;
+            // 
+            // btnReset
+            // 
+            this.btnReset.Location = new System.Drawing.Point(265, 93);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(100, 25);
+            this.btnReset.TabIndex = 44;
+            this.btnReset.Text = "Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Visible = false;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
             // HotelSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.lblError);
             this.Controls.Add(this.grpRewards);
             this.Controls.Add(this.grpHotelSettings);
             this.Controls.Add(this.btnLogOut);
@@ -378,5 +413,7 @@
         private System.Windows.Forms.TextBox txtCustomerID;
         private System.Windows.Forms.Label lblCustomerID;
         private System.Windows.Forms.Button btnCustomerID;
+        private System.Windows.Forms.Label lblError;
+        private System.Windows.Forms.Button btnReset;
     }
 }

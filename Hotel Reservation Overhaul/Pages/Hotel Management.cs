@@ -15,9 +15,11 @@ namespace Hotel_Reservation_Overhaul.Pages
 {
     public partial class HotelManagement : Form
     {
+        int UserID;
         public HotelManagement(int userID)
         {
             InitializeComponent();
+            UserID = userID;
         }
 
         private void btnThirdParty_Click(object sender, EventArgs e)
@@ -587,6 +589,23 @@ namespace Hotel_Reservation_Overhaul.Pages
                 }
                 lblFileStatus.Text = "Date: " + fileDate + " Number of unavailable rooms: " + maintainCount;
             }
+        }
+
+        private void btnHotel_Click(object sender, EventArgs e)
+        {
+            var hotelSett = new HotelSettings(UserID);
+            hotelSett.FormClosed += new FormClosedEventHandler(hotelSett_FormClosed);
+            this.Hide();
+            hotelSett.Show();
+        }
+        void hotelSett_FormClosed(object send, FormClosedEventArgs e)
+        {
+            this.Show();
+        }
+
+        private void btnReturn_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

@@ -48,7 +48,6 @@
             this.btnNewHotel = new System.Windows.Forms.Button();
             this.btnNewPackages = new System.Windows.Forms.Button();
             this.btnThirdParty = new System.Windows.Forms.Button();
-            this.btnAccountDetails = new System.Windows.Forms.Button();
             this.btnHotel = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.lblFileStatus = new System.Windows.Forms.Label();
@@ -64,6 +63,7 @@
             this.btnReturn.TabIndex = 12;
             this.btnReturn.Text = "Return";
             this.btnReturn.UseVisualStyleBackColor = true;
+            this.btnReturn.Click += new System.EventHandler(this.btnReturn_Click);
             // 
             // lblDescribe
             // 
@@ -206,7 +206,6 @@
             this.grpHotelSettings.Controls.Add(this.btnNewHotel);
             this.grpHotelSettings.Controls.Add(this.btnNewPackages);
             this.grpHotelSettings.Controls.Add(this.btnThirdParty);
-            this.grpHotelSettings.Controls.Add(this.btnAccountDetails);
             this.grpHotelSettings.Controls.Add(this.btnHotel);
             this.grpHotelSettings.Location = new System.Drawing.Point(50, 100);
             this.grpHotelSettings.Name = "grpHotelSettings";
@@ -218,7 +217,7 @@
             // btnNewMaintenance
             // 
             this.btnNewMaintenance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNewMaintenance.Location = new System.Drawing.Point(100, 120);
+            this.btnNewMaintenance.Location = new System.Drawing.Point(175, 120);
             this.btnNewMaintenance.Name = "btnNewMaintenance";
             this.btnNewMaintenance.Size = new System.Drawing.Size(150, 50);
             this.btnNewMaintenance.TabIndex = 8;
@@ -259,25 +258,16 @@
             this.btnThirdParty.UseVisualStyleBackColor = true;
             this.btnThirdParty.Click += new System.EventHandler(this.btnThirdParty_Click);
             // 
-            // btnAccountDetails
-            // 
-            this.btnAccountDetails.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAccountDetails.Location = new System.Drawing.Point(450, 120);
-            this.btnAccountDetails.Name = "btnAccountDetails";
-            this.btnAccountDetails.Size = new System.Drawing.Size(150, 50);
-            this.btnAccountDetails.TabIndex = 4;
-            this.btnAccountDetails.Text = "Change Account Details";
-            this.btnAccountDetails.UseVisualStyleBackColor = true;
-            // 
             // btnHotel
             // 
             this.btnHotel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHotel.Location = new System.Drawing.Point(275, 120);
+            this.btnHotel.Location = new System.Drawing.Point(375, 120);
             this.btnHotel.Name = "btnHotel";
             this.btnHotel.Size = new System.Drawing.Size(150, 50);
             this.btnHotel.TabIndex = 3;
             this.btnHotel.Text = "Edit Hotel Chain Settings";
             this.btnHotel.UseVisualStyleBackColor = true;
+            this.btnHotel.Click += new System.EventHandler(this.btnHotel_Click);
             // 
             // openFileDialog1
             // 
@@ -332,7 +322,6 @@
         private System.Windows.Forms.DateTimePicker dateStart;
         private System.Windows.Forms.ListBox lstReports;
         private System.Windows.Forms.Button btnReport;
-        private System.Windows.Forms.Button btnAccountDetails;
         private System.Windows.Forms.Button btnThirdParty;
         private System.Windows.Forms.Button btnNewMaintenance;
         private System.Windows.Forms.Button btnNewHotel;
