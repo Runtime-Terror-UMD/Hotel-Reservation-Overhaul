@@ -249,8 +249,16 @@ namespace Hotel_Reservation_Overhaul
                         }
                         // update reservation record
                         resInfo.updateReservation(resInfo);
+
                         // log cancellation
-                        resInfo.logCancellation(userInfo.userID);                    
+                        if(userInfo.isCustomer) 
+                        {
+                            resInfo.logCancellation(userInfo.userID, userInfo.userID);
+                        }
+                        else
+                        {
+                            resInfo.logCancellation(userInfo.userID, resUserID);
+                        }                    
                     }
                 }             
             }
