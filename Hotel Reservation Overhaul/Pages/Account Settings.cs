@@ -39,11 +39,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             Utilities accountInfo = new Utilities();
             string newFirstName = txtFirstName.Text;
             string newLastName = txtLastName.Text;
-            if(newFirstName.Length > 45 || newLastName.Length > 45) //name cannot be longer than 45 char
-            {
-                MessageBox.Show("Full name was not changed. First or last name cannot be longer than 45 characters.");
-            }
-            else if(accountInfo.setFirstName(UserID, newFirstName) && accountInfo.setLastName(UserID, newLastName))
+            if(accountInfo.setFirstName(UserID, newFirstName) && accountInfo.setLastName(UserID, newLastName))
             {
                 MessageBox.Show("Full name was successfully changed.");
             }
@@ -61,11 +57,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             Utilities accountInfo = new Utilities();
             string oldPassword = txtCurrentPassword.Text;
             string newPassword = txtNewPassword.Text;
-            if(newPassword.Length > 45) //if password is longer than 45 char
-            {
-                MessageBox.Show("New password is too long. Unable to change password.");
-            }
-            else if (accountInfo.passwordMatches(UserID, oldPassword))
+            if (accountInfo.passwordMatches(UserID, oldPassword))
             {
                 if(accountInfo.updatePassword(UserID, newPassword))
                 {
@@ -90,11 +82,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             string currentans = txtCurrentAnswer.Text;
             string newquest = txtNewQuestion.Text;
             string newans = txtNewAnswer.Text;
-            if(newquest.Length > 250 || newans.Length > 250)
-            {
-                MessageBox.Show("New question or answer are too long, they must be less than 250 characters.");
-            }
-            else if(accountInfo.secretAnswerMatches(UserID, currentans))
+            if(accountInfo.secretAnswerMatches(UserID, currentans))
             {
                 if (accountInfo.setSecretQuestion(UserID, newquest) && accountInfo.setSecretAnswer(UserID, newans))
                 {
