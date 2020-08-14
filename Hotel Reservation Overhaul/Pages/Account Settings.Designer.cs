@@ -112,6 +112,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             // 
             this.txtCurrentPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCurrentPassword.Location = new System.Drawing.Point(180, 30);
+            this.txtCurrentPassword.MaxLength = 45;
             this.txtCurrentPassword.Name = "txtCurrentPassword";
             this.txtCurrentPassword.Size = new System.Drawing.Size(150, 21);
             this.txtCurrentPassword.TabIndex = 3;
@@ -155,6 +156,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             // 
             this.txtNewPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNewPassword.Location = new System.Drawing.Point(180, 65);
+            this.txtNewPassword.MaxLength = 45;
             this.txtNewPassword.Name = "txtNewPassword";
             this.txtNewPassword.Size = new System.Drawing.Size(150, 21);
             this.txtNewPassword.TabIndex = 4;
@@ -202,6 +204,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             // 
             this.txtCurrentAnswer.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCurrentAnswer.Location = new System.Drawing.Point(180, 65);
+            this.txtCurrentAnswer.MaxLength = 250;
             this.txtCurrentAnswer.Name = "txtCurrentAnswer";
             this.txtCurrentAnswer.Size = new System.Drawing.Size(506, 21);
             this.txtCurrentAnswer.TabIndex = 6;
@@ -241,6 +244,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             // 
             this.txtNewAnswer.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNewAnswer.Location = new System.Drawing.Point(180, 135);
+            this.txtNewAnswer.MaxLength = 250;
             this.txtNewAnswer.Name = "txtNewAnswer";
             this.txtNewAnswer.Size = new System.Drawing.Size(506, 21);
             this.txtNewAnswer.TabIndex = 8;
@@ -259,6 +263,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             // 
             this.txtNewQuestion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNewQuestion.Location = new System.Drawing.Point(180, 100);
+            this.txtNewQuestion.MaxLength = 250;
             this.txtNewQuestion.Name = "txtNewQuestion";
             this.txtNewQuestion.Size = new System.Drawing.Size(506, 21);
             this.txtNewQuestion.TabIndex = 7;
@@ -291,6 +296,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             // 
             this.txtFirstName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtFirstName.Location = new System.Drawing.Point(181, 29);
+            this.txtFirstName.MaxLength = 45;
             this.txtFirstName.Name = "txtFirstName";
             this.txtFirstName.Size = new System.Drawing.Size(150, 21);
             this.txtFirstName.TabIndex = 24;
@@ -319,6 +325,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             // 
             this.txtLastName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLastName.Location = new System.Drawing.Point(181, 64);
+            this.txtLastName.MaxLength = 45;
             this.txtLastName.Name = "txtLastName";
             this.txtLastName.Size = new System.Drawing.Size(150, 21);
             this.txtLastName.TabIndex = 1;

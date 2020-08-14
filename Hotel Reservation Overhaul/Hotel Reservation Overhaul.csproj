@@ -93,6 +93,12 @@
     <Compile Include="Pages\Hotel Management.Designer.cs">
       <DependentUpon>Hotel Management.cs</DependentUpon>
     </Compile>
+    <Compile Include="Pages\HotelSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\HotelSettings.Designer.cs">
+      <DependentUpon>HotelSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -149,6 +155,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Hotel Management.resx">
       <DependentUpon>Hotel Management.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\HotelSettings.resx">
+      <DependentUpon>HotelSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
@@ -214,6 +223,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="HotelSettings.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

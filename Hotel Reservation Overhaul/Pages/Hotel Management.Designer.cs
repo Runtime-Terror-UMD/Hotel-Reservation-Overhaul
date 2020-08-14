@@ -49,7 +49,7 @@
             this.btnNewPackages = new System.Windows.Forms.Button();
             this.btnThirdParty = new System.Windows.Forms.Button();
             this.btnAccountDetails = new System.Windows.Forms.Button();
-            this.btnWaitlist = new System.Windows.Forms.Button();
+            this.btnHotel = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.lblFileStatus = new System.Windows.Forms.Label();
             this.grpReports.SuspendLayout();
@@ -207,7 +207,7 @@
             this.grpHotelSettings.Controls.Add(this.btnNewPackages);
             this.grpHotelSettings.Controls.Add(this.btnThirdParty);
             this.grpHotelSettings.Controls.Add(this.btnAccountDetails);
-            this.grpHotelSettings.Controls.Add(this.btnWaitlist);
+            this.grpHotelSettings.Controls.Add(this.btnHotel);
             this.grpHotelSettings.Location = new System.Drawing.Point(50, 100);
             this.grpHotelSettings.Name = "grpHotelSettings";
             this.grpHotelSettings.Size = new System.Drawing.Size(700, 200);
@@ -269,15 +269,15 @@
             this.btnAccountDetails.Text = "Change Account Details";
             this.btnAccountDetails.UseVisualStyleBackColor = true;
             // 
-            // btnWaitlist
+            // btnHotel
             // 
-            this.btnWaitlist.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnWaitlist.Location = new System.Drawing.Point(275, 120);
-            this.btnWaitlist.Name = "btnWaitlist";
-            this.btnWaitlist.Size = new System.Drawing.Size(150, 50);
-            this.btnWaitlist.TabIndex = 3;
-            this.btnWaitlist.Text = "Edit Waitlist Settings";
-            this.btnWaitlist.UseVisualStyleBackColor = true;
+            this.btnHotel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnHotel.Location = new System.Drawing.Point(275, 120);
+            this.btnHotel.Name = "btnHotel";
+            this.btnHotel.Size = new System.Drawing.Size(150, 50);
+            this.btnHotel.TabIndex = 3;
+            this.btnHotel.Text = "Edit Hotel Chain Settings";
+            this.btnHotel.UseVisualStyleBackColor = true;
             // 
             // openFileDialog1
             // 
@@ -321,7 +321,7 @@
         private System.Windows.Forms.Button btnLogOut;
         private System.Windows.Forms.GroupBox grpReports;
         private System.Windows.Forms.GroupBox grpHotelSettings;
-        private System.Windows.Forms.Button btnWaitlist;
+        private System.Windows.Forms.Button btnHotel;
         private System.Windows.Forms.Label lblUsername;
         private System.Windows.Forms.Label lblHotel;
         private System.Windows.Forms.ComboBox cboxHotel;

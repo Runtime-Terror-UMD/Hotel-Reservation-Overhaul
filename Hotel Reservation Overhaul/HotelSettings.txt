@@ -1,0 +1,5 @@
+﻿MinimumCharge= 50
+CancelFee= 50
+CancelationFeeDays= 3
+PointsPerDay= 25
+NotifyCustomerDays= 3
