@@ -89,14 +89,15 @@ public class Reservation
         return false;
     }
 
-    public void logCancellation(int cancelledBy)
+    public void logCancellation(int cancelledBy, int userID)
     {
         DBConnect cancelResConn = new DBConnect();
-        MySqlCommand cancelRes = new MySqlCommand(@"INSERT INTO `dbo`.`activitylog`(`userID`,`activityTypeID`,`refID`,`created`)
+        MySqlCommand cancelRes = new MySqlCommand(@"INSERT INTO `dbo`.`activitylog`(`userID`,`activityTypeID`,`refID`,`created`.`createdBy`)
                                                     VALUES(@userID,3,@confirmationID,@created");
-        cancelRes.Parameters.Add("@userID", MySqlDbType.Int32).Value = cancelledBy;
+        cancelRes.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
         cancelRes.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = this.confirmatonID;
         cancelRes.Parameters.Add("@created", MySqlDbType.Int32).Value = DateTime.Today;      //FIXME: Replace with date varialbe
+        cancelRes.Parameters.Add("@createdBy", MySqlDbType.Int32).Value = cancelledBy;
         cancelResConn.NonQuery(cancelRes);
     }
 }
