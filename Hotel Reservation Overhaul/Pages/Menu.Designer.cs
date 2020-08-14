@@ -47,6 +47,7 @@
             this.btnLogOut.TabIndex = 6;
             this.btnLogOut.Text = "Log Out";
             this.btnLogOut.UseVisualStyleBackColor = true;
+            this.btnLogOut.Click += new System.EventHandler(this.btnLogOut_Click);
             // 
             // lblDescribe
             // 
@@ -109,6 +110,7 @@
             this.btnHistory.TabIndex = 3;
             this.btnHistory.Text = "History";
             this.btnHistory.UseVisualStyleBackColor = true;
+            this.btnHistory.Click += new System.EventHandler(this.btnHistory_Click);
             // 
             // btnHotelManagement
             // 

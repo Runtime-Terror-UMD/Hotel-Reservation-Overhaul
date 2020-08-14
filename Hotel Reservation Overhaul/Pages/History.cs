@@ -16,5 +16,16 @@ namespace Hotel_Reservation_Overhaul.Pages
         {
             InitializeComponent();
         }
+
+        private void btnReturn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnLogOut_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            Application.OpenForms["Menu"].Close();
+        }
     }
 }

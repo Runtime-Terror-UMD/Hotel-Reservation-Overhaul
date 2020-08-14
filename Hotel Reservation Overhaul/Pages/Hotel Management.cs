@@ -15,13 +15,16 @@ namespace Hotel_Reservation_Overhaul.Pages
 {
     public partial class HotelManagement : Form
     {
-        int UserID;
         public HotelManagement(int userID)
         {
             InitializeComponent();
-            UserID = userID;
         }
 
+        public void displayError(string message)
+        {
+            lblError.Text = "Error: " + message;
+            lblError.Visible = true;
+        }
         private void btnThirdParty_Click(object sender, EventArgs e)
         {
             OpenFileDialog resFile = new OpenFileDialog();
@@ -214,6 +217,8 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 }
                                 numReserv++; 
                                 
+                                // check that customer ID exists
+                                //
                                 
                                 
                                 
@@ -591,21 +596,52 @@ namespace Hotel_Reservation_Overhaul.Pages
             }
         }
 
-        private void btnHotel_Click(object sender, EventArgs e)
-        {
-            var hotelSett = new HotelSettings(UserID);
-            hotelSett.FormClosed += new FormClosedEventHandler(hotelSett_FormClosed);
-            this.Hide();
-            hotelSett.Show();
-        }
-        void hotelSett_FormClosed(object send, FormClosedEventArgs e)
-        {
-            this.Show();
-        }
-
         private void btnReturn_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnLogOut_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            Application.OpenForms["Menu"].Close();
+        }
+
+        private void btnClose_Click(object sender, EventArgs eventArgs)
+        {
+            System.Windows.Forms.Application.Exit();
+        }
+
+        private void lstReports_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstReports.SelectedItem.ToString() == "Customer History")
+                cboxHotel.Enabled = false;
+        }
+
+        private void btnReport_Click(object sender, EventArgs e)
+        {
+            lblError.Visible = false;
+            if (lstReports.SelectedItem.ToString() == "Customer History")
+            {
+                Utilities customerReport = new Utilities();
+                if (customerReport.userIDExists(Convert.ToInt32(txtUser.Text)))
+                {
+                    if(customerReport.isCustomer(Convert.ToInt32(txtUser.Text)))
+                    {
+                        var customerHistory = new ReportViewer("customerHistory", Convert.ToInt32(txtUser.Text));
+                        this.Hide();
+                        customerHistory.Show();
+                    }
+                    else
+                    {
+                        displayError("User ID is not a customer");
+                    }
+                }
+                else
+                {
+                    displayError("User ID does not exist");
+                }
+            }
         }
     }
 }

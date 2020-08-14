@@ -40,11 +40,15 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: un-hides page after newAccount page is closed
         void newAcct_FormClosed(object sender, FormClosedEventArgs e)
         {
+            txtUsername.Text = String.Empty;
+            txtPassword.Text = String.Empty;
             this.Show();
         }
 
         void recovery_FormClosed(object send, FormClosedEventArgs e)
         {
+            txtUsername.Text = String.Empty;
+            txtPassword.Text = String.Empty;
             this.Show();
         }
 
@@ -101,13 +105,15 @@ namespace Hotel_Reservation_Overhaul
                         if(isCustomer(txtUsername.Text))
                         {
                             // re-drecit to menu, hide hotel management button
-                            var menuScreen = new Menu(true, verifyCredentials.getUserIDFromUsername(txtUsername.Text) );
+                            var menuScreen = new Menu(true, verifyCredentials.getUserIDFromUsername(txtUsername.Text), this);
+                            menuScreen.FormClosed += new FormClosedEventHandler(menuScreen_FormClosed);
                             this.Hide();
                             menuScreen.Show();
                         }
                         else
                         {   // re-drecit to menu, show hotel management button
-                            var menuScreen = new Menu(false, verifyCredentials.getUserIDFromUsername(txtUsername.Text));
+                            var menuScreen = new Menu(false, verifyCredentials.getUserIDFromUsername(txtUsername.Text), this);
+                            menuScreen.FormClosed += new FormClosedEventHandler(menuScreen_FormClosed);
                             this.Hide();
                             menuScreen.Show();
                         }                       
@@ -122,6 +128,13 @@ namespace Hotel_Reservation_Overhaul
                     displayError("Username does not exist");
                 }
             }
+            txtUsername.Text = String.Empty;
+            txtPassword.Text = String.Empty;
+        }
+
+        private void menuScreen_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Show();
         }
 
         //DESCRIPTION: re-directs to username recovery page

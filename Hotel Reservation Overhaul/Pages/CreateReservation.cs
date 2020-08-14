@@ -19,34 +19,38 @@ namespace Hotel_Reservation_Overhaul
         public DateTime? endDate = null;
         public bool waitlist = false;
         public int resUserID;
+        public int userID;
         public int roomNum = -1;
         public double pricePerNight;
         public double price;
         public int points;
         public string combindstring;
 
-        public CreateReservation(int userID)
+        public CreateReservation(int UserID, int ResUserID )
         {
             InitializeComponent();
             PopulateCheckBoxes();
-            resUserID = userID;
+            resUserID = ResUserID;
+            userID = UserID;
         }
 
-        public CreateReservation(int userID, int confirmationID)
-        {
-            InitializeComponent();
-            PopulateCheckBoxes();
-            resUserID = userID;
-            Reservation resInfo = new Reservation(confirmationID);
-            monthStart.SelectionRange.Start = resInfo.startDate;
-            monthEnd.SelectionRange.Start = resInfo.endDate;
-            lblCost.Text = resInfo.totalPrice.ToString();
-            cboxHotel.SelectedIndex = resInfo.locationID + 1;
-        }
+        //public CreateReservation(int userID, int confirmationID)
+        //{
+        //    InitializeComponent();
+        //    PopulateCheckBoxes();
+        //    resUserID = userID;
+        //    Reservation resInfo = new Reservation(confirmationID);
+        //    monthStart.SelectionRange.Start = resInfo.startDate;
+        //    monthEnd.SelectionRange.Start = resInfo.endDate;
+        //    lblCost.Text = resInfo.totalPrice.ToString();
+        //    cboxHotel.SelectedIndex = resInfo.locationID + 1;
+        //}
 
         private void btnLogOut_Click(object sender, EventArgs e)
         {
-
+            this.Close();
+            Application.OpenForms["ReservationList"].Close();
+            Application.OpenForms["Menu"].Close();
         }
 
         // DESCRIPTION: 
@@ -184,10 +188,11 @@ namespace Hotel_Reservation_Overhaul
                                                     from dbo.relation_room_package rrp
                                                     where packageID in (" + combindstring + @") and locationID = @locationID
                                                     and roomNum not in (select roomNum from dbo.reservation where @startDate between startDate and endDate and reservationStatus <> 'cancelled' and locationID = @locationID)
-                                                    and roomNum not in (select roomNum from dbo.maintenance where locationID = @locationID and @startDate between startDate and endDate) 
+                                                    and roomNum not in (select roomNum from dbo.maintenance where locationID = @locationID and maintenanceDate BETWEEN @startDate and @endDate) 
                                                     group by roomNum
                                                     having count(distinct packageID) = @numPackages limit 1");
                 cmd.Parameters.Add("@startDate", MySqlDbType.DateTime).Value = startDate;
+                cmd.Parameters.Add("@endDate", MySqlDbType.DateTime).Value = endDate;
                 cmd.Parameters.Add("@numPackages", MySqlDbType.Int32).Value = packages.Count;
                 cmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = Convert.ToInt32(cboxHotel.SelectedValue);
                 cmd.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = Convert.ToInt32(cboxNumGuests.SelectedItem);
@@ -298,8 +303,9 @@ namespace Hotel_Reservation_Overhaul
                 createResConn.NonQuery(createResCmd);
 
                 // add to activity log
-                MySqlCommand logActivity = new MySqlCommand("INSERT INTO `dbo`.`activitylog`(`userID`,`activityTypeID`,`refID`,`created`)VALUES(@userID, 1, @confirmationID, @date)");
+                MySqlCommand logActivity = new MySqlCommand("INSERT INTO `dbo`.`activitylog`(`userID`,`activityTypeID`,`refID`,`created`,`createdBy`)VALUES(@userID, 1, @confirmationID, @date, @createdBy)");
                 logActivity.Parameters.Add("@confirmationID", MySqlDbType.Int32, 10).Value = comfirmationID;
+                logActivity.Parameters.Add("@createdBy", MySqlDbType.Int32, 10).Value = userID;
                 logActivity.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = resUserID;
                 logActivity.Parameters.Add("@date", MySqlDbType.Date).Value = DateTime.Today;      // FIXME: Replace with date variable
                 createResConn.NonQuery(logActivity);
@@ -345,6 +351,11 @@ namespace Hotel_Reservation_Overhaul
             checkPackages.Enabled = true;
             btnSubmit.Visible = true;
             btnMakeRes.Visible = false;
+        }
+
+        private void btnReturn_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
