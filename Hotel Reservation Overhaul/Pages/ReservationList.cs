@@ -169,7 +169,7 @@ namespace Hotel_Reservation_Overhaul
             }
             else
             {
-                var newReservation = new CreateReservation(resUserID);
+                var newReservation = new CreateReservation(userInfo.userID, resUserID);
                 newReservation.FormClosed += new FormClosedEventHandler(newReservation_FormClosed);
                 this.Hide();
                 newReservation.Show();
