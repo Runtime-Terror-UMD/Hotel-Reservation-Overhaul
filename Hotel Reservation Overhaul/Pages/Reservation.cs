@@ -9,31 +9,48 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace Hotel_Reservation_Overhaul
 {
-    public partial class Reservation : Form
+    public partial class CreateReservation : Form
     {
         public DateTime? startDate = null;
         public DateTime? endDate = null;
         public bool waitlist = false;
         public int resUserID;
+        public int userID;
         public int roomNum = -1;
         public double pricePerNight;
         public double price;
         public int points;
+        public string combindstring;
 
-        public Reservation(int userID)
+        public CreateReservation(int UserID, int ResUserID )
         {
             InitializeComponent();
             PopulateCheckBoxes();
-            resUserID = userID;
-
+            resUserID = ResUserID;
+            userID = UserID;
         }
+
+        //public CreateReservation(int userID, int confirmationID)
+        //{
+        //    InitializeComponent();
+        //    PopulateCheckBoxes();
+        //    resUserID = userID;
+        //    Reservation resInfo = new Reservation(confirmationID);
+        //    monthStart.SelectionRange.Start = resInfo.startDate;
+        //    monthEnd.SelectionRange.Start = resInfo.endDate;
+        //    lblCost.Text = resInfo.totalPrice.ToString();
+        //    cboxHotel.SelectedIndex = resInfo.locationID + 1;
+        //}
 
         private void btnLogOut_Click(object sender, EventArgs e)
         {
-
+            this.Close();
+            Application.OpenForms["ReservationList"].Close();
+            Application.OpenForms["Menu"].Close();
         }
 
         // DESCRIPTION: 
@@ -68,9 +85,11 @@ namespace Hotel_Reservation_Overhaul
             {
                 string package = row["packageName"].ToString();
                 checkPackages.Items.Add(package);
-            }
-        }
+             }
 
+            checkPackages.SetItemChecked(0, true);
+            checkPackages.SetItemCheckState(0, CheckState.Checked);
+        }
 
         // DESCRIPTION: Handles when the selected start date is changed
         private void monthStart_DateChanged(object sender, DateRangeEventArgs e)
@@ -130,6 +149,11 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Checks for reservation availability
         private void btnSubmit_Click(object sender, EventArgs e)
         {
+            if (checkPackages.GetItemCheckState(0) == CheckState.Unchecked)
+            {
+                checkPackages.SetItemCheckState(0, CheckState.Checked);
+                lblError.Text = "All rooms contain basic package.";
+            }
             // reset error
             lblError.Visible = false;
 
@@ -142,48 +166,77 @@ namespace Hotel_Reservation_Overhaul
             else if (cboxHotel.SelectedItem == null) { displayError("Please select a hotel"); }
             else
             {
+                // get selected packages
+                List<int> packages = new List<int>();
+
+                {   foreach (int indexChecked in checkPackages.CheckedIndices)
+                    {
+                        if (checkPackages.GetItemCheckState(indexChecked) == CheckState.Checked)
+                        {
+                            packages.Add(indexChecked + 1);
+                            lblError.Visible = true;
+                        }
+                    }
+                }
+
+                // put selected package IDs in list
+                combindstring = string.Join(",", packages);
+                
                 DBConnect checkAvailabilityConn = new DBConnect();
                 // Select available rooms at location not in maintenance
-                MySqlCommand cmd = new MySqlCommand("SELECT roomNum, pricePerNight FROM dbo.room r where r.locationID = @locationID and r.hasPackage2 = @hasPackage2 and r.hasPackage3 = @hasPackage3 and r.hasPackage4 = @hasPackage4 and r.occupancy >= @numGuests and r.roomNum not in (select roomNum from dbo.reservation where @startDate between startDate and endDate and reservationStatus <> 3) and r.roomNum not in (select roomNum from dbo.maintenance where @startDate between startDate and endDate) LIMIT 1");
+                MySqlCommand cmd = new MySqlCommand(@"select roomNum
+                                                    from dbo.relation_room_package rrp
+                                                    where packageID in (" + combindstring + @") and locationID = @locationID
+                                                    and roomNum not in (select roomNum from dbo.reservation where @startDate between startDate and endDate and reservationStatus <> 'cancelled' and locationID = @locationID)
+                                                    and roomNum not in (select roomNum from dbo.maintenance where locationID = @locationID and maintenanceDate BETWEEN @startDate and @endDate) 
+                                                    group by roomNum
+                                                    having count(distinct packageID) = @numPackages limit 1");
                 cmd.Parameters.Add("@startDate", MySqlDbType.DateTime).Value = startDate;
-                cmd.Parameters.Add("@hasPackage2", MySqlDbType.Bit).Value = 0;
-                cmd.Parameters.Add("@hasPackage3", MySqlDbType.Bit).Value = 0;
-                cmd.Parameters.Add("@hasPackage4", MySqlDbType.Bit).Value = 0;
+                cmd.Parameters.Add("@endDate", MySqlDbType.DateTime).Value = endDate;
+                cmd.Parameters.Add("@numPackages", MySqlDbType.Int32).Value = packages.Count;
                 cmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = Convert.ToInt32(cboxHotel.SelectedValue);
-                cmd.Parameters.Add("numGuests", MySqlDbType.Int32).Value = Convert.ToInt32(cboxNumGuests.SelectedItem);
-
-                // updates parameter values based on checkboxes
-                if (checkPackages.GetItemCheckState(1) == CheckState.Checked) { cmd.Parameters["@hasPackage2"].Value = 1; }
-                if (checkPackages.GetItemCheckState(2) == CheckState.Checked) { cmd.Parameters["@hasPackage3"].Value = 1; }
-                if (checkPackages.GetItemCheckState(3) == CheckState.Checked) { cmd.Parameters["@hasPackage4"].Value = 1; }
+                cmd.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = Convert.ToInt32(cboxNumGuests.SelectedItem);
 
                 MySqlDataReader dataReader = checkAvailabilityConn.ExecuteReader(cmd);
-
-                while (dataReader.Read())
+                if (dataReader.HasRows)
                 {
-                    roomNum = Convert.ToInt32(dataReader["roomNum"]);
-                    pricePerNight = Convert.ToDouble(dataReader["pricePerNight"]);
-                }
-                dataReader.Close();
-
-                if (roomNum == -1)
-                {
-                    cmd.CommandText = "SELECT pricePerNight FROM dbo.room r where r.locationID = @locationID and r.hasPackage2 = @hasPackage2 and r.hasPackage3 = @hasPackage3 and r.hasPackage4 = @hasPackage4 and r.occupancy >= @numGuests LIMIT 1";
-                    MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
-                    while (nonAvailableDR.Read())
+                    // gets roomNum if one is available
+                    while (dataReader.Read())
                     {
-                        pricePerNight = Convert.ToDouble(nonAvailableDR["pricePerNight"]);
+                        roomNum = Convert.ToInt32(dataReader["roomNum"]);
                     }
-                    nonAvailableDR.Close();
-                    if (pricePerNight == 0)
+                    Utilities getPricePerNight = new Utilities();
+                    pricePerNight = getPricePerNight.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue),roomNum);
+                    dataReader.Close();
+                    checkAvailabilityConn.CloseConnection();
+                }
+                else
+                {   // no room available, gets roomNum to reference for price 
+                    checkAvailabilityConn.OpenConnection();
+                    cmd.CommandText = @"select roomNum
+                                        from dbo.relation_room_package rrp
+                                        where packageID in (" + combindstring + @") and locationID = @locationID
+                                        group by roomNum
+                                        having count(distinct packageID) = @numPackages limit 1";
+
+                    MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
+                    if (nonAvailableDR.HasRows)
+                    {
+                        while (nonAvailableDR.Read())
+                        {
+                            roomNum = Convert.ToInt32(nonAvailableDR["roomNum"]);
+                        }
+                        Utilities getWLPricePerNight = new Utilities();
+                        pricePerNight = getWLPricePerNight.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), roomNum);
+                        displayError("No room with those criteria are available. Your reservation will be added to the waitlist");
+                        waitlist = true;
+                    }            
+                    else if (pricePerNight == 0)
                     {
                         displayError("No room with those criteria exists");
                         return;
                     }
-                    else
-                    {   displayError("No room with those criteria are available. Your reservation will be added to the waitlist");
-                        waitlist = true;
-                    }
+                    nonAvailableDR.Close();
                 }
 
                 checkAvailabilityConn.CloseConnection();
@@ -197,6 +250,14 @@ namespace Hotel_Reservation_Overhaul
                 lblDeposit.Text = "50.00";
                 txtCostNightly.Text = pricePerNight.ToString();
                 lblSubTotal.Text = (price + 50).ToString();
+                lblError.Visible = false;
+                cboxHotel.Enabled = false;
+                cboxNumGuests.Enabled = false;
+                monthStart.Enabled = false;
+                monthEnd.Enabled = false;
+                checkPackages.Enabled = false;
+                btnSubmit.Visible = false;
+                btnMakeRes.Visible = true;
             }
         }
 
@@ -218,14 +279,9 @@ namespace Hotel_Reservation_Overhaul
             {
                 // add to waitlist table 
                 createResCmd.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = Convert.ToInt32(cboxNumGuests.SelectedItem);
-                createResCmd.Parameters.Add("@package2", MySqlDbType.Bit).Value = 0;
-                createResCmd.Parameters.Add("@package3", MySqlDbType.Bit).Value = 0;
-                createResCmd.Parameters.Add("@package4", MySqlDbType.Bit).Value = 0;
-                if (checkPackages.GetItemCheckState(1) == CheckState.Checked) { createResCmd.Parameters["@package2"].Value = 1; }
-                if (checkPackages.GetItemCheckState(2) == CheckState.Checked) { createResCmd.Parameters["@package3"].Value = 1; }
-                if (checkPackages.GetItemCheckState(3) == CheckState.Checked) { createResCmd.Parameters["@package4"].Value = 1; }
+                createResCmd.Parameters.Add("@packages", MySqlDbType.VarChar, 45).Value = combindstring;
 
-                createResCmd.CommandText = "INSERT INTO `dbo`.`waitlist`(`customerID`,`locationID`,`startDate`,`endDate`,`package2`,`package3`,`package4`,`numGuests`)VALUES(@userID, @locationID, @startDate, @endDate, @package2, @package3, @package4, @numGuests)";
+                createResCmd.CommandText = "INSERT INTO `dbo`.`waitlist`(`customerID`,`locationID`,`startDate`,`endDate`,`numGuests`,`packages`)VALUES(@userID, @locationID, @startDate, @endDate, @numGuests,@packages)";
                 createResConn.NonQuery(createResCmd);
             }
             //If creating reservation
@@ -236,23 +292,70 @@ namespace Hotel_Reservation_Overhaul
                 int comfirmationID = createResConn.intScalar(cmd) + 1;
 
                 // add to reservation table
-                createResCmd.CommandText = "INSERT INTO `dbo`.`reservation`(`confirmationID`,`userID`,`locationID`,`roomNum`,`startDate`,`endDate`,`bookingMethod`,`pointsAccumulated`,`price`,`amountDue`,`amountPaid`,`reservationStatus`)VALUES(@confirmationID,@userID,@locationID,@roomNum,@startDate,@endDate,@bookingMethod,@points,@price,@price,@amountPaid,@status)";
+                createResCmd.CommandText = "INSERT INTO `dbo`.`reservation`(`confirmationID`,`userID`,`locationID`,`roomNum`,`startDate`,`endDate`,`pointsAccumulated`,`price`,`amountDue`,`amountPaid`,`reservationStatus`,`created`)VALUES(@confirmationID,@userID,@locationID,@roomNum,@startDate,@endDate,@points,@price,@price,@amountPaid,@status,@created)";
                 createResCmd.Parameters.Add("@confirmationID", MySqlDbType.Int32, 10).Value = comfirmationID;
                 createResCmd.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = roomNum;
                 createResCmd.Parameters.Add("@points", MySqlDbType.Int32).Value = points;
-                createResCmd.Parameters.Add("@bookingMethod", MySqlDbType.VarChar, 45).Value = "application";
                 createResCmd.Parameters.Add("@price", MySqlDbType.Decimal).Value = price;
-                createResCmd.Parameters.Add("@status", MySqlDbType.VarChar, 45).Value = "Upcoming";
                 createResCmd.Parameters.Add("@amountPaid", MySqlDbType.Decimal).Value = 0;
+                createResCmd.Parameters.Add("@status", MySqlDbType.VarChar, 45).Value = "upcoming";
+                createResCmd.Parameters.Add("@created", MySqlDbType.Date).Value = DateTime.Today;   
                 createResConn.NonQuery(createResCmd);
 
                 // add to activity log
-                MySqlCommand logActivity = new MySqlCommand("INSERT INTO `dbo`.`activitylog`(`userID`,`activityTypeID`,`refID`,`created`)VALUES(@userID, 1, @confirmationID, @date)");
+                MySqlCommand logActivity = new MySqlCommand("INSERT INTO `dbo`.`activitylog`(`userID`,`activityTypeID`,`refID`,`created`,`createdBy`)VALUES(@userID, 1, @confirmationID, @date, @createdBy)");
                 logActivity.Parameters.Add("@confirmationID", MySqlDbType.Int32, 10).Value = comfirmationID;
+                logActivity.Parameters.Add("@createdBy", MySqlDbType.Int32, 10).Value = userID;
                 logActivity.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = resUserID;
                 logActivity.Parameters.Add("@date", MySqlDbType.Date).Value = DateTime.Today;      // FIXME: Replace with date variable
                 createResConn.NonQuery(logActivity);
+
+                // opens payment screen for user to pay deposit
+                if (waitlist == false)
+                {
+                    var makePayment = new Payment(comfirmationID, resUserID);
+                    this.Hide();
+                    makePayment.Show();
+                }
+                else
+                {
+                    lblError.ForeColor = System.Drawing.Color.Green;
+                    lblError.Text = "You have been added to the waitlist";
+                }
             }
+        }
+
+        private void checkPackages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (checkPackages.GetItemCheckState(0) == CheckState.Unchecked)
+            {
+                checkPackages.SetItemCheckState(0, CheckState.Checked);
+                lblError.Text = "All rooms contain basic package.";
+                lblError.Visible = true;
+            }
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            foreach (int indexChecked in checkPackages.CheckedIndices)
+            {
+                checkPackages.SetItemChecked(indexChecked, false);
+            }
+            checkPackages.SetItemChecked(0, true);
+            cboxHotel.SelectedIndex = 0;
+            cboxNumGuests.SelectedIndex = 0;
+            cboxHotel.Enabled = true;
+            cboxNumGuests.Enabled = true;
+            monthStart.Enabled = true;
+            monthEnd.Enabled = true;
+            checkPackages.Enabled = true;
+            btnSubmit.Visible = true;
+            btnMakeRes.Visible = false;
+        }
+
+        private void btnReturn_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
