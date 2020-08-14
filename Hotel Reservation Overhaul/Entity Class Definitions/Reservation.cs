@@ -73,7 +73,8 @@ public class Reservation
                                                     `amountDue` = @amountDue,
                                                     `amountPaid` = @amountPaid,
                                                     `reservationStatus` = @status,
-                                                     WHERE `confirmationID` = @confirmationID");     
+                                                     WHERE `confirmationID` = @confirmationID");
+      
         updateRes.Parameters.Add("@locationID", MySqlDbType.Int32).Value = resInfo.locationID;
         updateRes.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = resInfo.roomNum;
         updateRes.Parameters.Add("@startDate", MySqlDbType.Int32).Value = resInfo.startDate;
@@ -92,7 +93,7 @@ public class Reservation
     {
         DBConnect cancelResConn = new DBConnect();
         MySqlCommand cancelRes = new MySqlCommand(@"INSERT INTO `dbo`.`activitylog`(`userID`,`activityTypeID`,`refID`,`created`.`createdBy`)
-                                                    VALUES(@userID,3,@confirmationID,@created");
+                                                    VALUES(@userID,3,@confirmationID,@created,@createdBy");
         cancelRes.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
         cancelRes.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = this.confirmatonID;
         cancelRes.Parameters.Add("@created", MySqlDbType.Int32).Value = DateTime.Today;      //FIXME: Replace with date varialbe

@@ -47,9 +47,9 @@
             this.lblBalance = new System.Windows.Forms.Label();
             this.lblBalDue = new System.Windows.Forms.Label();
             this.groupPaymentDetails = new System.Windows.Forms.GroupBox();
+            this.chkReward = new System.Windows.Forms.CheckBox();
             this.lblPoints = new System.Windows.Forms.Label();
             this.lblPointDesc = new System.Windows.Forms.Label();
-            this.chkReward = new System.Windows.Forms.CheckBox();
             this.groupPaymentDetails.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,6 +61,7 @@
             this.btnReturn.TabIndex = 13;
             this.btnReturn.Text = "Return";
             this.btnReturn.UseVisualStyleBackColor = true;
+            this.btnReturn.Click += new System.EventHandler(this.btnReturn_Click);
             // 
             // lblDescribe
             // 
@@ -122,6 +123,7 @@
             // 
             // cboxMethod
             // 
+            this.cboxMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboxMethod.FormattingEnabled = true;
             this.cboxMethod.Items.AddRange(new object[] {
             "Cash",
@@ -248,6 +250,17 @@
             this.groupPaymentDetails.TabStop = false;
             this.groupPaymentDetails.Text = "Payment Information";
             // 
+            // chkReward
+            // 
+            this.chkReward.AutoSize = true;
+            this.chkReward.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.chkReward.Location = new System.Drawing.Point(220, 286);
+            this.chkReward.Name = "chkReward";
+            this.chkReward.Size = new System.Drawing.Size(182, 20);
+            this.chkReward.TabIndex = 3;
+            this.chkReward.Text = "10% off reservation - 50pts";
+            this.chkReward.UseVisualStyleBackColor = true;
+            // 
             // lblPoints
             // 
             this.lblPoints.BackColor = System.Drawing.SystemColors.Window;
@@ -268,17 +281,6 @@
             this.lblPointDesc.TabIndex = 0;
             this.lblPointDesc.Text = "Points:";
             this.lblPointDesc.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // chkReward
-            // 
-            this.chkReward.AutoSize = true;
-            this.chkReward.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.chkReward.Location = new System.Drawing.Point(220, 286);
-            this.chkReward.Name = "chkReward";
-            this.chkReward.Size = new System.Drawing.Size(182, 20);
-            this.chkReward.TabIndex = 3;
-            this.chkReward.Text = "10% off reservation - 50pts";
-            this.chkReward.UseVisualStyleBackColor = true;
             // 
             // Payment
             // 

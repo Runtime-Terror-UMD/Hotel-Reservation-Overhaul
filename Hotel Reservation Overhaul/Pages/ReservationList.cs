@@ -44,7 +44,7 @@ namespace Hotel_Reservation_Overhaul
                 btnSearch.Visible = true;
             }
         }
-        
+
         // DESCRIPTION: Pulls reservation report
         private void GetData()
         {
@@ -52,7 +52,6 @@ namespace Hotel_Reservation_Overhaul
             {
                 // build and execute query
                 DBConnect reservationListConn = new DBConnect();
-                reservationListConn.OpenConnection();
                 string reservationListQuery = "SELECT r.confirmationID, r.startDate, r.endDate, loc.locationName  FROM dbo.reservation r join location loc on loc.locationID = r.locationID where r.userID = @userID";
                 MySqlCommand cmd = new MySqlCommand(reservationListQuery);
                 cmd.Parameters.AddWithValue("@userID", resUserID);
@@ -72,7 +71,9 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Logs out of system
         private void btnLogOut_Click(object sender, EventArgs e)
         {
-
+            //Application.OpenForms["Login"].Show();
+            this.Close();
+            Application.OpenForms["Menu"].Close();
         }
 
         // DESCRIPTION: Searches for specified customer ID reservations
@@ -84,7 +85,7 @@ namespace Hotel_Reservation_Overhaul
             // if no customer ID entered
             if (string.IsNullOrEmpty(txtCustomerSearch.Text))
             {
-              displayError("Customer ID not entered");
+                displayError("Customer ID not entered");
             }
             else
             {
@@ -95,16 +96,16 @@ namespace Hotel_Reservation_Overhaul
                 // check that user exists
                 if (!(checkForUser.userIDExists(resUserID)))
                 {
-                   displayError("Error: Customer ID does not exist");
+                    displayError("Error: Customer ID does not exist");
                 }
                 // ensure entered user ID is customer
-                else if(!(checkForUser.isCustomer(resUserID)))
+                else if (!(checkForUser.isCustomer(resUserID)))
                 {
                     displayError("Entered user ID is not customer");
                 }
                 // customer ID exists, pull report
                 {
-                    GetData(); 
+                    GetData();
                 }
             }
         }
@@ -122,17 +123,17 @@ namespace Hotel_Reservation_Overhaul
             this.locationTableAdapter.Fill(this.hotelmgmt.location);
             // TODO: This line of code loads data into the 'hotelmgmt.reservation' table. You can move, or remove it, as needed.
             this.reservationTableAdapter.Fill(this.hotelmgmt.reservation);
-          
+
         }
 
-      
+
         private int getConfirmationID()
         {
-             int selectedrowindex = resListDataGrid.SelectedCells[0].RowIndex;
-             DataGridViewRow selectedRow = resListDataGrid.Rows[selectedrowindex];
-             int confirmationID = Convert.ToInt32(selectedRow.Cells["ConfirmationID"].Value);
-             return confirmationID;
-    }
+            int selectedrowindex = resListDataGrid.SelectedCells[0].RowIndex;
+            DataGridViewRow selectedRow = resListDataGrid.Rows[selectedrowindex];
+            int confirmationID = Convert.ToInt32(selectedRow.Cells["ConfirmationID"].Value);
+            return confirmationID;
+        }
         // DESCRIPTION: Re-directs user to payment page, passes confirmation ID of selected reservation and userID of user
         private void btnPay_Click(object sender, EventArgs e)
         {
@@ -143,6 +144,7 @@ namespace Hotel_Reservation_Overhaul
 
                 // Passes confirmation ID and user ID to payment page
                 var makePayment = new Payment(confirmationID, resUserID);
+                makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
                 this.Hide();
                 makePayment.Show();
 
@@ -154,18 +156,29 @@ namespace Hotel_Reservation_Overhaul
 
         }
 
+        private void makePayment_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Show();
+        }
+
         private void btnNew_Click(object sender, EventArgs e)
         {
             if (userInfo.isCustomer == false && resUserID == -1)
-            { 
-                displayError("Please enter a customer ID"); 
+            {
+                displayError("Please enter a customer ID");
             }
             else
             {
-                var newReservation = new CreateReservation(resUserID);
+                var newReservation = new CreateReservation(userInfo.userID, resUserID);
+                newReservation.FormClosed += new FormClosedEventHandler(newReservation_FormClosed);
                 this.Hide();
                 newReservation.Show();
             }
+        }
+
+        private void newReservation_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Show();
         }
 
         private void btnModify_Click(object sender, EventArgs e)
@@ -173,32 +186,86 @@ namespace Hotel_Reservation_Overhaul
 
         }
 
+        // DESCRIPTION: Reservation cancellation process
         private void btnCancel_Click(object sender, EventArgs e)
         {
             if (resListDataGrid.SelectedRows.Count > 0)
             {
-                int confirmationID = getConfirmationID();
-                Reservation resInfo = new Reservation(confirmationID);
+                string cancelMessage = "Please note, a 50.00 charge will apply to any reservation cancelled within 3 days of the start date. Continue with cancellation?";
+                var selectedOption = MessageBox.Show(cancelMessage, "Cancel reservation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (selectedOption == DialogResult.Yes)
+                {
+                    {   // begin cancellation process
+                        int confirmationID = getConfirmationID();
+                        Reservation resInfo = new Reservation(confirmationID);
 
-                // check if reservation can be cancelled
-                if(resInfo.status == "cancelled")
-                {
-                    displayError("This reservation has already been cancelled");
-                }
-                else if(resInfo.status == "checked-out")
-                {
-                    displayError("This reservation has already been completed");
-                }
-                else if(resInfo.status == "checked-in")
-                {
-                    Utilities recalc = new Utilities();
-                    DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
-                    double newPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNum));
-                    double newPoints = recalc.calculatePoints((newEndDate - resInfo.endDate).TotalDays);
-                    resInfo.totalPrice = newPrice;
-                   // resInfo.
-                }
+                        // check if reservation can be cancelled
+                        if (resInfo.status == "cancelled")
+                        {
+                            displayError("This reservation has already been cancelled");
+                        }
+                        else if (resInfo.status == "checked-out")
+                        {
+                            displayError("This reservation has already been completed");
+                        }
+                        else if (resInfo.status == "checked-in")
+                        {
+                            // update reservation info
+                            Utilities recalc = new Utilities();
+                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
+                            resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNum));
+                            resInfo.points = Convert.ToInt32(recalc.calculatePoints((newEndDate - resInfo.endDate).TotalDays));
+                            resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
+                            resInfo.status = "checked-out";
+                        }
+                        else if (resInfo.status == "upcoming")
+                        {
+                            // if reservation is within 3 days
+                            if (((resInfo.startDate - DateTime.Today).TotalDays) <= 3)
+                            {
+                                resInfo.totalPrice = 50;
+                            }
+                            else
+                            {
+                                resInfo.totalPrice = 0;
+                            }
+                            resInfo.status = "cancelled";
+                            resInfo.points = 0;
+                            resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
+                        }
+                        if (resInfo.amountDue < 0)
+                        {
+                            // issue refund payment
+                            DBConnect issueRefundConn = new DBConnect();
+                            MySqlCommand issueRefund = new MySqlCommand(@"INSERT INTO `dbo`.`payment` (`customerID`, `confirmationID`, `amountPaid`, `paymentMethod`, `usedRewards`)
+                                                                      VALUES (@customerID,@confirmationID, @refundAmt, 'refund', 0");
+                            issueRefund.Parameters.Add("@customerID", MySqlDbType.Int32).Value = resInfo.userID;
+                            issueRefund.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = resInfo.confirmatonID;
+                            issueRefund.Parameters.Add("@refundAmt", MySqlDbType.Decimal).Value = resInfo.amountDue;
+                            issueRefundConn.NonQuery(issueRefund);
+                            resInfo.amountPaid = resInfo.amountDue + resInfo.amountPaid;
+                            resInfo.amountDue = 0;
+                        }
+                        // update reservation record
+                        resInfo.updateReservation(resInfo);
+
+                        // log cancellation
+                        if(userInfo.isCustomer) 
+                        {
+                            resInfo.logCancellation(userInfo.userID, userInfo.userID);
+                        }
+                        else
+                        {
+                            resInfo.logCancellation(userInfo.userID, resUserID);
+                        }                    
+                    }
+                }             
             }
+            else
+            {
+                displayError("No reservation selected"); 
+            }
+
         }
     }
 

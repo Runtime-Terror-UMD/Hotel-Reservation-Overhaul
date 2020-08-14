@@ -9,6 +9,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace Hotel_Reservation_Overhaul
 {
@@ -18,34 +19,38 @@ namespace Hotel_Reservation_Overhaul
         public DateTime? endDate = null;
         public bool waitlist = false;
         public int resUserID;
+        public int userID;
         public int roomNum = -1;
         public double pricePerNight;
         public double price;
         public int points;
         public string combindstring;
 
-        public CreateReservation(int userID)
+        public CreateReservation(int UserID, int ResUserID )
         {
             InitializeComponent();
             PopulateCheckBoxes();
-            resUserID = userID;
+            resUserID = ResUserID;
+            userID = UserID;
         }
 
-        public CreateReservation(int userID, int confirmationID)
-        {
-            InitializeComponent();
-            PopulateCheckBoxes();
-            resUserID = userID;
-            Reservation resInfo = new Reservation(confirmationID);
-            monthStart.SelectionRange.Start = resInfo.startDate;
-            monthEnd.SelectionRange.Start = resInfo.endDate;
-            lblCost.Text = resInfo.totalPrice.ToString();
-            cboxHotel.SelectedIndex = resInfo.locationID + 1;
-        }
+        //public CreateReservation(int userID, int confirmationID)
+        //{
+        //    InitializeComponent();
+        //    PopulateCheckBoxes();
+        //    resUserID = userID;
+        //    Reservation resInfo = new Reservation(confirmationID);
+        //    monthStart.SelectionRange.Start = resInfo.startDate;
+        //    monthEnd.SelectionRange.Start = resInfo.endDate;
+        //    lblCost.Text = resInfo.totalPrice.ToString();
+        //    cboxHotel.SelectedIndex = resInfo.locationID + 1;
+        //}
 
         private void btnLogOut_Click(object sender, EventArgs e)
         {
-
+            this.Close();
+            Application.OpenForms["ReservationList"].Close();
+            Application.OpenForms["Menu"].Close();
         }
 
         // DESCRIPTION: 
@@ -83,7 +88,7 @@ namespace Hotel_Reservation_Overhaul
              }
 
             checkPackages.SetItemChecked(0, true);
-            checkPackages.SetItemCheckState(0, CheckState.Indeterminate);
+            checkPackages.SetItemCheckState(0, CheckState.Checked);
         }
 
         // DESCRIPTION: Handles when the selected start date is changed
@@ -144,6 +149,11 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Checks for reservation availability
         private void btnSubmit_Click(object sender, EventArgs e)
         {
+            if (checkPackages.GetItemCheckState(0) == CheckState.Unchecked)
+            {
+                checkPackages.SetItemCheckState(0, CheckState.Checked);
+                lblError.Text = "All rooms contain basic package.";
+            }
             // reset error
             lblError.Visible = false;
 
@@ -164,8 +174,9 @@ namespace Hotel_Reservation_Overhaul
                         if (checkPackages.GetItemCheckState(indexChecked) == CheckState.Checked)
                         {
                             packages.Add(indexChecked + 1);
+                            lblError.Visible = true;
                         }
-                     }
+                    }
                 }
 
                 // put selected package IDs in list
@@ -177,10 +188,11 @@ namespace Hotel_Reservation_Overhaul
                                                     from dbo.relation_room_package rrp
                                                     where packageID in (" + combindstring + @") and locationID = @locationID
                                                     and roomNum not in (select roomNum from dbo.reservation where @startDate between startDate and endDate and reservationStatus <> 'cancelled' and locationID = @locationID)
-                                                    and roomNum not in (select roomNum from dbo.maintenance where locationID = @locationID and @startDate between startDate and endDate) 
+                                                    and roomNum not in (select roomNum from dbo.maintenance where locationID = @locationID and maintenanceDate BETWEEN @startDate and @endDate) 
                                                     group by roomNum
                                                     having count(distinct packageID) = @numPackages limit 1");
                 cmd.Parameters.Add("@startDate", MySqlDbType.DateTime).Value = startDate;
+                cmd.Parameters.Add("@endDate", MySqlDbType.DateTime).Value = endDate;
                 cmd.Parameters.Add("@numPackages", MySqlDbType.Int32).Value = packages.Count;
                 cmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = Convert.ToInt32(cboxHotel.SelectedValue);
                 cmd.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = Convert.ToInt32(cboxNumGuests.SelectedItem);
@@ -238,6 +250,12 @@ namespace Hotel_Reservation_Overhaul
                 lblDeposit.Text = "50.00";
                 txtCostNightly.Text = pricePerNight.ToString();
                 lblSubTotal.Text = (price + 50).ToString();
+                lblError.Visible = false;
+                cboxHotel.Enabled = false;
+                cboxNumGuests.Enabled = false;
+                monthStart.Enabled = false;
+                monthEnd.Enabled = false;
+                checkPackages.Enabled = false;
                 btnSubmit.Visible = false;
                 btnMakeRes.Visible = true;
             }
@@ -285,8 +303,9 @@ namespace Hotel_Reservation_Overhaul
                 createResConn.NonQuery(createResCmd);
 
                 // add to activity log
-                MySqlCommand logActivity = new MySqlCommand("INSERT INTO `dbo`.`activitylog`(`userID`,`activityTypeID`,`refID`,`created`)VALUES(@userID, 1, @confirmationID, @date)");
+                MySqlCommand logActivity = new MySqlCommand("INSERT INTO `dbo`.`activitylog`(`userID`,`activityTypeID`,`refID`,`created`,`createdBy`)VALUES(@userID, 1, @confirmationID, @date, @createdBy)");
                 logActivity.Parameters.Add("@confirmationID", MySqlDbType.Int32, 10).Value = comfirmationID;
+                logActivity.Parameters.Add("@createdBy", MySqlDbType.Int32, 10).Value = userID;
                 logActivity.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = resUserID;
                 logActivity.Parameters.Add("@date", MySqlDbType.Date).Value = DateTime.Today;      // FIXME: Replace with date variable
                 createResConn.NonQuery(logActivity);
@@ -304,6 +323,39 @@ namespace Hotel_Reservation_Overhaul
                     lblError.Text = "You have been added to the waitlist";
                 }
             }
+        }
+
+        private void checkPackages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (checkPackages.GetItemCheckState(0) == CheckState.Unchecked)
+            {
+                checkPackages.SetItemCheckState(0, CheckState.Checked);
+                lblError.Text = "All rooms contain basic package.";
+                lblError.Visible = true;
+            }
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            foreach (int indexChecked in checkPackages.CheckedIndices)
+            {
+                checkPackages.SetItemChecked(indexChecked, false);
+            }
+            checkPackages.SetItemChecked(0, true);
+            cboxHotel.SelectedIndex = 0;
+            cboxNumGuests.SelectedIndex = 0;
+            cboxHotel.Enabled = true;
+            cboxNumGuests.Enabled = true;
+            monthStart.Enabled = true;
+            monthEnd.Enabled = true;
+            checkPackages.Enabled = true;
+            btnSubmit.Visible = true;
+            btnMakeRes.Visible = false;
+        }
+
+        private void btnReturn_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
