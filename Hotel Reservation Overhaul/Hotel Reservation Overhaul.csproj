@@ -59,7 +59,7 @@
     <Compile Include="Entity Class Definitions\Location.cs" />
     <Compile Include="Entity Class Definitions\LoggedActivity.cs" />
     <Compile Include="Entity Class Definitions\Package.cs" />
-    <Compile Include="Entity Class Definitions\Payment.cs" />
+    <Compile Include="Entity Class Definitions\PaymentRecord.cs" />
     <Compile Include="Entity Class Definitions\Reservation.cs" />
     <Compile Include="Entity Class Definitions\Reward.cs" />
     <Compile Include="Entity Class Definitions\Room.cs" />

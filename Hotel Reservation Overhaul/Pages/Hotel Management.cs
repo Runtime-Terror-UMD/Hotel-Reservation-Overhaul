@@ -212,6 +212,8 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 }
                                 numReserv++; 
                                 
+                                // check that customer ID exists
+                                //
                                 
                                 
                                 

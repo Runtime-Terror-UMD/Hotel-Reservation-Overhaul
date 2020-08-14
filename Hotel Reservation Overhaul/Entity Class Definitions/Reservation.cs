@@ -25,8 +25,6 @@ public class Reservation
 
         // query to run 
         string reservationQuery = "SELECT * FROM dbo.reservation WHERE confirmationID = @confirmationID";
-        // declare and parameterize mySQL Command
-
         MySqlCommand cmd = new MySqlCommand(reservationQuery);
         cmd.Parameters.AddWithValue("@confirmationID", confirmationID);
 
@@ -61,16 +59,44 @@ public class Reservation
         ReservationConn.CloseConnection();
     }
 
-    //public bool updateReservation(this)
-    //{
-    //    string updateResQuery = "Update dbo.reservation"
-    //}
-    //public bool cancelReservation()
-    //{
-    //    if(this.status == "cancelled" || this.status == "checked-in")
-    //    {
-    //        return false;
-    //    }
-    //    return false;
-    //}
+    public bool updateReservation(Reservation resInfo)
+    {
+        DBConnect updateResConn = new DBConnect();
+        MySqlCommand  updateRes = new MySqlCommand(@"UPDATE `dbo`.`reservation`
+                                                    SET
+                                                    `locationID` = @locationID,
+                                                    `roomNum` = @roomNum,
+                                                    `startDate` = @startDate,
+                                                    `endDate` = @endDate,
+                                                    `pointsAccumulated` = @points,
+                                                    `price` = @price,
+                                                    `amountDue` = @amountDue,
+                                                    `amountPaid` = @amountPaid,
+                                                    `reservationStatus` = @status,
+                                                     WHERE `confirmationID` = @confirmationID");
+      
+        updateRes.Parameters.Add("@locationID", MySqlDbType.Int32).Value = resInfo.locationID;
+        updateRes.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = resInfo.roomNum;
+        updateRes.Parameters.Add("@startDate", MySqlDbType.Int32).Value = resInfo.startDate;
+        updateRes.Parameters.Add("@endDate", MySqlDbType.Int32).Value = resInfo.endDate;
+        updateRes.Parameters.Add("@points", MySqlDbType.Int32).Value = resInfo.points;
+        updateRes.Parameters.Add("@price", MySqlDbType.Int32).Value = resInfo.totalPrice;
+        updateRes.Parameters.Add("@amountDue", MySqlDbType.Int32).Value = resInfo.amountDue;
+        updateRes.Parameters.Add("@amountPaid", MySqlDbType.Int32).Value = resInfo.amountPaid;
+        updateRes.Parameters.Add("@status", MySqlDbType.Int32).Value = resInfo.status;
+        if(updateResConn.NonQuery(updateRes) > 0)
+            return true;
+        return false;
+    }
+
+    public void logCancellation(int cancelledBy)
+    {
+        DBConnect cancelResConn = new DBConnect();
+        MySqlCommand cancelRes = new MySqlCommand(@"INSERT INTO `dbo`.`activitylog`(`userID`,`activityTypeID`,`refID`,`created`)
+                                                    VALUES(@userID,3,@confirmationID,@created");
+        cancelRes.Parameters.Add("@userID", MySqlDbType.Int32).Value = cancelledBy;
+        cancelRes.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = this.confirmatonID;
+        cancelRes.Parameters.Add("@created", MySqlDbType.Int32).Value = DateTime.Today;      //FIXME: Replace with date varialbe
+        cancelResConn.NonQuery(cancelRes);
+    }
 }
