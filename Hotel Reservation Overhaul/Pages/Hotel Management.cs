@@ -611,8 +611,8 @@ namespace Hotel_Reservation_Overhaul.Pages
                 {
                     string fileName = resFile.FileName;
                     string[] fileLines = File.ReadAllLines(fileName);
-                    DateTime maintainDate;
-                    int hotelID;
+                    DateTime maintainDate = DateTime.Now;
+                    int hotelID = 0;
                     for (int i = 0; i < fileLines.Length; i++)
                     {
                         int start = 0;
