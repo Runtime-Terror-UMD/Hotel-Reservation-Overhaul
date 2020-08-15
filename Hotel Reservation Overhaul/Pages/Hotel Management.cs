@@ -215,10 +215,65 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 {
                                     throw new Exception("Unable to retrieve reward choice.");
                                 }
-                                numReserv++; 
-                                
-                                // check that customer ID exists
-                                //
+                                numReserv++;
+
+                                // verify reservation information
+                                Utilities verifyReservation = new Utilities();
+                                // if user ID exists
+                                if (verifyReservation.userIDExists(custID))
+                                {
+                                    User userInfo = new User(custID);
+                                    // if user ID is customer account
+                                    if (userInfo.isCustomer)
+                                    {
+                                        // if hotel ID exists
+                                        if(hotelExists(hotelID))
+                                        {
+                                            // check for availability
+                                            string combindstring = string.Join(",", packages);
+                                            Reservation resInfo = new Reservation();
+                                            int roomAvailable = resInfo.getAvailability(packages, occNum, hotelID, combindstring);
+                                            // no room available
+                                            if(roomAvailable == -1)
+                                            {
+                                               MessageBox.Show("No rooms with specified criteria. Please add user to waitlist");   // ADD YESNO MESSAGE BOX
+                                                DBConnect checkAvailabilityConn = new DBConnect();
+                                                MySqlCommand cmd = new MySqlCommand(@"select roomNum
+                                                                                    from dbo.relation_room_package rrp
+                                                                                    where packageID in (" + combindstring + @") and locationID = @locationID
+                                                                                    group by roomNum
+                                                                                    having count(distinct packageID) = @numPackages limit 1");
+                                                MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
+                                                if (nonAvailableDR.HasRows)
+                                                {
+                                                    Reservation addToWaitlist = new Reservation();
+                                                    addToWaitlist.addToWaitlist(custID, hotelID, checkIn, checkOut, occNum, combindstring);
+                                                }
+                                                else
+                                                {
+                                                    throw new Exception("No room with those criteria are available. Your reservation will be added to the waitlist");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                // calculate price and create reservation
+                                                Utilities calcPrice = new Utilities();
+                                                double pricePerNight = calcPrice.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), roomAvailable);
+                                                double price = calcPrice.calculatePrice(((checkIn - checkOut).TotalDays), pricePerNight);
+                                                int points = Convert.ToInt32(calcPrice.calculatePoints(((checkIn - checkOut).TotalDays)));
+                                                Reservation createReservation = new Reservation();
+                                                createReservation.makeReservation(hotelID, custID, custID, checkIn, checkOut, price, points, roomAvailable);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("User ID is not a customer account");
+                                    }
+                                }
+                                else
+                                    throw new Exception("User account does not exist");
+
                                 
                                 
                                 
@@ -763,6 +818,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                 return true;
             }
             return false;
+        }
         private void lstReports_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lstReports.SelectedItem.ToString() == "Customer History")
