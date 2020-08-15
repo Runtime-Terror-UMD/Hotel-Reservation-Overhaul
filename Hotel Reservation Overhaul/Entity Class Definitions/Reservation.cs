@@ -92,6 +92,7 @@ public class Reservation
         return false;
     }
 
+    // DESCRIPTION: Adds cancellation to activity log
     public void logCancellation(int cancelledBy, int userID)
     {
         DBConnect cancelResConn = new DBConnect();
@@ -104,6 +105,7 @@ public class Reservation
         cancelResConn.NonQuery(cancelRes);
     }
 
+    //DESCRIPTION: Gets availability for specified reservation request
     public int getAvailability(List<int> packages, int numGuests,int hotelID, string combindstring)
     {
         int roomAvailable = -1;
@@ -137,6 +139,7 @@ public class Reservation
         return roomAvailable;
     }
 
+    // DESCRIPTION: Adds reservation to dbo.reservation and activity log
     public int makeReservation(int locationID, int newResUserID, int resUserID, DateTime startDate, DateTime endDate, double newResPrice, int newResPoints, int newResRoomNum)
     {
         DBConnect createResConn = new DBConnect();
@@ -174,6 +177,7 @@ public class Reservation
         return -1;
     }
 
+    // DESCRIPTION: Adds request to dbo.waitlist
     public bool addToWaitlist(int wlUserID, int wlLocationID, DateTime wlStartDate, DateTime wlEndDate, int wlNumGuests, string combinedString)
 
     {
