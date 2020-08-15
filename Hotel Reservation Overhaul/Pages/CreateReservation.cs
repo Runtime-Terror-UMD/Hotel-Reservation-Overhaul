@@ -183,7 +183,8 @@ namespace Hotel_Reservation_Overhaul
 
                 // check for availability
                 Reservation resInfo = new Reservation();
-                roomNum =  resInfo.getAvailability(packages, Convert.ToInt32(cboxNumGuests.SelectedItem), Convert.ToInt32(cboxHotel.SelectedItem), combindstring);
+                int locationID = Convert.ToInt32(cboxHotel.SelectedValue);
+                roomNum =  resInfo.getAvailability(packages, Convert.ToInt32(cboxNumGuests.SelectedItem), locationID, combindstring);
                 
                 if(roomNum == -1)
                 {   // no room available, gets roomNum to reference for price 

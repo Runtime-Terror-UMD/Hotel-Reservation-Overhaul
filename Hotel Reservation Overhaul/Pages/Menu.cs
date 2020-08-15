@@ -13,7 +13,7 @@ namespace Hotel_Reservation_Overhaul
 {
     public partial class Menu : Form
     {
-        private int UserID;
+        public int UserID;
         public Menu(Login loginInstance)
         {
             InitializeComponent();

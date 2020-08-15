@@ -43,9 +43,9 @@ public class Reservation
         while (dataReader.Read())
         {
             reservationID = Convert.ToInt32(dataReader["reservationID"]);
-            confirmatonID = Convert.ToInt32(dataReader["confirmatonID"]);
+            confirmatonID = Convert.ToInt32(dataReader["confirmationID"]);
             roomNum = Convert.ToInt32(dataReader["roomNum"]);
-            userID = Convert.ToInt32(dataReader["customerID"]);
+            userID = Convert.ToInt32(dataReader["userID"]);
             locationID = Convert.ToInt32(dataReader["locationID"]);
             points = Convert.ToInt32(dataReader["pointsAccumulated"]);
             startDate = Convert.ToDateTime(dataReader["startDate"]);
