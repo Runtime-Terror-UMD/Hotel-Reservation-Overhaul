@@ -18,21 +18,15 @@ public class User
     public string secretAnswer { get; set; }
     public bool isCustomer { get; set; }
     public int pointsBalance { get; set; }
-    public User(int userID)
+    public User(int UserID)
     {
-
-        // query to run 
-        string UserProfileQuery = "SELECT `user`.`userID`, `user`.`firstName`, `user`.`lastName`, `user`.`email`, `user`.`secretQuestion`, `user`.`secretAnswer`, `user`.`username`, `user`.`pointsBalance`, `user`.`password`, `user`.`isCustomer` FROM `dbo`.`user` where userID = @userID";
-
         // declare and parameterize mySQL Command
 
-        MySqlCommand cmd = new MySqlCommand(UserProfileQuery);
-        cmd.Parameters.AddWithValue("@userID", userID);
-
+        MySqlCommand cmd = new MySqlCommand("SELECT * FROM dbo.user WHERE userID = @UserID");
+        cmd.Parameters.Add("@UserID", MySqlDbType.Int32).Value = UserID;
 
         // connect to database
         DBConnect UserProfileConn = new DBConnect();
-
 
         //Create a data reader and Execute the command
         MySqlDataReader dataReader = UserProfileConn.ExecuteReader(cmd);
@@ -40,13 +34,14 @@ public class User
         //Read the data and store them in the list
         while (dataReader.Read())
         {
-            userID = Convert.ToInt32(dataReader["userid"]);
+            userID = Convert.ToInt32(dataReader["userID"]);
             firstName = dataReader["firstName"].ToString();
             lastName = dataReader["lastName"].ToString();
             email = dataReader["email"].ToString();
             secretQuestion = dataReader["secretQuestion"].ToString();
             secretAnswer = dataReader["secretAnswer"].ToString();
             username = dataReader["username"].ToString();
+            password = dataReader["password"].ToString();
             isCustomer = Convert.ToBoolean(dataReader["isCustomer"]);
             pointsBalance = Convert.ToInt32(dataReader["pointsBalance"]);
         }

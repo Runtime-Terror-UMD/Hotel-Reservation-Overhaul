@@ -15,7 +15,7 @@ namespace Hotel_Reservation_Overhaul
 {
     public partial class ReservationList : Form
     {
-        User userInfo;
+        public User userInfo;
         public int resUserID = -1;
 
         public void displayError(string errorMessage)
@@ -126,7 +126,6 @@ namespace Hotel_Reservation_Overhaul
             this.reservationTableAdapter.Fill(this.hotelmgmt.reservation);
 
         }
-
 
         private int getConfirmationID()
         {

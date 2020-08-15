@@ -337,10 +337,8 @@
             this.tableAdapterManager.locationTableAdapter = this.locationTableAdapter1;
             this.tableAdapterManager.maintenanceTableAdapter = null;
             this.tableAdapterManager.packageTableAdapter = this.packageTableAdapter;
-            this.tableAdapterManager.paymentmethodTableAdapter = null;
             this.tableAdapterManager.paymentTableAdapter = null;
             this.tableAdapterManager.reservationTableAdapter = null;
-            this.tableAdapterManager.rewardofferTableAdapter = null;
             this.tableAdapterManager.roomTableAdapter = null;
             this.tableAdapterManager.UpdateOrder = Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.TableAdapterManager.UpdateOrderOption.InsertUpdateDelete;
             this.tableAdapterManager.userTableAdapter = null;
