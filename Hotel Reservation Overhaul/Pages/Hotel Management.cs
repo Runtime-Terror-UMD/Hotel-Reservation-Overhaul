@@ -250,7 +250,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                                 }
                                                 else
                                                 {
-                                                    throw new Exception("No room with those criteria are available. Your reservation will be added to the waitlist");
+                                                    MessageBox.Show("No room with those criteria are available. Reservation will be added to the waitlist");
                                                 }
                                             }
                                             else
@@ -341,14 +341,14 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 string hotelName, hotelCity, hotelState;
                                 position = fileLines[i].IndexOf(' ', start);
                                 bool successHotelNum = int.TryParse(fileLines[i].Substring(start, position - start + 1), out hotelID); //set hotelID
-                                if (!successHotelNum) //INSERT CODE TO VERIFY HOTELID DOES NOT EXIST
+                                if (!successHotelNum) 
                                 {
                                     hotelID = 0;
                                     throw new Exception("Invalid hotel number");
                                 }
 
                                 else
-                                {
+                                {   // check if hotel ID already exists in DB
                                     bool alreadyExists = hotelExists(hotelID);
                                     if (alreadyExists)
                                     {
@@ -375,7 +375,10 @@ namespace Hotel_Reservation_Overhaul.Pages
                                         insertHotel.Parameters.Add("@hotelID", MySqlDbType.VarChar, 100).Value = hotelName;
                                         insertHotel.Parameters.Add("@hotelID", MySqlDbType.VarChar, 45).Value = hotelCity;
                                         insertHotel.Parameters.Add("@hotelID", MySqlDbType.VarChar, 45).Value = hotelState;
-                                        insertHotelConn.NonQuery(insertHotel);
+                                        if(insertHotelConn.NonQuery(insertHotel) < 1)
+                                        {
+                                            throw new Exception("Error inserting hotel into database. Contact database admin");
+                                        }
                                     }
                                 }
                                 hotelCount++;
@@ -393,7 +396,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 position = fileLines[i].IndexOf(' ', start);
                                 bool successRoomNum = int.TryParse(fileLines[i].Substring(start, position - start + 1), out roomNum);
                                 bool RoomExists = roomExists(roomNum, hotelID);
-                                //IF ROOMNUM EXISTS AT HOTEL, DO NOT ADD
+                                // if roomNum exists at hotelID, do not add to DB
                                 if(RoomExists)
                                 {
                                     throw new Exception("Room number is already defined at that location");
@@ -478,7 +481,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                     throw new Exception("Unable to retrieve packages.");
                                 }
 
-                                //ADD ROOM TO HOTEL IN DB
+                                //Add room to hotel in DB
 
                                 DBConnect insertRoomConn = new DBConnect();
 
@@ -489,18 +492,25 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 insertRoom.Parameters.Add("@hotelId", MySqlDbType.Int32).Value = hotelID;
                                 insertRoom.Parameters.Add("@roomOcc", MySqlDbType.Int32).Value = roomOcc;
                                 insertRoom.Parameters.Add("@roomCost", MySqlDbType.Decimal).Value = roomCost;
-                                insertRoomConn.NonQuery(insertRoom);
-
-                                //insert packages-room relationship
-                                MySqlCommand insertRoomPacks = new MySqlCommand(@"INSERT INTO `dbo`.`relation_room_package`(`roomNum`,`locationID`,`packageID`)
-                                                                                VALUES(@roomNum,@hotelId,@packID");
-                                insertRoomPacks.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = roomNum;
-                                insertRoom.Parameters.Add("@hotelId", MySqlDbType.Int32).Value = hotelID;
-
-                                foreach (var pack in roomPackages)
+                                if (insertRoomConn.NonQuery(insertRoom) < 1)
                                 {
-                                    insertRoomPacks.Parameters.Add("@packID", MySqlDbType.Int32).Value = pack;
-                                    insertRoomConn.NonQuery(insertRoomPacks);
+                                    throw new Exception("Error creating reservation. Contact database admin");
+                                }
+                                else
+                                {                                 //insert packages-room relationship
+                                    MySqlCommand insertRoomPacks = new MySqlCommand(@"INSERT INTO `dbo`.`relation_room_package`(`roomNum`,`locationID`,`packageID`)
+                                                                                VALUES(@roomNum,@hotelId,@packID");
+                                    insertRoomPacks.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = roomNum;
+                                    insertRoom.Parameters.Add("@hotelId", MySqlDbType.Int32).Value = hotelID;
+
+                                    foreach (var pack in roomPackages)
+                                    {
+                                        insertRoomPacks.Parameters.Add("@packID", MySqlDbType.Int32).Value = pack;
+                                        if(insertRoomConn.NonQuery(insertRoomPacks) < 1)
+                                        {
+                                            throw new Exception("Error creating reservation. Contact database admin");
+                                        }
+                                    }
                                 }
 
                             }
@@ -572,43 +582,47 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 {
                                     throw new Exception("Invalid package ID.");
                                 }
-                                //IF PACKAGE ID ALREADY EXISTS, THROW EXCEPTION
+                                //If package exists in DB, throw exception
                                 else if (packExists)
                                 {
                                     throw new Exception("Package already exists.");
                                 }
-
                                 else
                                 {
                                     start = position + 1;
                                     position = fileLines[i].IndexOf(' ', start);
                                     packName = fileLines[i].Substring(start, position - start + 1).Trim();
 
-                                    //IF PACKAGE NAME EXISTS, THROW EXCEPTION
+                                    //If package name exists already, throw exception
                                     DBConnect checkForPackNameConn = new DBConnect();
                                     MySqlCommand checkForPackName = new MySqlCommand("SELECT COUNT(*) from dbo.package where packageName = @packName");
                                     checkForPackName.Parameters.Add("@packName", MySqlDbType.VarChar, 45).Value = packName;
-                                    if (checkForPackNameConn.intScalar(checkForPackName) > 1)
+                                    if (checkForPackNameConn.intScalar(checkForPackName) > 0)
                                     {
-                                        throw new Exception("Invalid package ID.");
+                                        throw new Exception("A package with that name already exists.");
                                     }
-
-                                    start = position + 1;
-                                    position = fileLines[i].IndexOf(' ', start);
-                                    bool successPackCost = decimal.TryParse(fileLines[i].Substring(start + 1), out packCost); //set pack cost
-                                    if (packCost < 0)
+                                    else
                                     {
-                                        throw new Exception("Invalid package cost.");
-                                    }
-                                    //ADD PACKAGE TO DATABASE
-                                    DBConnect insertPackageConn = new DBConnect();
-                                    MySqlCommand insertPackage = new MySqlCommand(@"INSERT INTO `dbo`.`package`(`packageID`,`packageName`,`pricePerNight`)
-                                                                               VALUES(@packID >, @packName, @packCost)");
-                                    insertPackage.Parameters.Add("@packID", MySqlDbType.VarChar, 45).Value = packID;
-                                    insertPackage.Parameters.Add("@packName", MySqlDbType.VarChar, 45).Value = packName;
-                                    insertPackage.Parameters.Add("@packName", MySqlDbType.Decimal).Value = packCost;
+                                        start = position + 1;
+                                        position = fileLines[i].IndexOf(' ', start);
+                                        bool successPackCost = decimal.TryParse(fileLines[i].Substring(start + 1), out packCost); //set pack cost
+                                        if (packCost < 0)
+                                        {
+                                            throw new Exception("Invalid package cost.");
+                                        }
+                                        else
+                                        {
+                                            //add package to database
+                                            DBConnect insertPackageConn = new DBConnect();
+                                            MySqlCommand insertPackage = new MySqlCommand(@"INSERT INTO `dbo`.`package`(`packageID`,`packageName`,`pricePerNight`)
+                                                                                          VALUES(@packID >, @packName, @packCost)");
+                                            insertPackage.Parameters.Add("@packID", MySqlDbType.VarChar, 45).Value = packID;
+                                            insertPackage.Parameters.Add("@packName", MySqlDbType.VarChar, 45).Value = packName;
+                                            insertPackage.Parameters.Add("@packName", MySqlDbType.Decimal).Value = packCost;
 
-                                    packageCount++;
+                                            packageCount++;
+                                        }
+                                    }
                                 }
                             }
                             else if (startCode == "A") //get line for package information
@@ -620,29 +634,47 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 string amenity;
                                 amenity = fileLines[i].Substring(position).Trim();
 
-                                // IF AMENITY DOESN'T EXIST IN DBO.AMENITY
+                                // If amenity doesn't exist
                                 DBConnect checkForAmenityConn = new DBConnect();
                                 MySqlCommand checkForAmenity = new MySqlCommand("select count(*) from amenity where description = @amenity");
                                 checkForAmenity.Parameters.Add("@amenity", MySqlDbType.VarChar, 45).Value = amenity;
                                 if (checkForAmenityConn.intScalar(checkForAmenity) < 1)
-                                {    // INSERT INTO DBO.AMENITY
+                                {    // Insert into DB
                                     DBConnect insertAmenityConn = new DBConnect();
                                     MySqlCommand insertAmenity = new MySqlCommand("INSERT INTO `dbo`.`amenity` (`description`) VALUES (@amenity)");
                                     insertAmenity.Parameters.Add("@amenity", MySqlDbType.VarChar, 45).Value = amenity;
                                     insertAmenityConn.NonQuery(insertAmenity);
+
+                                    if (insertAmenityConn.NonQuery(insertAmenity) < 1)
+                                    {
+                                        throw new Exception("Error inserting amenity into database. Contact database admin");
+                                    }
+                                    else
+                                    {
+                                        //Add amenity-package relationship in DB
+                                        DBConnect getAmenityIDConn = new DBConnect();
+                                        MySqlCommand getAmenityID = new MySqlCommand("SELECT amenityID from amenity where description = @amenity");
+                                        int amenityID = getAmenityIDConn.intScalar(getAmenityID);
+                                        if (amenityID == -1)
+                                        {
+                                            throw new Exception("Error inserting amenity into database. Contact database admin");
+                                        }
+                                        else
+                                        {
+                                            DBConnect insertAmenityRelationConn = new DBConnect();
+                                            MySqlCommand insertAmenityRelation = new MySqlCommand("INSERT INTO `dbo`.`relation_package_amenity` (`packageID`, `amenityID`) VALUES (@packID, @amenityID)");
+                                            insertAmenityRelation.Parameters.Add("@packID", MySqlDbType.Int32).Value = packID;
+                                            insertAmenityRelation.Parameters.Add("@amenityID", MySqlDbType.Int32).Value = amenityID;
+
+                                            if (insertAmenityRelationConn.NonQuery(insertAmenityRelation) < 1)
+                                            {
+                                                throw new Exception("Error inserting amenity into database. Contact database admin");
+                                            }
+                                        }
+                                    }
                                 }
                                 packageCount++;
-                                //ADD AMENITY PACKAGE RELATIONSHIP IN DATABASE
-                                DBConnect getAmenityIDConn = new DBConnect();
-                                MySqlCommand getAmenityID = new MySqlCommand("SELECT amenityID from amenity where description = @amenity");
-                                int amenityID = getAmenityIDConn.intScalar(getAmenityID);
-
-                                DBConnect insertAmenityRelationConn = new DBConnect();
-                                MySqlCommand insertAmenityRelation = new MySqlCommand("INSERT INTO `dbo`.`relation_package_amenity` (`packageID`, `amenityID`) VALUES (@packID, @amenityID)");
-                                insertAmenityRelation.Parameters.Add("@packID", MySqlDbType.Int32).Value = packID;
-                                insertAmenityRelation.Parameters.Add("@amenityID", MySqlDbType.Int32).Value = amenityID;
-                                insertAmenityRelationConn.NonQuery(insertAmenityRelation);
-                            }
+                               }
                             else
                             {
                                 throw new Exception("Invalid file format.");
@@ -732,21 +764,27 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 int roomNum;
                                 bool successRoom = int.TryParse(fileLines[i].Substring(start), out roomNum);
                                 bool RoomExists = roomExists(roomNum, hotelID);
-
-                                if (!successRoom || roomNum < 0 || !RoomExists) // IF ROOM DOESNT EXIST THROW EXCEPTION
+                                // if room doesn't exist, throw exception
+                                if (!successRoom || roomNum < 0 || !RoomExists) 
                                 {
                                     throw new Exception("Unable to retrieve room number.");
                                 }
 
-                                //SET ROOMNUM IN HOTELID TO UNAVAILABLE ON MAINTAINDATE
+                                //Insert maintenance record in database
                                 DBConnect insertMaintenanceConn = new DBConnect();
                                 MySqlCommand insertMaintenance = new MySqlCommand(@"INSERT INTO `dbo`.`maintenance`(`locationID`,`mainteanceDate`,`roomNum`)
                                                                                     VALUES(@hotelID, @maintainDate, @roomNum");
                                 insertMaintenance.Parameters.Add("@hotelID", MySqlDbType.Int32).Value = hotelID;
                                 insertMaintenance.Parameters.Add("@maintainDate", MySqlDbType.Date).Value = maintainDate;
                                 insertMaintenance.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = roomNum;
-                                insertMaintenanceConn.NonQuery(insertMaintenance);
-                                maintainCount++;
+                                if (insertMaintenanceConn.NonQuery(insertMaintenance) < 1)
+                                {
+                                    throw new Exception("Error inserting maintenance record. Contact database admin");
+                                }
+                                else
+                                {
+                                    maintainCount++;
+                                }
                             }
                             else
                             {
@@ -827,9 +865,11 @@ namespace Hotel_Reservation_Overhaul.Pages
             }
         }
 
+        // DESCRIPTION: Pulls specified report
         private void btnReport_Click_1(object sender, EventArgs e)
         {
             lblError.Visible = false;
+            // if no report selected
             if (lstReports.SelectedIndex == -1)
             {
                 displayError("Please select a report to run");
@@ -838,28 +878,32 @@ namespace Hotel_Reservation_Overhaul.Pages
             {
                 if (lstReports.SelectedItem.ToString() == "Customer History")
                 {
-                    Utilities customerReport = new Utilities();
+                    // if no user ID entered
                     if (string.IsNullOrWhiteSpace(txtUser.Text))
                     {
                         displayError("User ID not entered");
                     }
-                    else if (customerReport.userIDExists(Convert.ToInt32(txtUser.Text)))
-                    {
-                        if (customerReport.isCustomer(Convert.ToInt32(txtUser.Text)))
-                        {
-                            var customerHistory = new ReportViewer("customerHistory", Convert.ToInt32(txtUser.Text));
-                            this.Hide();
-                            customerHistory.Show();
+                    else
+                    {   Utilities customerReport = new Utilities();
+                        // verify user ID exists
+                        if (customerReport.userIDExists(Convert.ToInt32(txtUser.Text)))
+                        {   // verify user ID is a customer account
+                            if (customerReport.isCustomer(Convert.ToInt32(txtUser.Text)))
+                            {   // pull report
+                                var customerHistory = new ReportViewer("customerHistory", Convert.ToInt32(txtUser.Text));
+                                this.Hide();
+                                customerHistory.Show();
+                            }
+                            else
+                            {
+                                displayError("User ID is not a customer");
+                            }
                         }
                         else
                         {
-                            displayError("User ID is not a customer");
+                            displayError("User ID does not exist");
                         }
-                    }
-                    else
-                    {
-                        displayError("User ID does not exist");
-                    }
+                    }                  
                 }
             }
         }
