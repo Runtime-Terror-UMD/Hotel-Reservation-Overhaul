@@ -21,10 +21,11 @@ namespace Hotel_Reservation_Overhaul.Pages
         }
         private void lstReports_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(lstReports.SelectedItem.ToString() == "Customer History")
+            if (lstReports.SelectedItem.ToString() == "Customer History")
             {
                 cboxHotel.Enabled = false;
-			}
+            }
+        }
         public void displayError(string message)
         {
             lblError.Text = "Error: " + message;
@@ -823,11 +824,6 @@ namespace Hotel_Reservation_Overhaul.Pages
                 return true;
             }
             return false;
-        }
-        private void lstReports_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lstReports.SelectedItem.ToString() == "Customer History")
-                cboxHotel.Enabled = false;
         }
 
         private void btnReport_Click(object sender, EventArgs e)
