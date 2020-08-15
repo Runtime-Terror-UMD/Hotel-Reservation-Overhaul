@@ -55,17 +55,13 @@ namespace Hotel_Reservation_Overhaul
             }
         }
 
-        // DESCRIPTION: Checks to see if user-entered email address is already in use
+        // DESCRIPTION: Checks to see if user-entered email exists 
         public bool emailExists(string email)
         {
-            // query to run 
-            string emailExistsQuery = "SELECT Count(*) from dbo.user where email = @email";
-
             // declare and parameterize mySQL Command
 
-            MySqlCommand cmd = new MySqlCommand(emailExistsQuery);
-            cmd.Parameters.Add("@email", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@email"].Value = email;
+            MySqlCommand cmd = new MySqlCommand("SELECT Count(*) from dbo.user where email = @email");
+            cmd.Parameters.Add("@email", MySqlDbType.VarChar, 45).Value = email;
 
             // connect to database
             DBConnect emailExistsConn = new DBConnect();
@@ -77,16 +73,12 @@ namespace Hotel_Reservation_Overhaul
                 return false;
         }
 
-        // DESCRIPTION: Checks to see if user-entered username is already in use
+        // DESCRIPTION: Checks to see if user-entered username exists
         public bool usernameExists(string username)
         {
-            // query to run 
-            string usernameExistsQuery = "SELECT Count(*) from dbo.user where username = @username";
-
             // declare and parameterize mySQL Command
-            MySqlCommand cmd = new MySqlCommand(usernameExistsQuery);
-            cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@username"].Value = username;
+            MySqlCommand cmd = new MySqlCommand("SELECT Count(*) from dbo.user where username = @username");
+            cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45).Value = username;
 
             // connect to database
             DBConnect usernameExistsConn = new DBConnect();
@@ -101,13 +93,9 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Checks to see if user ID exists
         public bool userIDExists(int userID)
         {
-            // query to run 
-            string userIDExistsQuery = "SELECT Count(*) from dbo.user where userID = @userID";
-
             // declare and parameterize mySQL Command
-            MySqlCommand cmd = new MySqlCommand(userIDExistsQuery);
-            cmd.Parameters.Add("@userID", MySqlDbType.Int32);
-            cmd.Parameters["@userID"].Value = userID;
+            MySqlCommand cmd = new MySqlCommand("SELECT Count(*) from dbo.user where userID = @userID");
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
 
             // connect to database
             DBConnect userIDExistsConn = new DBConnect();
@@ -123,12 +111,9 @@ namespace Hotel_Reservation_Overhaul
         public bool secretAnswerMatches(int userid, string secretAnswer)
         {
             // construct query
-            string secretAnswerMatchesQuery = "SELECT Count(*) from dbo.user where userid = @userID AND secretAnswer = @secretAnswer";
-            MySqlCommand cmd = new MySqlCommand(secretAnswerMatchesQuery);
-            cmd.Parameters.Add("@userid", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@userid"].Value = userid;
-            cmd.Parameters.Add("@secretAnswer", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@secretAnswer"].Value = secretAnswer;
+            MySqlCommand cmd = new MySqlCommand("SELECT Count(*) from dbo.user where userid = @userID AND secretAnswer = @secretAnswer");
+            cmd.Parameters.Add("@userid", MySqlDbType.Int32).Value = userid;
+            cmd.Parameters.Add("@secretAnswer", MySqlDbType.VarChar, 45).Value = secretAnswer;
 
             // connect to database
             DBConnect secretAnswerMatches = new DBConnect();
@@ -147,23 +132,19 @@ namespace Hotel_Reservation_Overhaul
             DBConnect getUserIDFromEmailConn = new DBConnect();
 
             // build query
-            string getUserIDFromEmailQuery = "SELECT userid from dbo.user where email = @email";
-            MySqlCommand cmd = new MySqlCommand(getUserIDFromEmailQuery);
-            cmd.Parameters.AddWithValue("@email", email);
+            MySqlCommand cmd = new MySqlCommand("SELECT userid from dbo.user where email = @email");
+            cmd.Parameters.Add("@email", MySqlDbType.VarChar, 45).Value = email;
             
             // assign value to variable
             userID = getUserIDFromEmailConn.intScalar(cmd);
-
-            getUserIDFromEmailConn.CloseConnection();
             return userID;
         }
 
         public bool isCustomer(int userID)
         {
             DBConnect isCustomerConn = new DBConnect();
-            string isCustomerQuery = "SELECT isCustomer from dbo.user where userid = @userID";
-            MySqlCommand cmd = new MySqlCommand(isCustomerQuery);
-            cmd.Parameters.AddWithValue("@userID", userID);
+            MySqlCommand cmd = new MySqlCommand("SELECT isCustomer from dbo.user where userid = @userID");
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
             if (isCustomerConn.intScalar(cmd) == 0)
                 return false;
             return true;
@@ -176,15 +157,11 @@ namespace Hotel_Reservation_Overhaul
             DBConnect getUserIDFromUsernameConn = new DBConnect();
            
             // build query
-            string getUserIDFromUsernameQuery = "SELECT userid from dbo.user where username = @username";
-            MySqlCommand cmd = new MySqlCommand(getUserIDFromUsernameQuery);
-            cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@username"].Value = username;
+            MySqlCommand cmd = new MySqlCommand("SELECT userid from dbo.user where username = @username");
+            cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45).Value = username;
 
             // assign value to variable
             userID = getUserIDFromUsernameConn.intScalar(cmd);
-
-            getUserIDFromUsernameConn.CloseConnection();
             return userID;
         }
 
@@ -195,14 +172,11 @@ namespace Hotel_Reservation_Overhaul
             DBConnect getUsernameConn = new DBConnect();
 
             // build query
-            string getUsernameQuery = "SELECT username from dbo.user where userid = @userID";
-            MySqlCommand cmd = new MySqlCommand(getUsernameQuery);
-            cmd.Parameters.Add("@userID", MySqlDbType.Int32);
-            cmd.Parameters["@userID"].Value = userID;
+            MySqlCommand cmd = new MySqlCommand("SELECT username from dbo.user where userid = @userID");
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
 
             //assign value to variable
             username = getUsernameConn.stringScalar(cmd);
-            getUsernameConn.CloseConnection();
             return username;
         }
 
@@ -210,16 +184,12 @@ namespace Hotel_Reservation_Overhaul
         public bool passwordMatches(string username, string password)
         {
             // construct query
-            string passwordMatchesQuery = "SELECT Count(*) from dbo.user where username = @username AND password = @password";
-            MySqlCommand cmd = new MySqlCommand(passwordMatchesQuery);
-            cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@username"].Value = username;
-            cmd.Parameters.Add("@password", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@password"].Value = password;
+            MySqlCommand cmd = new MySqlCommand("SELECT Count(*) from dbo.user where username = @username AND password = @password");
+            cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45).Value = username;
+            cmd.Parameters.Add("@password", MySqlDbType.VarChar, 45).Value = password;
 
             // connect to database
             DBConnect passwordMatchesConn = new DBConnect();
-
             // if records exist
             if (passwordMatchesConn.intScalar(cmd) > 0)
                 return true;
@@ -229,12 +199,9 @@ namespace Hotel_Reservation_Overhaul
         public bool passwordMatches(int userID, string password)
         {
             // construct query
-            string passwordMatchesQuery = "SELECT Count(*) from dbo.user where userID = @userID AND password = @password";
-            MySqlCommand cmd = new MySqlCommand(passwordMatchesQuery);
-            cmd.Parameters.Add("@userID", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@userID"].Value = userID;
-            cmd.Parameters.Add("@password", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@password"].Value = password;
+            MySqlCommand cmd = new MySqlCommand("SELECT Count(*) from dbo.user where userID = @userID AND password = @password");
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
+            cmd.Parameters.Add("@password", MySqlDbType.VarChar, 45).Value = password;
 
             // connect to database
             DBConnect passwordMatchesConn = new DBConnect();
@@ -250,8 +217,7 @@ namespace Hotel_Reservation_Overhaul
         public bool updatePassword(string username, string newPassword)
         {
             // build query
-            string updatePasswordQuery = "UPDATE `dbo`.`user` SET `password` = @newpassword WHERE `username` = @username";
-            MySqlCommand cmd = new MySqlCommand(updatePasswordQuery);
+            MySqlCommand cmd = new MySqlCommand("UPDATE `dbo`.`user` SET `password` = @newpassword WHERE `username` = @username");
             cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45).Value = username;
             cmd.Parameters.Add("@newpassword", MySqlDbType.VarChar, 45).Value = newPassword;
 
@@ -264,9 +230,8 @@ namespace Hotel_Reservation_Overhaul
         public bool updatePassword(int userID, string newPassword)
         {
             // build query
-            string updatePasswordQuery = "UPDATE `dbo`.`user` SET `password` = @newpassword WHERE `userID` = @userID";
-            MySqlCommand cmd = new MySqlCommand(updatePasswordQuery);
-            cmd.Parameters.Add("@userID", MySqlDbType.VarChar, 45).Value = userID;
+            MySqlCommand cmd = new MySqlCommand("UPDATE `dbo`.`user` SET `password` = @newpassword WHERE `userID` = @userID");
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
             cmd.Parameters.Add("@newpassword", MySqlDbType.VarChar, 45).Value = newPassword;
 
             DBConnect updatePassword = new DBConnect();
@@ -285,8 +250,7 @@ namespace Hotel_Reservation_Overhaul
             // build query
             string getPointsBalanceQuery = "SELECT pointsBalance from dbo.user where userid = @userID";
             MySqlCommand cmd = new MySqlCommand(getPointsBalanceQuery);
-            cmd.Parameters.Add("@userID", MySqlDbType.Int32);
-            cmd.Parameters["@userID"].Value = userID;
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
 
             //assign value to variable
             rewards = getPointsBalanceConn.intScalar(cmd);
@@ -299,8 +263,8 @@ namespace Hotel_Reservation_Overhaul
             // build query
             string updatePointsQuery = "UPDATE `dbo`.`user` SET `pointsBalance` = @newPoints WHERE `userID` = @userID";
             MySqlCommand cmd = new MySqlCommand(updatePointsQuery);
-            cmd.Parameters.Add("@userID", MySqlDbType.VarChar, 45).Value = userID;
-            cmd.Parameters.Add("@newPoints", MySqlDbType.VarChar, 45).Value = points;
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32, 45).Value = userID;
+            cmd.Parameters.Add("@newPoints", MySqlDbType.Int32, 45).Value = points;
 
             DBConnect updatePoints = new DBConnect();
             if ((updatePoints.NonQuery(cmd)) > 0)
@@ -316,10 +280,8 @@ namespace Hotel_Reservation_Overhaul
             DBConnect getEmailConn = new DBConnect();
 
             // build query
-            string getEmailQuery = "SELECT email from dbo.user where userid = @userID";
-            MySqlCommand cmd = new MySqlCommand(getEmailQuery);
-            cmd.Parameters.Add("@userID", MySqlDbType.Int32);
-            cmd.Parameters["@userID"].Value = userID;
+            MySqlCommand cmd = new MySqlCommand("SELECT email from dbo.user where userid = @userID");
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
 
             //assign value to variable
             email = getEmailConn.stringScalar(cmd);
@@ -334,10 +296,8 @@ namespace Hotel_Reservation_Overhaul
             DBConnect getSecretQuestionConn = new DBConnect();
 
             // build query
-            string getEmailQuery = "SELECT secretQuestion from dbo.user where userid = @userID";
-            MySqlCommand cmd = new MySqlCommand(getEmailQuery);
-            cmd.Parameters.Add("@userID", MySqlDbType.Int32);
-            cmd.Parameters["@userID"].Value = userID;
+            MySqlCommand cmd = new MySqlCommand("SELECT secretQuestion from dbo.user where userid = @userID");
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
 
             //assign value to variable
             secretQuestion = getSecretQuestionConn.stringScalar(cmd);
@@ -351,10 +311,8 @@ namespace Hotel_Reservation_Overhaul
             DBConnect getFirstNameConn = new DBConnect();
 
             // build query
-            string getEmailQuery = "SELECT firstName from dbo.user where userid = @userID";
-            MySqlCommand cmd = new MySqlCommand(getEmailQuery);
-            cmd.Parameters.Add("@userID", MySqlDbType.Int32);
-            cmd.Parameters["@userID"].Value = userID;
+            MySqlCommand cmd = new MySqlCommand("SELECT firstName from dbo.user where userid = @userID");
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
 
             //assign value to variable
             firstName = getFirstNameConn.stringScalar(cmd);
@@ -368,10 +326,8 @@ namespace Hotel_Reservation_Overhaul
             DBConnect getLastNameConn = new DBConnect();
 
             // build query
-            string getEmailQuery = "SELECT lastName from dbo.user where userid = @userID";
-            MySqlCommand cmd = new MySqlCommand(getEmailQuery);
-            cmd.Parameters.Add("@userID", MySqlDbType.Int32);
-            cmd.Parameters["@userID"].Value = userID;
+            MySqlCommand cmd = new MySqlCommand("SELECT lastName from dbo.user where userid = @userID");
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
 
             //assign value to variable
             lastName = getLastNameConn.stringScalar(cmd);
