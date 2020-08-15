@@ -15,7 +15,11 @@ namespace Hotel_Reservation_Overhaul.Pages
     {
         public ReportViewer(string report, int userID)
         {
+            DBConnect reportConn = new DBConnect();
+            DataTable ReportData = new DataTable();
             BindingSource bindingSource1 = new BindingSource();
+
+
             InitializeComponent();
             if(report == "customerHistory")
             {
@@ -31,16 +35,15 @@ namespace Hotel_Reservation_Overhaul.Pages
                 try
                 {
                     // build and execute query
-                    DBConnect custHistoryConn = new DBConnect();                  
                     MySqlCommand cmd = new MySqlCommand(@"select al.created 'Action Date',
 	                                                     concat(activityTypeDescription, al.refID) Action
                                                          from activitylog al
                                                         join activitytype at
-	                                                        on at.activityTypeID = al.activityTypeID
+	                                                    on at.activityTypeID = al.activityTypeID
                                                         where al.userID = @userID");
-                    cmd.Parameters.AddWithValue("@userID", userID);
-                    DataTable customerHistoryReport = custHistoryConn.ExecuteDataTable(cmd);
-                    bindingSource1.DataSource = customerHistoryReport;
+                    cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
+                    ReportData = reportConn.ExecuteDataTable(cmd);
+                    bindingSource1.DataSource = ReportData;
                     reportDataGrid.DataSource = bindingSource1;
                     }
   
@@ -50,6 +53,51 @@ namespace Hotel_Reservation_Overhaul.Pages
                 }
 
             }
+            else if(report == "EmployeeHistory")
+            {
+                lblDescribe.Text = "Employee  History Report";
+                User userInfo = new User(userID);
+                lblAccountID.Text = userID.ToString();
+                lblFirstName.Text = userInfo.firstName;
+                lblLastName.Text = userInfo.lastName;
+                lblEmail.Text = userInfo.email;
+                lblUsername.Text = userInfo.username;
+                lblRewardsPoints.Visible = false;
+                lblRewardDesc.Visible = false;
+
+                try
+                {
+                    // build and execute query
+                    MySqlCommand cmd = new MySqlCommand(@"select al.created 'Action Date',
+	                                                        concat(activityTypeDescription, al.refID ', customer ID ', al.userID) ) Action
+                                                             from activitylog al
+                                                            join activitytype at
+                                                                on at.activityTypeID = al.activityTypeID
+                                                            where al.createdBy = @userID");
+                    cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
+                    ReportData = reportConn.ExecuteDataTable(cmd);
+                }
+
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.ToString());
+                }
+            }
+            else if(report == "RewardSummary")
+            {
+
+            }
+            else if(report == "OccupancySummary")
+            {
+
+            }   
+            else if(report == "CustomerSummary")
+            {
+
+            }
+
+            bindingSource1.DataSource = ReportData;
+            reportDataGrid.DataSource = bindingSource1;
         }
 
         private void btnLogOut_Click(object sender, EventArgs e)

@@ -204,6 +204,7 @@
             this.Location});
             this.resListDataGrid.DataSource = this.hotelmgmtBindingSource;
             this.resListDataGrid.Location = new System.Drawing.Point(75, 154);
+            this.resListDataGrid.MultiSelect = false;
             this.resListDataGrid.Name = "resListDataGrid";
             this.resListDataGrid.ReadOnly = true;
             this.resListDataGrid.RowHeadersWidth = 62;
