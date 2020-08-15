@@ -13,11 +13,11 @@ namespace Hotel_Reservation_Overhaul
     public partial class Payment : Form
     {
         User userInfo;
-        CreateReservation resInfo;
+        Reservation resInfo;
         public Payment(int confirmationID, int userID)
         {
             InitializeComponent();
-            resInfo = new CreateReservation(confirmationID);
+            resInfo = new Reservation(confirmationID);
             userInfo = new User(userID);
             lblPoints.Text = "" + userInfo.rewardPoints;
         }
