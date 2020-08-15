@@ -15,9 +15,11 @@ namespace Hotel_Reservation_Overhaul.Pages
 {
     public partial class HotelManagement : Form
     {
+        private int UserID;
         public HotelManagement(int userID)
         {
             InitializeComponent();
+            userID = userID;
         }
         public void displayError(string message)
         {
@@ -906,6 +908,18 @@ namespace Hotel_Reservation_Overhaul.Pages
                     }                  
                 }
             }
+        }
+
+        private void btnHotelSettings_Click(object sender, EventArgs e)
+        {
+            var hotelSett = new HotelSettings(UserID);
+            hotelSett.FormClosed += new FormClosedEventHandler(hotelSett_FormClosed);
+            this.Hide();
+            hotelSett.Show();
+        }
+        void hotelSett_FormClosed(object sender, EventArgs e)
+        {
+            this.Show();
         }
     }
 }

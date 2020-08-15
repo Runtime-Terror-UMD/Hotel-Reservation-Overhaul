@@ -215,6 +215,10 @@ namespace Hotel_Reservation_Overhaul.Pages
                 btnCustomerRewards.Visible = true;
                 txtCustomerID.Enabled = false;
                 btnCustomerID.Enabled = false;
+                btnReset.Visible = true;
+                lblCustomerPoints.Visible = true;
+                txtAdjustPoints.Visible = true;
+                lblAdjustPoints.Visible = true;
             }
             else
             {
@@ -228,11 +232,16 @@ namespace Hotel_Reservation_Overhaul.Pages
             int rewards;
             int user;
             int.TryParse(txtCustomerID.Text, out user);
-            if (int.TryParse(txtCustomerRewards.Text, out rewards))
+            int points = account.getRewardsPoints(user);
+            if (int.TryParse(txtAdjustPoints.Text, out rewards)) //rewards is the added/removed points amount
             {
-                if(rewards >= 0 && account.setRewardsPoints(user, rewards))
+                points = points + rewards;
+                if(points >= 0 && account.setRewardsPoints(user, points))
                 {
                     displayMessage("Rewards points updated for " + user, false);
+                    txtCustomerRewards.Text = "" + points;
+                    txtAdjustPoints.Clear();
+                    //TODO: add rewards tracking here
                 }
                 else
                 {
@@ -251,7 +260,14 @@ namespace Hotel_Reservation_Overhaul.Pages
             btnCustomerID.Enabled = true;
             txtCustomerRewards.Visible = false;
             btnCustomerRewards.Visible = false;
+            txtAdjustPoints.Visible = false;
+            lblAdjustPoints.Visible = false;
+            lblCustomerPoints.Visible = false;
+            lblAdjustPoints.Visible = false;
+            btnReset.Visible = false;
             txtCustomerRewards.Clear();
+            txtAdjustPoints.Clear();
+            txtCustomerID.Clear();
         }
     }
 }

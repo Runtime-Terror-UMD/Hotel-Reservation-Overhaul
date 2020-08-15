@@ -189,9 +189,10 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Reservation cancellation process
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            Utilities getFileSettings = new Utilities();
             if (resListDataGrid.SelectedRows.Count > 0)
             {
-                string cancelMessage = "Please note, a 50.00 charge will apply to any reservation cancelled within 3 days of the start date. Continue with cancellation?";
+                string cancelMessage = "Please note, a " + getFileSettings.getCancelCharge() + " charge will apply to any reservation cancelled within " + getFileSettings.getCancelWindow() +" days of the start date. Continue with cancellation?";
                 var selectedOption = MessageBox.Show(cancelMessage, "Cancel reservation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (selectedOption == DialogResult.Yes)
                 {
@@ -221,9 +222,9 @@ namespace Hotel_Reservation_Overhaul
                         else if (resInfo.status == "upcoming")
                         {
                             // if reservation is within 3 days
-                            if (((resInfo.startDate - DateTime.Today).TotalDays) <= 3)
+                            if (((resInfo.startDate - DateTime.Today).TotalDays) <= getFileSettings.getCancelWindow())
                             {
-                                resInfo.totalPrice = 50;
+                                resInfo.totalPrice = (double)getFileSettings.getCancelCharge();
                             }
                             else
                             {
