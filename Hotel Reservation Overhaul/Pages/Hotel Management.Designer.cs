@@ -33,6 +33,7 @@
             this.lblTitle = new System.Windows.Forms.Label();
             this.btnLogOut = new System.Windows.Forms.Button();
             this.grpReports = new System.Windows.Forms.GroupBox();
+            this.lblError = new System.Windows.Forms.Label();
             this.lblUsername = new System.Windows.Forms.Label();
             this.lblHotel = new System.Windows.Forms.Label();
             this.cboxHotel = new System.Windows.Forms.ComboBox();
@@ -52,7 +53,6 @@
             this.btnWaitlist = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.lblFileStatus = new System.Windows.Forms.Label();
-            this.lblError = new System.Windows.Forms.Label();
             this.grpReports.SuspendLayout();
             this.grpHotelSettings.SuspendLayout();
             this.SuspendLayout();
@@ -122,6 +122,19 @@
             this.grpReports.TabIndex = 19;
             this.grpReports.TabStop = false;
             this.grpReports.Text = "Reports";
+            // 
+            // lblError
+            // 
+            this.lblError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblError.ForeColor = System.Drawing.Color.Red;
+            this.lblError.Location = new System.Drawing.Point(472, 298);
+            this.lblError.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblError.Name = "lblError";
+            this.lblError.Size = new System.Drawing.Size(55, 31);
+            this.lblError.TabIndex = 12;
+            this.lblError.Text = "Error:";
+            this.lblError.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblError.Visible = false;
             // 
             // lblUsername
             // 
@@ -323,19 +336,6 @@
             this.lblFileStatus.Size = new System.Drawing.Size(600, 31);
             this.lblFileStatus.TabIndex = 21;
             this.lblFileStatus.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // lblError
-            // 
-            this.lblError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblError.ForeColor = System.Drawing.Color.Red;
-            this.lblError.Location = new System.Drawing.Point(472, 298);
-            this.lblError.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblError.Name = "lblError";
-            this.lblError.Size = new System.Drawing.Size(55, 31);
-            this.lblError.TabIndex = 12;
-            this.lblError.Text = "Error:";
-            this.lblError.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblError.Visible = false;
             // 
             // HotelManagement
             // 

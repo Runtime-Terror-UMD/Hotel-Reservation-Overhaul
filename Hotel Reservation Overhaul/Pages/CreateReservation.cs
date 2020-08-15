@@ -169,55 +169,30 @@ namespace Hotel_Reservation_Overhaul
                 // get selected packages
                 List<int> packages = new List<int>();
 
-                {   foreach (int indexChecked in checkPackages.CheckedIndices)
+                foreach (int indexChecked in checkPackages.CheckedIndices)
+                {
+                    if (checkPackages.GetItemCheckState(indexChecked) == CheckState.Checked)
                     {
-                        if (checkPackages.GetItemCheckState(indexChecked) == CheckState.Checked)
-                        {
-                            packages.Add(indexChecked + 1);
-                            lblError.Visible = true;
-                        }
+                        packages.Add(indexChecked + 1);
+                        lblError.Visible = true;
                     }
                 }
-
+                
                 // put selected package IDs in list
                 combindstring = string.Join(",", packages);
-                
-                DBConnect checkAvailabilityConn = new DBConnect();
-                // Select available rooms at location not in maintenance
-                MySqlCommand cmd = new MySqlCommand(@"select roomNum
-                                                    from dbo.relation_room_package rrp
-                                                    where packageID in (" + combindstring + @") and locationID = @locationID
-                                                    and roomNum not in (select roomNum from dbo.reservation where @startDate between startDate and endDate and reservationStatus <> 'cancelled' and locationID = @locationID)
-                                                    and roomNum not in (select roomNum from dbo.maintenance where locationID = @locationID and maintenanceDate BETWEEN @startDate and @endDate) 
-                                                    group by roomNum
-                                                    having count(distinct packageID) = @numPackages limit 1");
-                cmd.Parameters.Add("@startDate", MySqlDbType.DateTime).Value = startDate;
-                cmd.Parameters.Add("@endDate", MySqlDbType.DateTime).Value = endDate;
-                cmd.Parameters.Add("@numPackages", MySqlDbType.Int32).Value = packages.Count;
-                cmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = Convert.ToInt32(cboxHotel.SelectedValue);
-                cmd.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = Convert.ToInt32(cboxNumGuests.SelectedItem);
 
-                MySqlDataReader dataReader = checkAvailabilityConn.ExecuteReader(cmd);
-                if (dataReader.HasRows)
-                {
-                    // gets roomNum if one is available
-                    while (dataReader.Read())
-                    {
-                        roomNum = Convert.ToInt32(dataReader["roomNum"]);
-                    }
-                    Utilities getPricePerNight = new Utilities();
-                    pricePerNight = getPricePerNight.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue),roomNum);
-                    dataReader.Close();
-                    checkAvailabilityConn.CloseConnection();
-                }
-                else
+                // check for availability
+                Reservation resInfo = new Reservation();
+                roomNum =  resInfo.getAvailability(packages, Convert.ToInt32(cboxNumGuests.SelectedItem), Convert.ToInt32(cboxHotel.SelectedItem), combindstring);
+                
+                if(roomNum == -1)
                 {   // no room available, gets roomNum to reference for price 
-                    checkAvailabilityConn.OpenConnection();
-                    cmd.CommandText = @"select roomNum
+                    DBConnect checkAvailabilityConn = new DBConnect();
+                    MySqlCommand cmd = new MySqlCommand( @"select roomNum
                                         from dbo.relation_room_package rrp
                                         where packageID in (" + combindstring + @") and locationID = @locationID
                                         group by roomNum
-                                        having count(distinct packageID) = @numPackages limit 1";
+                                        having count(distinct packageID) = @numPackages limit 1");
 
                     MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
                     if (nonAvailableDR.HasRows)
@@ -231,18 +206,18 @@ namespace Hotel_Reservation_Overhaul
                         displayError("No room with those criteria are available. Your reservation will be added to the waitlist");
                         waitlist = true;
                     }            
-                    else if (pricePerNight == 0)
+                    else 
                     {
                         displayError("No room with those criteria exists");
                         return;
                     }
                     nonAvailableDR.Close();
+                    checkAvailabilityConn.CloseConnection();
                 }
-
-                checkAvailabilityConn.CloseConnection();
 
                 // calculate price and rewards
                 Utilities calcPrice = new Utilities();
+                pricePerNight = calcPrice.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), roomNum);
                 price = calcPrice.calculatePrice(((endDate.Value - startDate.Value).TotalDays), pricePerNight);
                 points = Convert.ToInt32(calcPrice.calculatePoints(((endDate.Value - startDate.Value).TotalDays)));
 
@@ -264,64 +239,22 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Creates reservation or adds to waitlist depending on availability
         private void btnMakeRes_Click(object sender, EventArgs e)
         {
-            //Build base command
-            DBConnect createResConn = new DBConnect();
-            MySqlCommand createResCmd = new MySqlCommand();
-
-            int locationID = Convert.ToInt32(cboxHotel.SelectedValue);
-            createResCmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = Convert.ToInt32(cboxHotel.SelectedValue);
-            createResCmd.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = resUserID;
-            createResCmd.Parameters.Add("@startDate", MySqlDbType.Date).Value = startDate.Value;
-            createResCmd.Parameters.Add("@endDate", MySqlDbType.Date).Value = endDate.Value;
-
-            // If adding to waitlist
+           
             if (waitlist == true)
             {
-                // add to waitlist table 
-                createResCmd.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = Convert.ToInt32(cboxNumGuests.SelectedItem);
-                createResCmd.Parameters.Add("@packages", MySqlDbType.VarChar, 45).Value = combindstring;
-
-                createResCmd.CommandText = "INSERT INTO `dbo`.`waitlist`(`customerID`,`locationID`,`startDate`,`endDate`,`numGuests`,`packages`)VALUES(@userID, @locationID, @startDate, @endDate, @numGuests,@packages)";
-                createResConn.NonQuery(createResCmd);
+                Reservation addToWaitlist = new Reservation();
+                addToWaitlist.addToWaitlist(resUserID, Convert.ToInt32(cboxHotel.SelectedItem), startDate.Value, endDate.Value, Convert.ToInt32(cboxNumGuests.SelectedItem), combindstring);
+                lblError.ForeColor = System.Drawing.Color.Green;
+                lblError.Text = "You have been added to the waitlist";
             }
             //If creating reservation
             else
             {   // Get next confirmation ID
-                string getNextConfID = "select confirmationID from dbo.reservation order by confirmationID desc limit 1";
-                MySqlCommand cmd = new MySqlCommand(getNextConfID);
-                int comfirmationID = createResConn.intScalar(cmd) + 1;
-
-                // add to reservation table
-                createResCmd.CommandText = "INSERT INTO `dbo`.`reservation`(`confirmationID`,`userID`,`locationID`,`roomNum`,`startDate`,`endDate`,`pointsAccumulated`,`price`,`amountDue`,`amountPaid`,`reservationStatus`,`created`)VALUES(@confirmationID,@userID,@locationID,@roomNum,@startDate,@endDate,@points,@price,@price,@amountPaid,@status,@created)";
-                createResCmd.Parameters.Add("@confirmationID", MySqlDbType.Int32, 10).Value = comfirmationID;
-                createResCmd.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = roomNum;
-                createResCmd.Parameters.Add("@points", MySqlDbType.Int32).Value = points;
-                createResCmd.Parameters.Add("@price", MySqlDbType.Decimal).Value = price;
-                createResCmd.Parameters.Add("@amountPaid", MySqlDbType.Decimal).Value = 0;
-                createResCmd.Parameters.Add("@status", MySqlDbType.VarChar, 45).Value = "upcoming";
-                createResCmd.Parameters.Add("@created", MySqlDbType.Date).Value = DateTime.Today;
-                createResConn.NonQuery(createResCmd);
-
-                // add to activity log
-                MySqlCommand logActivity = new MySqlCommand("INSERT INTO `dbo`.`activitylog`(`userID`,`activityTypeID`,`refID`,`created`,`createdBy`)VALUES(@userID, 1, @confirmationID, @date, @createdBy)");
-                logActivity.Parameters.Add("@confirmationID", MySqlDbType.Int32, 10).Value = comfirmationID;
-                logActivity.Parameters.Add("@createdBy", MySqlDbType.Int32, 10).Value = userID;
-                logActivity.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = resUserID;
-                logActivity.Parameters.Add("@date", MySqlDbType.Date).Value = DateTime.Today;      // FIXME: Replace with date variable
-                createResConn.NonQuery(logActivity);
-
-                // opens payment screen for user to pay deposit
-                if (waitlist == false)
-                {
-                    var makePayment = new Payment(comfirmationID, resUserID);
+                Reservation createReservation = new Reservation();
+                int confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue), resUserID, userID, startDate.Value, endDate.Value, price, points, roomNum);
+                    var makePayment = new Payment(confirmationID, resUserID);
                     this.Hide();
-                    makePayment.Show();
-                }
-                else
-                {
-                    lblError.ForeColor = System.Drawing.Color.Green;
-                    lblError.Text = "You have been added to the waitlist";
-                }
+                    makePayment.Show();     
             }
         }
 
@@ -352,7 +285,6 @@ namespace Hotel_Reservation_Overhaul
             btnSubmit.Visible = true;
             btnMakeRes.Visible = false;
         }
-
         private void btnReturn_Click(object sender, EventArgs e)
         {
             this.Close();

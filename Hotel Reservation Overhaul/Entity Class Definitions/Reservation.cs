@@ -1,6 +1,8 @@
 ﻿using Hotel_Reservation_Overhaul;
 using MySql.Data.MySqlClient;
 using System;
+using System.Collections.Generic;
+
 public class Reservation
 {
 
@@ -20,6 +22,7 @@ public class Reservation
     public int points { get; set; }
     public string status { get; set; }
 
+    public Reservation() { }
     public Reservation(int confirmationID)
     {
 
@@ -99,5 +102,94 @@ public class Reservation
         cancelRes.Parameters.Add("@created", MySqlDbType.Int32).Value = DateTime.Today;      //FIXME: Replace with date varialbe
         cancelRes.Parameters.Add("@createdBy", MySqlDbType.Int32).Value = cancelledBy;
         cancelResConn.NonQuery(cancelRes);
+    }
+
+    public int getAvailability(List<int> packages, int numGuests,int hotelID, string combindstring)
+    {
+        int roomAvailable = -1;
+        DBConnect checkAvailabilityConn = new DBConnect();
+        // Select available rooms at location not in maintenance
+        MySqlCommand cmd = new MySqlCommand(@"select roomNum
+                                                    from dbo.relation_room_package rrp
+                                                    where packageID in (" + combindstring + @") and locationID = @locationID
+                                                    and roomNum not in (select roomNum from dbo.reservation where @startDate between startDate and endDate and reservationStatus <> 'cancelled' and locationID = @locationID)
+                                                    and roomNum not in (select roomNum from dbo.maintenance where locationID = @locationID and maintenanceDate BETWEEN @startDate and @endDate) 
+                                                    group by roomNum
+                                                    having count(distinct packageID) = @numPackages limit 1");
+        cmd.Parameters.Add("@startDate", MySqlDbType.DateTime).Value = startDate;
+        cmd.Parameters.Add("@endDate", MySqlDbType.DateTime).Value = endDate;
+        cmd.Parameters.Add("@numPackages", MySqlDbType.Int32).Value = packages.Count;
+        cmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = hotelID;
+        cmd.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = numGuests;
+
+        MySqlDataReader dataReader = checkAvailabilityConn.ExecuteReader(cmd);
+        if (dataReader.HasRows)
+        {
+            // gets roomNum if one is available
+            while (dataReader.Read())
+            {
+                roomAvailable = Convert.ToInt32(dataReader["roomNum"]);
+            }
+            dataReader.Close();
+            checkAvailabilityConn.CloseConnection();
+            return roomAvailable;
+        }
+        return roomAvailable;
+    }
+
+    public int makeReservation(int locationID, int newResUserID, int resUserID, DateTime startDate, DateTime endDate, double newResPrice, int newResPoints, int newResRoomNum)
+    {
+        DBConnect createResConn = new DBConnect();
+        MySqlCommand createResCmd = new MySqlCommand("INSERT INTO `dbo`.`reservation`(`confirmationID`,`userID`,`locationID`,`roomNum`,`startDate`,`endDate`,`pointsAccumulated`,`price`,`amountDue`,`amountPaid`,`reservationStatus`,`created`)VALUES(@confirmationID,@userID,@locationID,@roomNum,@startDate,@endDate,@points,@price,@price,0,@status,@created)");
+
+        string getNextConfID = "select confirmationID from dbo.reservation order by confirmationID desc limit 1";
+        MySqlCommand cmd = new MySqlCommand(getNextConfID);
+        int comfirmationID = createResConn.intScalar(cmd) + 1;
+
+        createResCmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = locationID;
+        createResCmd.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = resUserID;
+        createResCmd.Parameters.Add("@startDate", MySqlDbType.Date).Value = startDate;
+        createResCmd.Parameters.Add("@endDate", MySqlDbType.Date).Value = endDate;
+        createResCmd.Parameters.Add("@confirmationID", MySqlDbType.Int32, 10).Value = comfirmationID;
+        createResCmd.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = newResRoomNum;
+        createResCmd.Parameters.Add("@points", MySqlDbType.Int32).Value = newResPoints;
+        createResCmd.Parameters.Add("@price", MySqlDbType.Decimal).Value = newResPrice;
+        createResCmd.Parameters.Add("@status", MySqlDbType.VarChar, 45).Value = "upcoming";
+        createResCmd.Parameters.Add("@created", MySqlDbType.Date).Value = DateTime.Today;               //FIXME: ADD DATE PARAMETER
+
+        if (createResConn.NonQuery(createResCmd) > 0)
+        {
+            // add to activity log
+            MySqlCommand logActivity = new MySqlCommand("INSERT INTO `dbo`.`activitylog`(`userID`,`activityTypeID`,`refID`,`created`,`createdBy`)VALUES(@userID, 1, @confirmationID, @date, @createdBy)");
+            logActivity.Parameters.Add("@confirmationID", MySqlDbType.Int32, 10).Value = comfirmationID;
+            logActivity.Parameters.Add("@createdBy", MySqlDbType.Int32, 10).Value = newResUserID;
+            logActivity.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = resUserID;
+            logActivity.Parameters.Add("@date", MySqlDbType.Date).Value = DateTime.Today;      //FIXME: ADD DATE PARAMETER
+            if(createResConn.NonQuery(logActivity) > 0)
+            {
+                return comfirmationID;
+            }
+            return -1;
+        }
+        return -1;
+    }
+
+    public bool addToWaitlist(int wlUserID, int wlLocationID, DateTime wlStartDate, DateTime wlEndDate, int wlNumGuests, string combinedString)
+
+    {
+        DBConnect addToWLConn = new DBConnect();
+        MySqlCommand addToWL = new MySqlCommand(@"INSERT INTO `dbo`.`waitlist`(`customerID`,`locationID`,`startDate`,`endDate`,`numGuests`,`packages`)
+                                                  VALUES(@userID, @locationID, @startDate, @endDate, @numGuests,@packages)");
+        addToWL.Parameters.Add("@locationID", MySqlDbType.Int32).Value = wlLocationID;
+        addToWL.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = wlUserID;
+        addToWL.Parameters.Add("@startDate", MySqlDbType.Date).Value = wlStartDate;
+        addToWL.Parameters.Add("@endDate", MySqlDbType.Date).Value = wlEndDate;
+        addToWL.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = wlNumGuests;
+        addToWL.Parameters.Add("@packages", MySqlDbType.VarChar, 45).Value = combinedString;
+        if (addToWLConn.NonQuery(addToWL) > 0)
+        {
+            return true;
+        }
+        return false;
     }
 }
