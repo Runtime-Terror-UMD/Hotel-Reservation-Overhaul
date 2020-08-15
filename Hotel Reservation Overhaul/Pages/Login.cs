@@ -40,11 +40,15 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: un-hides page after newAccount page is closed
         void newAcct_FormClosed(object sender, FormClosedEventArgs e)
         {
+            txtUsername.Text = String.Empty;
+            txtPassword.Text = String.Empty;
             this.Show();
         }
 
         void recovery_FormClosed(object send, FormClosedEventArgs e)
         {
+            txtUsername.Text = String.Empty;
+            txtPassword.Text = String.Empty;
             this.Show();
         }
 
@@ -57,26 +61,7 @@ namespace Hotel_Reservation_Overhaul
 
         }
 
-        // DESCRIPTION: Checks if entered password matches specified username
-        private bool passwordMatches(string username, string password)
-        {
-            // construct query
-            string passwordMatchesQuery = "SELECT Count(*) from dbo.user where username = @username AND password = @password";
-            MySqlCommand cmd = new MySqlCommand(passwordMatchesQuery);
-            cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@username"].Value = username;
-            cmd.Parameters.Add("@password", MySqlDbType.VarChar, 45);
-            cmd.Parameters["@password"].Value = password;
-
-            // connect to database
-            DBConnect passwordMatchesConn = new DBConnect();
-
-            // if records exist
-            if (passwordMatchesConn.intScalar(cmd) > 0)
-                return true;
-            else
-                return false;
-        }
+        
 
         // DESCRIPTION: checks if user is customer account
         private bool isCustomer(string username)
@@ -96,7 +81,7 @@ namespace Hotel_Reservation_Overhaul
          // DESCRIPTION: Login process
          private void btnLogin_Click(object sender, EventArgs e)
         {
-
+            Utilities account = new Utilities();
             // reset error status
             lblError.Visible = false;
 
@@ -115,18 +100,20 @@ namespace Hotel_Reservation_Overhaul
             {
                 if(verifyCredentials.usernameExists(txtUsername.Text))
                 {
-                    if(passwordMatches(txtUsername.Text, txtPassword.Text))
+                    if(account.passwordMatches(txtUsername.Text, txtPassword.Text))
                     {
                         if(isCustomer(txtUsername.Text))
                         {
                             // re-drecit to menu, hide hotel management button
-                            var menuScreen = new Menu(true, verifyCredentials.getUserIDFromUsername(txtUsername.Text) );
+                            var menuScreen = new Menu(true, verifyCredentials.getUserIDFromUsername(txtUsername.Text), this);
+                            menuScreen.FormClosed += new FormClosedEventHandler(menuScreen_FormClosed);
                             this.Hide();
                             menuScreen.Show();
                         }
                         else
                         {   // re-drecit to menu, show hotel management button
-                            var menuScreen = new Menu(false, verifyCredentials.getUserIDFromUsername(txtUsername.Text));
+                            var menuScreen = new Menu(false, verifyCredentials.getUserIDFromUsername(txtUsername.Text), this);
+                            menuScreen.FormClosed += new FormClosedEventHandler(menuScreen_FormClosed);
                             this.Hide();
                             menuScreen.Show();
                         }                       
@@ -141,6 +128,13 @@ namespace Hotel_Reservation_Overhaul
                     displayError("Username does not exist");
                 }
             }
+            txtUsername.Text = String.Empty;
+            txtPassword.Text = String.Empty;
+        }
+
+        private void menuScreen_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Show();
         }
 
         //DESCRIPTION: re-directs to username recovery page

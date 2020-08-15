@@ -299,7 +299,7 @@ namespace Hotel_Reservation_Overhaul
                 createResCmd.Parameters.Add("@price", MySqlDbType.Decimal).Value = price;
                 createResCmd.Parameters.Add("@amountPaid", MySqlDbType.Decimal).Value = 0;
                 createResCmd.Parameters.Add("@status", MySqlDbType.VarChar, 45).Value = "upcoming";
-                createResCmd.Parameters.Add("@created", MySqlDbType.Date).Value = DateTime.Today;   
+                createResCmd.Parameters.Add("@created", MySqlDbType.Date).Value = DateTime.Today;
                 createResConn.NonQuery(createResCmd);
 
                 // add to activity log

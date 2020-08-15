@@ -59,7 +59,7 @@
     <Compile Include="Entity Class Definitions\Location.cs" />
     <Compile Include="Entity Class Definitions\LoggedActivity.cs" />
     <Compile Include="Entity Class Definitions\Package.cs" />
-    <Compile Include="Entity Class Definitions\Payment.cs" />
+    <Compile Include="Entity Class Definitions\PaymentRecord.cs" />
     <Compile Include="Entity Class Definitions\Reservation.cs" />
     <Compile Include="Entity Class Definitions\Reward.cs" />
     <Compile Include="Entity Class Definitions\Room.cs" />
@@ -93,6 +93,12 @@
     <Compile Include="Pages\Hotel Management.Designer.cs">
       <DependentUpon>Hotel Management.cs</DependentUpon>
     </Compile>
+    <Compile Include="Pages\HotelSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\HotelSettings.Designer.cs">
+      <DependentUpon>HotelSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,17 +117,17 @@
     <Compile Include="Pages\NewAccount.Designer.cs">
       <DependentUpon>NewAccount.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\NewReward.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Pages\NewReward.Designer.cs">
-      <DependentUpon>NewReward.cs</DependentUpon>
-    </Compile>
     <Compile Include="Pages\Payment.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Pages\Payment.Designer.cs">
       <DependentUpon>Payment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ReportViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\ReportViewer.Designer.cs">
+      <DependentUpon>ReportViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -131,23 +137,17 @@
     <Compile Include="Pages\Recovery.Designer.cs">
       <DependentUpon>Recovery.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Reservation.cs">
+    <Compile Include="Pages\CreateReservation.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Pages\Reservation.Designer.cs">
-      <DependentUpon>Reservation.cs</DependentUpon>
+    <Compile Include="Pages\CreateReservation.Designer.cs">
+      <DependentUpon>CreateReservation.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\ReservationList.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Pages\ReservationList.Designer.cs">
       <DependentUpon>ReservationList.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Rewards.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Pages\Rewards.Designer.cs">
-      <DependentUpon>Rewards.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="Pages\Account Settings.resx">
@@ -162,6 +162,9 @@
     <EmbeddedResource Include="Pages\Hotel Management.resx">
       <DependentUpon>Hotel Management.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Pages\HotelSettings.resx">
+      <DependentUpon>HotelSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Pages\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
@@ -171,11 +174,11 @@
     <EmbeddedResource Include="Pages\NewAccount.resx">
       <DependentUpon>NewAccount.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\NewReward.resx">
-      <DependentUpon>NewReward.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Pages\Payment.resx">
       <DependentUpon>Payment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\ReportViewer.resx">
+      <DependentUpon>ReportViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -189,14 +192,11 @@
     <EmbeddedResource Include="Pages\Recovery.resx">
       <DependentUpon>Recovery.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Reservation.resx">
-      <DependentUpon>Reservation.cs</DependentUpon>
+    <EmbeddedResource Include="Pages\CreateReservation.resx">
+      <DependentUpon>CreateReservation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\ReservationList.resx">
       <DependentUpon>ReservationList.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Pages\Rewards.resx">
-      <DependentUpon>Rewards.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="dboDataSet1.xsc">
       <DependentUpon>dboDataSet1.xsd</DependentUpon>
@@ -232,6 +232,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="HotelSettings.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

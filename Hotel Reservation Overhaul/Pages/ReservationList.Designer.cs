@@ -113,25 +113,27 @@
             // btnModify
             // 
             this.btnModify.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnModify.Location = new System.Drawing.Point(900, 331);
+            this.btnModify.Location = new System.Drawing.Point(900, 636);
             this.btnModify.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnModify.Name = "btnModify";
             this.btnModify.Size = new System.Drawing.Size(225, 77);
             this.btnModify.TabIndex = 2;
             this.btnModify.Text = "View/Modify Reservation";
             this.btnModify.UseVisualStyleBackColor = true;
+            this.btnModify.Visible = false;
             this.btnModify.Click += new System.EventHandler(this.btnModify_Click);
             // 
             // btnCancel
             // 
             this.btnCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.Location = new System.Drawing.Point(900, 683);
+            this.btnCancel.Location = new System.Drawing.Point(900, 487);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(225, 77);
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel Reservation";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnReturn
             // 
@@ -147,7 +149,7 @@
             // btnPay
             // 
             this.btnPay.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPay.Location = new System.Drawing.Point(900, 508);
+            this.btnPay.Location = new System.Drawing.Point(900, 315);
             this.btnPay.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnPay.Name = "btnPay";
             this.btnPay.Size = new System.Drawing.Size(225, 77);

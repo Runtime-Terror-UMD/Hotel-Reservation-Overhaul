@@ -170,6 +170,26 @@ namespace Hotel_Reservation_Overhaul
             }
         }
 
+        public double doubleScalar(MySqlCommand cmd)
+        {
+            this.OpenConnection();
+            double returnDouble= -1;
+
+            //Open Connection
+            if (this.OpenConnection() == true)
+            {
+                cmd.Connection = connection;
+
+                //ExecuteScalar will return one value
+                returnDouble = double.Parse(cmd.ExecuteScalar() + "");
+                this.CloseConnection();
+                return returnDouble;
+            }
+            else
+            {
+                return returnDouble;
+            }
+        }
         // DESCRIPTION: Executes scalar query of type string
         public string stringScalar(MySqlCommand cmd)
         {
