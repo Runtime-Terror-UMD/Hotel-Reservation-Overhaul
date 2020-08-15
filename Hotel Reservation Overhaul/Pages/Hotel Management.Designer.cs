@@ -211,7 +211,6 @@
             this.lstReports.Name = "lstReports";
             this.lstReports.Size = new System.Drawing.Size(298, 244);
             this.lstReports.TabIndex = 6;
-            this.lstReports.SelectedIndexChanged += new System.EventHandler(this.lstReports_SelectedIndexChanged);
             // 
             // btnReport
             // 
@@ -223,7 +222,6 @@
             this.btnReport.TabIndex = 11;
             this.btnReport.Text = "Create Report";
             this.btnReport.UseVisualStyleBackColor = true;
-            this.btnReport.Click += new System.EventHandler(this.btnReport_Click);
             // 
             // grpHotelSettings
             // 
