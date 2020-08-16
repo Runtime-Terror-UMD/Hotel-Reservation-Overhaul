@@ -188,9 +188,15 @@ public class Reservation
     }
 
     //  DESCRIPTION: 
-    public bool checkOut()
+    public bool checkOut(DateTime currentDate)
     {
-
+        Utilities getInfo = new Utilities();
+        if(endDate != currentDate)
+        {
+            this.endDate = currentDate;
+            double pricePerNight = getInfo.getPricePerNight(locationID, roomNum);
+            totalPrice = pricePerNight * 
+        }
     }
     public bool checkIn()
     {
