@@ -26,7 +26,6 @@ namespace Hotel_Reservation_Overhaul
         public ReservationList(int userID)
         {
             InitializeComponent();
-            resListDataGrid.MultiSelect = false;
 
             // gets user info
             userInfo = new User(userID);
@@ -72,7 +71,6 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Logs out of system
         private void btnLogOut_Click(object sender, EventArgs e)
         {
-            //Application.OpenForms["Login"].Show();
             this.Close();
             Application.OpenForms["Menu"].Close();
         }
@@ -104,6 +102,7 @@ namespace Hotel_Reservation_Overhaul
                 {
                     displayError("Entered user ID is not customer");
                 }
+                else
                 // customer ID exists, pull report
                 {
                     GetData();
@@ -126,7 +125,7 @@ namespace Hotel_Reservation_Overhaul
             this.reservationTableAdapter.Fill(this.hotelmgmt.reservation);
 
         }
-
+        // DESCRIPTION: Gets confirmation ID of selected reservation row
         private int getConfirmationID()
         {
             int selectedrowindex = resListDataGrid.SelectedCells[0].RowIndex;
@@ -214,7 +213,7 @@ namespace Hotel_Reservation_Overhaul
                             // update reservation info
                             Utilities recalc = new Utilities();
                             DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
-                            resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNum));
+                            resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNumList[0]));
                             resInfo.points = Convert.ToInt32(recalc.calculatePoints((newEndDate - resInfo.endDate).TotalDays));
                             resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
                             resInfo.status = "checked-out";
