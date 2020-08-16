@@ -27,7 +27,8 @@ namespace Hotel_Reservation_Overhaul
         public ReservationList(int userID, DateTime current)
         {
             InitializeComponent();
-            resListDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            currentDate = current;
+            resListDataGrid.MultiSelect = false;
 
             // gets user info
             userInfo = new User(userID);
@@ -72,6 +73,7 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Logs out of system
         private void btnLogOut_Click(object sender, EventArgs e)
         {
+            //Application.OpenForms["Login"].Show();
             this.Close();
             Application.OpenForms["Menu"].Close();
         }
@@ -103,7 +105,6 @@ namespace Hotel_Reservation_Overhaul
                 {
                     displayError("Entered user ID is not customer");
                 }
-                else
                 // customer ID exists, pull report
                 {
                     GetData();
@@ -126,7 +127,7 @@ namespace Hotel_Reservation_Overhaul
             this.reservationTableAdapter.Fill(this.hotelmgmt.reservation);
 
         }
-        // DESCRIPTION: Gets confirmation ID of selected reservation row
+
         private int getConfirmationID()
         {
             int selectedrowindex = resListDataGrid.SelectedCells[0].RowIndex;
@@ -141,9 +142,7 @@ namespace Hotel_Reservation_Overhaul
             {
                 // Pulls out confirmation ID from selected row
                 int confirmationID = getConfirmationID();
-
                 Reservation makeResPayment = new Reservation(confirmationID);
-
                 // check that reservation not already paid
                 if (makeResPayment.amountDue > 0)
                 { // Passes confirmation ID and user ID to payment page
@@ -177,7 +176,7 @@ namespace Hotel_Reservation_Overhaul
             }
             else
             {
-                var newReservation = new CreateReservation(userInfo.userID, resUserID);
+                var newReservation = new CreateReservation(userInfo.userID, resUserID, currentDate);
                 newReservation.FormClosed += new FormClosedEventHandler(newReservation_FormClosed);
                 this.Hide();
                 newReservation.Show();
