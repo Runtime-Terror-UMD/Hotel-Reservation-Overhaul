@@ -17,7 +17,7 @@ namespace Hotel_Reservation_Overhaul
     {
         public User userInfo;
         public int resUserID = -1;
-        private DateTime currentDate;
+        
 
         public void displayError(string errorMessage)
         {
@@ -147,7 +147,6 @@ namespace Hotel_Reservation_Overhaul
                 // check that reservation not already paid
                 if (makeResPayment.amountDue > 0)
                 { // Passes confirmation ID and user ID to payment page
-                   var makePayment = new Payment(confirmationID, resUserID, currentDate);
                     var makePayment = new Payment(confirmationID, resUserID);
                     makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
                     this.Hide();
@@ -237,8 +236,12 @@ namespace Hotel_Reservation_Overhaul
                         {
                             // update reservation info
                             Utilities recalc = new Utilities();
+<<<<<<< HEAD
                             DateTime newEndDate = currentDate;       //FIXME: Replace with date variable
                             resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNum));
+=======
+                            resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNumList[0]));
+>>>>>>> parent of 43aebde... resolving conflict
                             resInfo.points = Convert.ToInt32(recalc.calculatePoints((newEndDate - resInfo.endDate).TotalDays));
                             resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
                             resInfo.status = "checked-out";
@@ -246,6 +249,7 @@ namespace Hotel_Reservation_Overhaul
                         else if (resInfo.status == "upcoming")
                         {
                             // if reservation is within 3 days
+                            if (((resInfo.startDate - DateTime.Today).TotalDays) <= getFileSettings.getCancelWindow())
                             {
                                 resInfo.totalPrice = (double)getFileSettings.getCancelCharge();
                             }
@@ -276,10 +280,11 @@ namespace Hotel_Reservation_Overhaul
                         // log cancellation
                         if(userInfo.isCustomer) 
                         {
-                            resInfo.logCancellation(userInfo.userID, userInfo.userID, currentDate);
+                            resInfo.logCancellation(userInfo.userID, userInfo.userID);
                         }
                         else
                         {
+                            resInfo.logCancellation(userInfo.userID, resUserID);
                         }
                         GetData();
                     }
