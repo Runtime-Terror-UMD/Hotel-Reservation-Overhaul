@@ -215,7 +215,7 @@ namespace Hotel_Reservation_Overhaul
                         {
                             // update reservation info
                             Utilities recalc = new Utilities();
-                            DateTime newEndDate = currentDate;       //FIXME: Replace with date variable
+                            DateTime newEndDate = currentDate;
                             resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNum));
                             resInfo.points = Convert.ToInt32(recalc.calculatePoints((newEndDate - resInfo.endDate).TotalDays));
                             resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
