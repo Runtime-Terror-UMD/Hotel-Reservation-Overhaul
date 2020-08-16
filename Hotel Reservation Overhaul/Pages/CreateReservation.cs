@@ -257,7 +257,7 @@ namespace Hotel_Reservation_Overhaul
             {   // Get next confirmation ID
                 Reservation createReservation = new Reservation();
                 int confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue), resUserID, userID, startDate.Value, endDate.Value, price, points, roomNum, currentDate);
-                    var makePayment = new Payment(confirmationID, resUserID, currentDate);
+                    var makePayment = new Payment(confirmationID, resUserID, currentDate, true);
                     this.Hide();
                     makePayment.Show();     
             }

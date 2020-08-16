@@ -179,7 +179,6 @@ public class Reservation
 
     // DESCRIPTION: Adds request to dbo.waitlist
     public bool addToWaitlist(int wlUserID, int wlLocationID, DateTime wlStartDate, DateTime wlEndDate, int wlNumGuests, string combinedString)
-
     {
         DBConnect addToWLConn = new DBConnect();
         MySqlCommand addToWL = new MySqlCommand(@"INSERT INTO `dbo`.`waitlist`(`customerID`,`locationID`,`startDate`,`endDate`,`numGuests`,`packages`)

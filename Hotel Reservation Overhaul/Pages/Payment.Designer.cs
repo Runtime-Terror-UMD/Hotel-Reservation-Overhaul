@@ -47,9 +47,14 @@
             this.lblBalance = new System.Windows.Forms.Label();
             this.lblBalDue = new System.Windows.Forms.Label();
             this.groupPaymentDetails = new System.Windows.Forms.GroupBox();
+            this.lblrewardError = new System.Windows.Forms.Label();
+            this.lblCardNumError = new System.Windows.Forms.Label();
+            this.lblMethodError = new System.Windows.Forms.Label();
             this.chkReward = new System.Windows.Forms.CheckBox();
             this.lblPoints = new System.Windows.Forms.Label();
             this.lblPointDesc = new System.Windows.Forms.Label();
+            this.lblAmountError = new System.Windows.Forms.Label();
+            this.lblApplyReward = new System.Windows.Forms.Label();
             this.groupPaymentDetails.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,6 +66,7 @@
             this.btnReturn.TabIndex = 13;
             this.btnReturn.Text = "Return";
             this.btnReturn.UseVisualStyleBackColor = true;
+            this.btnReturn.Click += new System.EventHandler(this.btnReturn_Click);
             // 
             // lblDescribe
             // 
@@ -84,7 +90,7 @@
             // 
             // btnLogOut
             // 
-            this.btnLogOut.Location = new System.Drawing.Point(697, 12);
+            this.btnLogOut.Location = new System.Drawing.Point(709, 15);
             this.btnLogOut.Name = "btnLogOut";
             this.btnLogOut.Size = new System.Drawing.Size(75, 25);
             this.btnLogOut.TabIndex = 14;
@@ -131,6 +137,7 @@
             this.cboxMethod.Name = "cboxMethod";
             this.cboxMethod.Size = new System.Drawing.Size(120, 21);
             this.cboxMethod.TabIndex = 1;
+            this.cboxMethod.SelectedIndexChanged += new System.EventHandler(this.cboxMethod_SelectedIndexChanged);
             // 
             // lblCardNum
             // 
@@ -149,6 +156,7 @@
             this.txtCardNum.Name = "txtCardNum";
             this.txtCardNum.Size = new System.Drawing.Size(200, 20);
             this.txtCardNum.TabIndex = 2;
+            this.txtCardNum.TextChanged += new System.EventHandler(this.txtCardNum_TextChanged);
             // 
             // lblRewards
             // 
@@ -169,6 +177,7 @@
             this.btnSubmit.TabIndex = 9;
             this.btnSubmit.Text = "Submit Payment";
             this.btnSubmit.UseVisualStyleBackColor = true;
+            this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
             // 
             // lblPriceAmount
             // 
@@ -187,6 +196,7 @@
             this.txtPrice.Name = "txtPrice";
             this.txtPrice.Size = new System.Drawing.Size(100, 20);
             this.txtPrice.TabIndex = 7;
+            this.txtPrice.TextChanged += new System.EventHandler(this.txtPrice_TextChanged);
             // 
             // lblDeposit
             // 
@@ -232,6 +242,9 @@
             // 
             // groupPaymentDetails
             // 
+            this.groupPaymentDetails.Controls.Add(this.lblrewardError);
+            this.groupPaymentDetails.Controls.Add(this.lblCardNumError);
+            this.groupPaymentDetails.Controls.Add(this.lblMethodError);
             this.groupPaymentDetails.Controls.Add(this.chkReward);
             this.groupPaymentDetails.Controls.Add(this.lblPoints);
             this.groupPaymentDetails.Controls.Add(this.lblPointDesc);
@@ -249,6 +262,39 @@
             this.groupPaymentDetails.TabStop = false;
             this.groupPaymentDetails.Text = "Payment Information";
             // 
+            // lblrewardError
+            // 
+            this.lblrewardError.AutoSize = true;
+            this.lblrewardError.ForeColor = System.Drawing.Color.Red;
+            this.lblrewardError.Location = new System.Drawing.Point(226, 309);
+            this.lblrewardError.Name = "lblrewardError";
+            this.lblrewardError.Size = new System.Drawing.Size(181, 13);
+            this.lblrewardError.TabIndex = 28;
+            this.lblrewardError.Text = "Error message for redeeming rewards";
+            this.lblrewardError.Visible = false;
+            // 
+            // lblCardNumError
+            // 
+            this.lblCardNumError.AutoSize = true;
+            this.lblCardNumError.ForeColor = System.Drawing.Color.Red;
+            this.lblCardNumError.Location = new System.Drawing.Point(226, 159);
+            this.lblCardNumError.Name = "lblCardNumError";
+            this.lblCardNumError.Size = new System.Drawing.Size(151, 13);
+            this.lblCardNumError.TabIndex = 29;
+            this.lblCardNumError.Text = "Error message for card number";
+            this.lblCardNumError.Visible = false;
+            // 
+            // lblMethodError
+            // 
+            this.lblMethodError.AutoSize = true;
+            this.lblMethodError.ForeColor = System.Drawing.Color.Red;
+            this.lblMethodError.Location = new System.Drawing.Point(226, 110);
+            this.lblMethodError.Name = "lblMethodError";
+            this.lblMethodError.Size = new System.Drawing.Size(170, 13);
+            this.lblMethodError.TabIndex = 28;
+            this.lblMethodError.Text = "Error message for payment method";
+            this.lblMethodError.Visible = false;
+            // 
             // chkReward
             // 
             this.chkReward.AutoSize = true;
@@ -259,6 +305,7 @@
             this.chkReward.TabIndex = 3;
             this.chkReward.Text = "10% off reservation - 50pts";
             this.chkReward.UseVisualStyleBackColor = true;
+            this.chkReward.CheckedChanged += new System.EventHandler(this.chkReward_CheckedChanged);
             // 
             // lblPoints
             // 
@@ -281,11 +328,35 @@
             this.lblPointDesc.Text = "Points:";
             this.lblPointDesc.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // lblAmountError
+            // 
+            this.lblAmountError.AutoSize = true;
+            this.lblAmountError.ForeColor = System.Drawing.Color.Red;
+            this.lblAmountError.Location = new System.Drawing.Point(597, 329);
+            this.lblAmountError.Name = "lblAmountError";
+            this.lblAmountError.Size = new System.Drawing.Size(127, 13);
+            this.lblAmountError.TabIndex = 28;
+            this.lblAmountError.Text = "Error message for amount";
+            this.lblAmountError.Visible = false;
+            // 
+            // lblApplyReward
+            // 
+            this.lblApplyReward.AutoSize = true;
+            this.lblApplyReward.ForeColor = System.Drawing.Color.Green;
+            this.lblApplyReward.Location = new System.Drawing.Point(593, 235);
+            this.lblApplyReward.Name = "lblApplyReward";
+            this.lblApplyReward.Size = new System.Drawing.Size(131, 13);
+            this.lblApplyReward.TabIndex = 29;
+            this.lblApplyReward.Text = "10% Discount was applied";
+            this.lblApplyReward.Visible = false;
+            // 
             // Payment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.ClientSize = new System.Drawing.Size(796, 561);
+            this.Controls.Add(this.lblApplyReward);
+            this.Controls.Add(this.lblAmountError);
             this.Controls.Add(this.groupPaymentDetails);
             this.Controls.Add(this.lblBalance);
             this.Controls.Add(this.lblBalDue);
@@ -331,5 +402,10 @@
         private System.Windows.Forms.Label lblPoints;
         private System.Windows.Forms.Label lblPointDesc;
         private System.Windows.Forms.CheckBox chkReward;
+        private System.Windows.Forms.Label lblCardNumError;
+        private System.Windows.Forms.Label lblMethodError;
+        private System.Windows.Forms.Label lblrewardError;
+        private System.Windows.Forms.Label lblAmountError;
+        private System.Windows.Forms.Label lblApplyReward;
     }
 }

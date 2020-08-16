@@ -145,7 +145,7 @@ namespace Hotel_Reservation_Overhaul
                 int confirmationID = getConfirmationID();
 
                 // Passes confirmation ID and user ID to payment page
-                var makePayment = new Payment(confirmationID, resUserID, currentDate);
+                var makePayment = new Payment(confirmationID, resUserID, currentDate, false);
                 makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
                 this.Hide();
                 makePayment.Show();

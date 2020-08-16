@@ -30,7 +30,7 @@ namespace Hotel_Reservation_Overhaul.Pages
         }
         private void btnThirdParty_Click(object sender, EventArgs e)
         {
-            OpenFileDialog resFile = new OpenFileDialog();
+            /*OpenFileDialog resFile = new OpenFileDialog();
             resFile.Title = "Open Third Party Reservation File";
             resFile.Filter = "TXT files|*.txt";
             resFile.InitialDirectory = @"C:\";
@@ -297,12 +297,12 @@ namespace Hotel_Reservation_Overhaul.Pages
                 }
                 //display date of file and number of reservations read
                 lblFileStatus.Text = "Date: " + fileDate + " Number of reservations: " + numReserv;
-            }
+            }*/
         }
 
         private void btnNewHotel_Click(object sender, EventArgs e)
         {
-            OpenFileDialog resFile = new OpenFileDialog();
+            /*OpenFileDialog resFile = new OpenFileDialog();
             resFile.Title = "Open Third Party Reservation File";
             resFile.Filter = "TXT files|*.txt";
             resFile.InitialDirectory = @"C:\";
@@ -498,13 +498,13 @@ namespace Hotel_Reservation_Overhaul.Pages
                     MessageBox.Show("Error: Could not read file. " + ex.Message);
                 }
                 lblFileStatus.Text = "Date: " + fileDate + " Number of hotels: " + hotelCount;
-            }
+            }*/
 
         }
 
         private void btnNewPackages_Click(object sender, EventArgs e)
         {
-            OpenFileDialog resFile = new OpenFileDialog();
+            /*OpenFileDialog resFile = new OpenFileDialog();
             resFile.Title = "Open Third Party Reservation File";
             resFile.Filter = "TXT files|*.txt";
             resFile.InitialDirectory = @"C:\";
@@ -656,12 +656,12 @@ namespace Hotel_Reservation_Overhaul.Pages
                     MessageBox.Show("Error: Could not read file. " + ex.Message);
                 }
                 lblFileStatus.Text = "Date: " + fileDate + " Number of packages: " + packageCount;
-            }
+            }*/
         }
 
         private void btnNewMaintenance_Click(object sender, EventArgs e)
         {
-            OpenFileDialog resFile = new OpenFileDialog();
+            /*OpenFileDialog resFile = new OpenFileDialog();
             resFile.Title = "Open Third Party Reservation File";
             resFile.Filter = "TXT files|*.txt";
             resFile.InitialDirectory = @"C:\";
@@ -768,7 +768,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                     MessageBox.Show("Error: Could not read file. " + ex.Message);
                 }
                 lblFileStatus.Text = "Date: " + fileDate + " Number of unavailable rooms: " + maintainCount;
-            }
+            }*/
         }
 
         private void btnReturn_Click(object sender, EventArgs e)
