@@ -17,7 +17,7 @@ namespace Hotel_Reservation_Overhaul
     {
         public User userInfo;
         public int resUserID = -1;
-        
+        private DateTime currentDate;
 
         public void displayError(string errorMessage)
         {
@@ -236,39 +236,8 @@ namespace Hotel_Reservation_Overhaul
                         {
                             // update reservation info
                             Utilities recalc = new Utilities();
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
                             DateTime newEndDate = currentDate;       //FIXME: Replace with date variable
-                            resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNum));
-=======
-=======
-                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
->>>>>>> parent of 43aebde... resolving conflict
-=======
-                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
->>>>>>> parent of 43aebde... resolving conflict
-=======
-                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
->>>>>>> parent of 43aebde... resolving conflict
-=======
-                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
->>>>>>> parent of 43aebde... resolving conflict
-=======
-                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
->>>>>>> parent of 43aebde... resolving conflict
-=======
-                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
->>>>>>> parent of 43aebde... resolving conflict
-=======
-                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
->>>>>>> parent of 43aebde... resolving conflict
                             resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNumList[0]));
->>>>>>> parent of 43aebde... resolving conflict
                             resInfo.points = Convert.ToInt32(recalc.calculatePoints((newEndDate - resInfo.endDate).TotalDays));
                             resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
                             resInfo.status = "checked-out";
@@ -293,7 +262,7 @@ namespace Hotel_Reservation_Overhaul
                             // issue refund payment
                             DBConnect issueRefundConn = new DBConnect();
                             MySqlCommand issueRefund = new MySqlCommand(@"INSERT INTO `dbo`.`payment` (`customerID`, `confirmationID`, `amountPaid`, `paymentMethod`, `usedRewards`)
-                                                                      VALUES (@customerID,@confirmationID, @refundAmt, 'refund', 0");
+                                                                      VALUES (@customerID,@confirmationID, @refundAmt, 'refund', 0)");
                             issueRefund.Parameters.Add("@customerID", MySqlDbType.Int32).Value = resInfo.userID;
                             issueRefund.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = resInfo.confirmatonID;
                             issueRefund.Parameters.Add("@refundAmt", MySqlDbType.Decimal).Value = resInfo.amountDue;
