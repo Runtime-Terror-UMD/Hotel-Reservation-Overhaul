@@ -39,7 +39,6 @@
             this.locationBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.hotelmgmt = new Hotel_Reservation_Overhaul.hotelmgmt();
             this.locationBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dboDataSet = new Hotel_Reservation_Overhaul.dboDataSet();
             this.cboxNumGuests = new System.Windows.Forms.ComboBox();
             this.lblGuests = new System.Windows.Forms.Label();
             this.lblHotel = new System.Windows.Forms.Label();
@@ -54,7 +53,6 @@
             this.lblSubTotal = new System.Windows.Forms.Label();
             this.lblDeposit = new System.Windows.Forms.Label();
             this.lblDepositDesc = new System.Windows.Forms.Label();
-            this.locationTableAdapter = new Hotel_Reservation_Overhaul.dboDataSetTableAdapters.locationTableAdapter();
             this.dboDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.locationBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.locationTableAdapter1 = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.locationTableAdapter();
@@ -71,7 +69,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dboDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.packageBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.packageBindingSource)).BeginInit();
@@ -126,7 +123,7 @@
             // monthStart
             // 
             this.monthStart.Location = new System.Drawing.Point(225, 138);
-            this.monthStart.Margin = new System.Windows.Forms.Padding(14, 14, 14, 14);
+            this.monthStart.Margin = new System.Windows.Forms.Padding(14);
             this.monthStart.MaxSelectionCount = 1;
             this.monthStart.Name = "monthStart";
             this.monthStart.ShowToday = false;
@@ -137,7 +134,7 @@
             // monthEnd
             // 
             this.monthEnd.Location = new System.Drawing.Point(765, 138);
-            this.monthEnd.Margin = new System.Windows.Forms.Padding(14, 14, 14, 14);
+            this.monthEnd.Margin = new System.Windows.Forms.Padding(14);
             this.monthEnd.MaxSelectionCount = 1;
             this.monthEnd.Name = "monthEnd";
             this.monthEnd.ShowToday = false;
@@ -147,8 +144,8 @@
             // 
             // cboxHotel
             // 
-            this.cboxHotel.DataSource = this.locationBindingSource2;
-            this.cboxHotel.DisplayMember = "locationName";
+            this.cboxHotel.DataSource = this.hotelmgmt;
+            this.cboxHotel.DisplayMember = "location.locationName";
             this.cboxHotel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboxHotel.FormattingEnabled = true;
             this.cboxHotel.Location = new System.Drawing.Point(244, 489);
@@ -171,12 +168,6 @@
             // locationBindingSource
             // 
             this.locationBindingSource.DataMember = "location";
-            this.locationBindingSource.DataSource = this.dboDataSet;
-            // 
-            // dboDataSet
-            // 
-            this.dboDataSet.DataSetName = "dboDataSet";
-            this.dboDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // cboxNumGuests
             // 
@@ -326,15 +317,6 @@
             this.lblDepositDesc.Text = "Deposit:";
             this.lblDepositDesc.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // locationTableAdapter
-            // 
-            this.locationTableAdapter.ClearBeforeFill = true;
-            // 
-            // dboDataSetBindingSource
-            // 
-            this.dboDataSetBindingSource.DataSource = this.dboDataSet;
-            this.dboDataSetBindingSource.Position = 0;
-            // 
             // locationBindingSource1
             // 
             this.locationBindingSource1.DataMember = "location";
@@ -361,6 +343,7 @@
             this.tableAdapterManager.relation_package_amenityTableAdapter = null;
             this.tableAdapterManager.relation_room_packageTableAdapter = null;
             this.tableAdapterManager.reservationTableAdapter = null;
+            this.tableAdapterManager.reward_logTableAdapter = null;
             this.tableAdapterManager.roomTableAdapter = null;
             this.tableAdapterManager.UpdateOrder = Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.TableAdapterManager.UpdateOrderOption.InsertUpdateDelete;
             this.tableAdapterManager.userTableAdapter = null;
@@ -502,7 +485,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dboDataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.packageBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.packageBindingSource)).EndInit();
@@ -531,9 +513,7 @@
         private System.Windows.Forms.Label lblSubTotal;
         private System.Windows.Forms.Label lblDeposit;
         private System.Windows.Forms.Label lblDepositDesc;
-        private dboDataSet dboDataSet;
         private System.Windows.Forms.BindingSource locationBindingSource;
-        private dboDataSetTableAdapters.locationTableAdapter locationTableAdapter;
         private System.Windows.Forms.BindingSource dboDataSetBindingSource;
         private hotelmgmt hotelmgmt;
         private System.Windows.Forms.BindingSource locationBindingSource1;
