@@ -249,7 +249,7 @@ namespace Hotel_Reservation_Overhaul
            
             if (waitlist == true)
             {
-                Reservation addToWaitlist = new Reservation();
+                Waitlist addToWaitlist = new Waitlist();
                 addToWaitlist.addToWaitlist(resUserID, Convert.ToInt32(cboxHotel.SelectedItem), startDate.Value, endDate.Value, Convert.ToInt32(cboxNumGuests.SelectedItem), Convert.ToInt32(cboxNumRooms.SelectedItem), combindstring);
                 lblError.ForeColor = System.Drawing.Color.Green;
                 lblError.Text = "You have been added to the waitlist";

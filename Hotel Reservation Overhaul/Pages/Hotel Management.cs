@@ -247,7 +247,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                                 MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
                                                 if (nonAvailableDR.HasRows)
                                                 {
-                                                    Reservation addToWaitlist = new Reservation();
+                                                    Waitlist addToWaitlist = new Waitlist();
                                                     addToWaitlist.addToWaitlist(custID, hotelID, checkIn, checkOut, occNum, 1, combindstring);
                                                 }
                                                 else
