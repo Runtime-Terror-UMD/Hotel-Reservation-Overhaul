@@ -14,22 +14,18 @@ namespace Hotel_Reservation_Overhaul
     public partial class Menu : Form
     {
         public int UserID;
-        private DateTime currentDate;
-        public Menu(Login loginInstance, DateTime current)
+        public Menu(Login loginInstance)
         {
             InitializeComponent();
-            currentDate = current;
         }
 
         // DESCRIPTION: Initializer. Shows/hides hotel management button based on isCustomer
-        public Menu(bool isCustomer, int userID, Login loginInstance, DateTime current)
+        public Menu(bool isCustomer, int userID, Login loginInstance)
         {
             InitializeComponent();
             UserID = userID;
             if (isCustomer == true)
                 btnHotelManagement.Visible = false;
-            currentDate = current;
-            lblNotification.Text = "Today's date: " + currentDate;
         }
         //DESCRIPTION: Opens account settings page
         private void btnAccount_Click(object sender, EventArgs e)
@@ -51,7 +47,7 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Opens Reservation Management page
         private void btnReservations_Click(object sender, EventArgs e)
         {
-            var reservationMgmt = new ReservationList(UserID, currentDate);
+            var reservationMgmt = new ReservationList(UserID);
             reservationMgmt.FormClosed += new FormClosedEventHandler(resMgmt_FormClosed);
             this.Hide();
             reservationMgmt.Show();
@@ -59,7 +55,7 @@ namespace Hotel_Reservation_Overhaul
 
         private void btnHotelManagement_Click(object sender, EventArgs e)
         {
-            var hotelMgmt = new HotelManagement(UserID, currentDate);
+            var hotelMgmt = new HotelManagement(UserID);
             hotelMgmt.FormClosed += new FormClosedEventHandler(hotMgmt_FormClosed);
             this.Hide();
             hotelMgmt.Show();
@@ -77,7 +73,7 @@ namespace Hotel_Reservation_Overhaul
 
         private void btnHistory_Click(object sender, EventArgs e)
         {
-            var history = new History(currentDate);
+            var history = new History();
             history.FormClosed += new FormClosedEventHandler(history_FormClosed);
             this.Hide();
             history.Show();

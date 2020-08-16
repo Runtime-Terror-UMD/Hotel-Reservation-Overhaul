@@ -271,12 +271,5 @@ namespace Hotel_Reservation_Overhaul.Pages
             txtAdjustPoints.Clear();
             txtCustomerID.Clear();
         }
-
-        private void btnLogOut_Click(object sender, EventArgs e)
-        {
-            this.Close();
-            Application.OpenForms["Hotel Management"].Close();
-            Application.OpenForms["Menu"].Close();
-        }
     }
 }

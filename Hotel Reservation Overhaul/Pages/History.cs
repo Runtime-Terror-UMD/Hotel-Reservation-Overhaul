@@ -12,11 +12,9 @@ namespace Hotel_Reservation_Overhaul.Pages
 {
     public partial class History : Form
     {
-        private DateTime currentDate;
-        public History(DateTime current)
+        public History()
         {
             InitializeComponent();
-            currentDate = current;
         }
 
         private void btnReturn_Click(object sender, EventArgs e)

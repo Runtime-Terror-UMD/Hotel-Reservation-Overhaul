@@ -16,11 +16,9 @@ namespace Hotel_Reservation_Overhaul.Pages
     public partial class HotelManagement : Form
     {
         private int UserID;
-        private DateTime currentDate;
-        public HotelManagement(int userID, DateTime current)
+        public HotelManagement(int userID)
         {
             InitializeComponent();
-            currentDate = current;
             userID = userID;
         }
         public void displayError(string message)
