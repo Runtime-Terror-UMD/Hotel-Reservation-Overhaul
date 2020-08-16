@@ -156,5 +156,10 @@ namespace Hotel_Reservation_Overhaul
             this.Hide();
             resetPassword.Show();
         }
+
+        public void updateDate(DateTime newDay)
+        {
+            currentDay = newDay;
+        }
     }
 }

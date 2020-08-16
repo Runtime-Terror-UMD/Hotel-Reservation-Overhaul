@@ -16,13 +16,16 @@ namespace Hotel_Reservation_Overhaul.Pages
     public partial class HotelManagement : Form
     {
         private int UserID;
-        DateTime currentDate;
-        public HotelManagement(int userID, DateTime current)
+        Menu menuWind;
+        private DateTime currentDate { get { return currentDate; } set { } }
+        public HotelManagement(int userID, DateTime current, Menu window)
         {
             InitializeComponent();
             UserID = userID;
             currentDate = current;
             fillCBoxHotel();
+            UserID = userID;
+            menuWind = window;
         }
         public void displayError(string message)
         {
@@ -37,7 +40,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             resFile.InitialDirectory = @"C:\";
             if (resFile.ShowDialog() == DialogResult.OK)
             {
-                DateTime fileDate = new DateTime(2020, 1, 1);
+                DateTime fileDate = currentDate;
                 int numReserv = 0; //count number of reservations in file
                 try
                 {
@@ -308,7 +311,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             resFile.InitialDirectory = @"C:\";
             if (resFile.ShowDialog() == DialogResult.OK)
             {
-                DateTime fileDate = new DateTime(2020, 1, 1);
+                DateTime fileDate = currentDate;
                 int hotelCount = 0;
                 try
                 {
@@ -510,7 +513,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             resFile.InitialDirectory = @"C:\";
             if (resFile.ShowDialog() == DialogResult.OK)
             {
-                DateTime fileDate = new DateTime(2020, 1, 1);
+                DateTime fileDate = currentDate;
                 int packageCount = 0;
                 try
                 {
@@ -667,7 +670,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             resFile.InitialDirectory = @"C:\";
             if (resFile.ShowDialog() == DialogResult.OK)
             {
-                DateTime fileDate = new DateTime(2020, 1, 1);
+                DateTime fileDate = currentDate;
                 int maintainCount = 0;
                 try
                 {
@@ -912,6 +915,12 @@ namespace Hotel_Reservation_Overhaul.Pages
             cboxHotel.DataSource = hotelDT;
             cboxHotel.DisplayMember = "locationName";
             cboxHotel.ValueMember = "locationID";
+        }
+
+        private void btnTime_Click(object sender, EventArgs e)
+        {
+            currentDate = currentDate.AddDays(1);
+            menuWind.updateDate(currentDate);
         }
     }
 }
