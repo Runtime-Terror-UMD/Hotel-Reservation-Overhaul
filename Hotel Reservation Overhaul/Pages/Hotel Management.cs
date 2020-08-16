@@ -248,7 +248,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                                 if (nonAvailableDR.HasRows)
                                                 {
                                                     Reservation addToWaitlist = new Reservation();
-                                                    addToWaitlist.addToWaitlist(custID, hotelID, checkIn, checkOut, occNum, combindstring);
+                                                    addToWaitlist.addToWaitlist(custID, hotelID, checkIn, checkOut, occNum, 1, combindstring);
                                                 }
                                                 else
                                                 {
