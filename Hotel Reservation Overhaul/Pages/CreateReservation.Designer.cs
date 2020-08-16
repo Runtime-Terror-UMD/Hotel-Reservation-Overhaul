@@ -36,8 +36,8 @@
             this.monthStart = new System.Windows.Forms.MonthCalendar();
             this.monthEnd = new System.Windows.Forms.MonthCalendar();
             this.cboxHotel = new System.Windows.Forms.ComboBox();
-            this.locationBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.hotelmgmt = new Hotel_Reservation_Overhaul.hotelmgmt();
+            this.locationBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.locationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.cboxNumGuests = new System.Windows.Forms.ComboBox();
             this.lblGuests = new System.Windows.Forms.Label();
@@ -66,8 +66,10 @@
             this.lblCost = new System.Windows.Forms.Label();
             this.lblNumRooms = new System.Windows.Forms.Label();
             this.cboxNumRooms = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource2)).BeginInit();
+            this.btnModify = new System.Windows.Forms.Button();
+            this.checkFreeUpgrade = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.packageBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt1)).BeginInit();
@@ -155,15 +157,15 @@
             this.cboxHotel.TabIndex = 3;
             this.cboxHotel.ValueMember = "locationID";
             // 
-            // locationBindingSource2
-            // 
-            this.locationBindingSource2.DataMember = "location";
-            this.locationBindingSource2.DataSource = this.hotelmgmt;
-            // 
             // hotelmgmt
             // 
             this.hotelmgmt.DataSetName = "hotelmgmt";
             this.hotelmgmt.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // locationBindingSource2
+            // 
+            this.locationBindingSource2.DataMember = "location";
+            this.locationBindingSource2.DataSource = this.hotelmgmt;
             // 
             // locationBindingSource
             // 
@@ -217,7 +219,7 @@
             this.checkPackages.Location = new System.Drawing.Point(244, 575);
             this.checkPackages.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkPackages.Name = "checkPackages";
-            this.checkPackages.Size = new System.Drawing.Size(338, 112);
+            this.checkPackages.Size = new System.Drawing.Size(338, 139);
             this.checkPackages.TabIndex = 5;
             this.checkPackages.SelectedIndexChanged += new System.EventHandler(this.checkPackages_SelectedIndexChanged);
             // 
@@ -447,11 +449,38 @@
             this.cboxNumRooms.Size = new System.Drawing.Size(338, 28);
             this.cboxNumRooms.TabIndex = 29;
             // 
+            // btnModify
+            // 
+            this.btnModify.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnModify.Location = new System.Drawing.Point(930, 608);
+            this.btnModify.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnModify.Name = "btnModify";
+            this.btnModify.Size = new System.Drawing.Size(195, 46);
+            this.btnModify.TabIndex = 30;
+            this.btnModify.Text = "Modify Reservation";
+            this.btnModify.UseVisualStyleBackColor = true;
+            this.btnModify.Visible = false;
+            this.btnModify.Click += new System.EventHandler(this.btnModify_Click);
+            // 
+            // checkFreeUpgrade
+            // 
+            this.checkFreeUpgrade.AutoSize = true;
+            this.checkFreeUpgrade.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.checkFreeUpgrade.Location = new System.Drawing.Point(244, 722);
+            this.checkFreeUpgrade.Name = "checkFreeUpgrade";
+            this.checkFreeUpgrade.Size = new System.Drawing.Size(249, 29);
+            this.checkFreeUpgrade.TabIndex = 31;
+            this.checkFreeUpgrade.Text = "Complimentary Upgrade";
+            this.checkFreeUpgrade.UseVisualStyleBackColor = true;
+            this.checkFreeUpgrade.Visible = false;
+            // 
             // CreateReservation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1178, 863);
+            this.Controls.Add(this.checkFreeUpgrade);
+            this.Controls.Add(this.btnModify);
             this.Controls.Add(this.cboxNumRooms);
             this.Controls.Add(this.lblNumRooms);
             this.Controls.Add(this.txtCostNightly);
@@ -482,8 +511,8 @@
             this.Name = "CreateReservation";
             this.Text = "Hotel Reservation: Reservation";
             this.Load += new System.EventHandler(this.Reservation_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.packageBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt1)).EndInit();
@@ -491,6 +520,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dboDataSetBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -533,5 +563,7 @@
         private System.Windows.Forms.Label lblCost;
         private System.Windows.Forms.Label lblNumRooms;
         private System.Windows.Forms.ComboBox cboxNumRooms;
+        private System.Windows.Forms.Button btnModify;
+        private System.Windows.Forms.CheckBox checkFreeUpgrade;
     }
 }

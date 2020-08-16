@@ -55,8 +55,7 @@ namespace Hotel_Reservation_Overhaul
             {
                 // build and execute query
                 DBConnect reservationListConn = new DBConnect();
-                string reservationListQuery = "SELECT r.confirmationID, r.startDate, r.endDate, loc.locationName  FROM dbo.reservation r join location loc on loc.locationID = r.locationID where r.userID = @userID";
-                MySqlCommand cmd = new MySqlCommand(reservationListQuery);
+                MySqlCommand cmd = new MySqlCommand("SELECT distinct r.confirmationID, r.startDate, r.endDate, loc.locationName  FROM dbo.reservation r join location loc on loc.locationID = r.locationID where r.userID = @userID and r.reservationStatus <> 'cancelled'");
                 cmd.Parameters.AddWithValue("@userID", resUserID);
                 DataSet resReport = reservationListConn.ExecuteDataSet(cmd);
 
@@ -143,13 +142,19 @@ namespace Hotel_Reservation_Overhaul
             {
                 // Pulls out confirmation ID from selected row
                 int confirmationID = getConfirmationID();
-
-                // Passes confirmation ID and user ID to payment page
-                var makePayment = new Payment(confirmationID, resUserID, currentDate);
-                makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
-                this.Hide();
-                makePayment.Show();
-
+                Reservation makeResPayment = new Reservation(confirmationID);
+                // check that reservation not already paid
+                if (makeResPayment.amountDue > 0)
+                { // Passes confirmation ID and user ID to payment page
+                   var makePayment = new Payment(confirmationID, resUserID, currentDate);
+                    makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
+                    this.Hide();
+                    makePayment.Show();
+                }
+                else
+                {
+                    displayError("This reservation has been paid in full");
+                }
             }
             else
             {
@@ -185,7 +190,22 @@ namespace Hotel_Reservation_Overhaul
 
         private void btnModify_Click(object sender, EventArgs e)
         {
-
+            if (resUserID == -1)
+            {
+                displayError("Please enter a customer ID");
+            }
+            else if (resListDataGrid.SelectedRows.Count < 1)
+            {
+                displayError("Please select a reservation");
+            }
+            else
+            {
+                // Pulls out confirmation ID from selected row
+                int confirmationID = getConfirmationID();
+                var modReservation = new CreateReservation(userInfo.userID, confirmationID, true);
+                this.Hide();
+                modReservation.Show();
+            }
         }
 
         // DESCRIPTION: Reservation cancellation process
@@ -260,7 +280,8 @@ namespace Hotel_Reservation_Overhaul
                         else
                         {
                             resInfo.logCancellation(userInfo.userID, resUserID, currentDate);
-                        }                    
+                        }
+                        GetData();
                     }
                 }             
             }

@@ -9,8 +9,8 @@ public class Reservation
     public int reservationID { get; set; }
     public int confirmatonID { get; set; }
     public int locationID { get; set; }
-  
-    public int roomNum { get; set; }
+    public int numGuests { get; set; }
+    public List<int> roomNumList { get; set; }
     public int userID { get; set; }
     public DateTime startDate { get; set; }
     public DateTime endDate { get; set; }
@@ -55,6 +55,8 @@ public class Reservation
             amountPaid = Convert.ToDouble(dataReader["amountPaid"]);
             amountDue = Convert.ToDouble(dataReader["amountDue"]);
             status = dataReader["reservationStatus"].ToString();
+            numGuests = Convert.ToInt32(dataReader["numGuests"]);
+            roomNumList.Add((Convert.ToInt32(dataReader["roomNum"])));
         }
 
         //close Data Reader
@@ -65,31 +67,26 @@ public class Reservation
     public bool updateReservation(Reservation resInfo)
     {
         DBConnect updateResConn = new DBConnect();
-        MySqlCommand  updateRes = new MySqlCommand(@"UPDATE `dbo`.`reservation`
-                                                    SET
-                                                    `locationID` = @locationID,
-                                                    `roomNum` = @roomNum,
-                                                    `startDate` = @startDate,
-                                                    `endDate` = @endDate,
-                                                    `pointsAccumulated` = @points,
-                                                    `price` = @price,
-                                                    `amountDue` = @amountDue,
-                                                    `amountPaid` = @amountPaid,
-                                                    `reservationStatus` = @status,
-                                                     WHERE `confirmationID` = @confirmationID");
-      
+        MySqlCommand updateRes = new MySqlCommand();
+        updateRes.CommandText = "UPDATE `dbo`.`reservation` SET `locationID` = @locationID, `roomNum` = @roomNum, `startDate` = @startDate, `endDate` = @endDate, `pointsAccumulated` = @points, `price` = @price, `amountDue` = @amountDue, `amountPaid` = @amountPaid, `reservationStatus` = @resStatus, `numGuests` = @numGuests WHERE `confirmationID` = @confirmationID";
         updateRes.Parameters.Add("@locationID", MySqlDbType.Int32).Value = resInfo.locationID;
-        updateRes.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = resInfo.roomNum;
-        updateRes.Parameters.Add("@startDate", MySqlDbType.Int32).Value = resInfo.startDate;
-        updateRes.Parameters.Add("@endDate", MySqlDbType.Int32).Value = resInfo.endDate;
+        updateRes.Parameters.Add("@startDate", MySqlDbType.Date).Value = resInfo.startDate.Date;
+        updateRes.Parameters.Add("@endDate", MySqlDbType.Date).Value = resInfo.endDate.Date;
         updateRes.Parameters.Add("@points", MySqlDbType.Int32).Value = resInfo.points;
-        updateRes.Parameters.Add("@price", MySqlDbType.Int32).Value = resInfo.totalPrice;
-        updateRes.Parameters.Add("@amountDue", MySqlDbType.Int32).Value = resInfo.amountDue;
-        updateRes.Parameters.Add("@amountPaid", MySqlDbType.Int32).Value = resInfo.amountPaid;
-        updateRes.Parameters.Add("@status", MySqlDbType.Int32).Value = resInfo.status;
-        if(updateResConn.NonQuery(updateRes) > 0)
-            return true;
-        return false;
+        updateRes.Parameters.Add("@price", MySqlDbType.Decimal).Value = Convert.ToDecimal(resInfo.totalPrice);
+        updateRes.Parameters.Add("@amountDue", MySqlDbType.Decimal).Value = Convert.ToDecimal(resInfo.amountDue);
+        updateRes.Parameters.Add("@amountPaid", MySqlDbType.Decimal).Value = Convert.ToDecimal(resInfo.amountPaid);
+        updateRes.Parameters.Add("@resStatus", MySqlDbType.VarChar, 45).Value = resInfo.status;
+        updateRes.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = resInfo.numGuests;
+        updateRes.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = resInfo.confirmatonID;
+        updateRes.Parameters.Add("@roomNum", MySqlDbType.Int32);
+
+        foreach (int roomNum in resInfo.roomNumList)
+        {
+            updateRes.Parameters["@roomNum"].Value = roomNum;
+            updateResConn.NonQuery(updateRes);
+        }     
+        return true;
     }
 
     // DESCRIPTION: Adds cancellation to activity log
@@ -140,60 +137,45 @@ public class Reservation
     }
 
     // DESCRIPTION: Adds reservation to dbo.reservation and activity log
-    public int makeReservation(int locationID, int newResUserID, int resUserID, DateTime startDate, DateTime endDate, double newResPrice, int newResPoints, int newResRoomNum, DateTime current)
+    public int makeReservation(int locationID, int newResUserID, int resUserID, DateTime startDate, DateTime endDate, double newResPrice, int newResPoints, List<int> newResRoomList, int numGuests,DateTime current)
     {
         DBConnect createResConn = new DBConnect();
-        MySqlCommand createResCmd = new MySqlCommand("INSERT INTO `dbo`.`reservation`(`confirmationID`,`userID`,`locationID`,`roomNum`,`startDate`,`endDate`,`pointsAccumulated`,`price`,`amountDue`,`amountPaid`,`reservationStatus`,`created`)VALUES(@confirmationID,@userID,@locationID,@roomNum,@startDate,@endDate,@points,@price,@price,0,@status,@created)");
+        MySqlCommand createResCmd = new MySqlCommand();
+        createResCmd.CommandText = "INSERT INTO `dbo`.`reservation`(`confirmationID`,`userID`,`locationID`,`roomNum`,`startDate`,`endDate`,`pointsAccumulated`,`price`,`amountDue`,`amountPaid`,`reservationStatus`,`created`,`numGuests`) VALUES(@confirmationID,@userID,@locationID,@roomNum,@startDate,@endDate,@points,@price,@price,0,@status,@created,@numGuests)";
 
-        string getNextConfID = "select confirmationID from dbo.reservation order by confirmationID desc limit 1";
-        MySqlCommand cmd = new MySqlCommand(getNextConfID);
-        int comfirmationID = createResConn.intScalar(cmd) + 1;
+        DBConnect getNextConfConn = new DBConnect();
+        MySqlCommand cmd = new MySqlCommand("select confirmationID from dbo.reservation order by confirmationID desc limit 1");
+        int comfirmationID = getNextConfConn.intScalar(cmd) + 1;
+        string status = "upcoming";
 
         createResCmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = locationID;
-        createResCmd.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = resUserID;
+        createResCmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = resUserID;
         createResCmd.Parameters.Add("@startDate", MySqlDbType.Date).Value = startDate;
         createResCmd.Parameters.Add("@endDate", MySqlDbType.Date).Value = endDate;
+        createResCmd.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = comfirmationID;
+        createResCmd.Parameters.Add("@status", MySqlDbType.VarChar, 45).Value = status;
+        createResCmd.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = numGuests;            
         createResCmd.Parameters.Add("@confirmationID", MySqlDbType.Int32, 10).Value = comfirmationID;
-        createResCmd.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = newResRoomNum;
         createResCmd.Parameters.Add("@points", MySqlDbType.Int32).Value = newResPoints;
         createResCmd.Parameters.Add("@price", MySqlDbType.Decimal).Value = newResPrice;
-        createResCmd.Parameters.Add("@status", MySqlDbType.VarChar, 45).Value = "upcoming";
         createResCmd.Parameters.Add("@created", MySqlDbType.Date).Value = current;
+        createResCmd.Parameters.Add("@roomNum", MySqlDbType.Int32);
 
-        if (createResConn.NonQuery(createResCmd) > 0)
+        // insert one row for each room
+        foreach (int newResRoomNum in newResRoomList)   
         {
-            // add to activity log
-            MySqlCommand logActivity = new MySqlCommand("INSERT INTO `dbo`.`activitylog`(`userID`,`activityTypeID`,`refID`,`created`,`createdBy`)VALUES(@userID, 1, @confirmationID, @date, @createdBy)");
-            logActivity.Parameters.Add("@confirmationID", MySqlDbType.Int32, 10).Value = comfirmationID;
-            logActivity.Parameters.Add("@createdBy", MySqlDbType.Int32, 10).Value = newResUserID;
-            logActivity.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = resUserID;
-            logActivity.Parameters.Add("@date", MySqlDbType.Date).Value = current;
-            if(createResConn.NonQuery(logActivity) > 0)
-            {
-                return comfirmationID;
-            }
+            createResCmd.Parameters["@roomNum"].Value = newResRoomNum;
+            createResConn.NonQuery(createResCmd);
+        }
+
+        LoggedActivity logNewReservation = new LoggedActivity();
+        if (logNewReservation.logActivity(resUserID, 1, this.confirmatonID, current, newResUserID))
+        {
+            return comfirmationID;
+        }
+        else
+        {
             return -1;
         }
-        return -1;
-    }
-
-    // DESCRIPTION: Adds request to dbo.waitlist
-    public bool addToWaitlist(int wlUserID, int wlLocationID, DateTime wlStartDate, DateTime wlEndDate, int wlNumGuests, string combinedString)
-
-    {
-        DBConnect addToWLConn = new DBConnect();
-        MySqlCommand addToWL = new MySqlCommand(@"INSERT INTO `dbo`.`waitlist`(`customerID`,`locationID`,`startDate`,`endDate`,`numGuests`,`packages`)
-                                                  VALUES(@userID, @locationID, @startDate, @endDate, @numGuests,@packages)");
-        addToWL.Parameters.Add("@locationID", MySqlDbType.Int32).Value = wlLocationID;
-        addToWL.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = wlUserID;
-        addToWL.Parameters.Add("@startDate", MySqlDbType.Date).Value = wlStartDate;
-        addToWL.Parameters.Add("@endDate", MySqlDbType.Date).Value = wlEndDate;
-        addToWL.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = wlNumGuests;
-        addToWL.Parameters.Add("@packages", MySqlDbType.VarChar, 45).Value = combinedString;
-        if (addToWLConn.NonQuery(addToWL) > 0)
-        {
-            return true;
-        }
-        return false;
     }
 }
