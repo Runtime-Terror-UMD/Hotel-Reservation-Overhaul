@@ -24,7 +24,7 @@ namespace Hotel_Reservation_Overhaul
             lblError.Visible = true;
             lblError.Text = "Error: " + errorMessage;
         }
-        public ReservationList(int userID, DateTime current)
+        public ReservationList(int userID)
         {
             InitializeComponent();
             resListDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -148,6 +148,7 @@ namespace Hotel_Reservation_Overhaul
                 if (makeResPayment.amountDue > 0)
                 { // Passes confirmation ID and user ID to payment page
                    var makePayment = new Payment(confirmationID, resUserID, currentDate);
+                    var makePayment = new Payment(confirmationID, resUserID);
                     makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
                     this.Hide();
                     makePayment.Show();
@@ -245,7 +246,6 @@ namespace Hotel_Reservation_Overhaul
                         else if (resInfo.status == "upcoming")
                         {
                             // if reservation is within 3 days
-                            if (((resInfo.startDate - currentDate).TotalDays) <= getFileSettings.getCancelWindow())
                             {
                                 resInfo.totalPrice = (double)getFileSettings.getCancelCharge();
                             }
@@ -280,7 +280,6 @@ namespace Hotel_Reservation_Overhaul
                         }
                         else
                         {
-                            resInfo.logCancellation(userInfo.userID, resUserID, currentDate);
                         }
                         GetData();
                     }
