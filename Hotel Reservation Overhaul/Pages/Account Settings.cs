@@ -19,12 +19,13 @@ namespace Hotel_Reservation_Overhaul.Pages
             UserID = userID;
             lblAccountID.Text = "" + UserID;
             Utilities accountInfo = new Utilities();
-            lblUsername.Text = accountInfo.getUsername(UserID);
-            lblRewardsPoints.Text = "" + accountInfo.getRewardsPoints(UserID);
-            lblEmail.Text = accountInfo.getEmail(UserID);
-            txtFirstName.Text = accountInfo.getFirstName(UserID);
-            txtLastName.Text = accountInfo.getLastName(UserID);
-            lblCurrentQuestion.Text = accountInfo.getSecretQuestion(UserID);
+            User userInfo = new User(userID);
+            lblUsername.Text = userInfo.username;
+            lblRewardsPoints.Text = "" + userInfo.rewardPoints;
+            lblEmail.Text = userInfo.email;
+            txtFirstName.Text = userInfo.firstName;
+            txtLastName.Text = userInfo.lastName;
+            lblCurrentQuestion.Text = userInfo.secretQuestion;
         }
 
         private void btnReturn_Click(object sender, EventArgs e)
