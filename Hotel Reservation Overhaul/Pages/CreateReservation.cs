@@ -30,13 +30,15 @@ namespace Hotel_Reservation_Overhaul
         public string combindstring;
         public bool mod = false;
         List<int> roomNumList = new List<int>();
+        DateTime currentDate;
 
-        public CreateReservation(int UserID, int ResUserID )
+        public CreateReservation(int UserID, int ResUserID, DateTime current )
         {
             InitializeComponent();
             PopulateCheckBoxes();
             resUserID = ResUserID;
             userID = UserID;
+            currentDate = current;
         }
 
         // DESCRIPTION: Fills fields with reservation info for reservation to modify
@@ -206,7 +208,7 @@ namespace Hotel_Reservation_Overhaul
                 int numGuests = Convert.ToInt32(cboxNumGuests.SelectedItem);
                 int numRooms = Convert.ToInt32(cboxNumRooms.SelectedItem);
 
-                roomNumList =  resInfo.getAvailability(packages, numGuests, locationID, numRooms, combindstring);
+                roomNumList =  resInfo.getAvailability(packages, numGuests, locationID, numRooms, combindstring, currentDate);
 
                 if (roomNumList.Count != numRooms)
                 {   // no room available, gets roomNum to reference for price 
@@ -287,8 +289,8 @@ namespace Hotel_Reservation_Overhaul
             else
             {   // Get next confirmation ID
                 Reservation createReservation = new Reservation();
-                int confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue), resUserID, userID, startDate.Value, endDate.Value, price, points, roomNumList, Convert.ToInt32(cboxNumGuests.SelectedItem));
-                var makePayment = new Payment(confirmationID, resUserID);
+                int confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue), resUserID, userID, startDate.Value, endDate.Value, price, points, roomNumList, Convert.ToInt32(cboxNumGuests.SelectedItem), currentDate);
+                var makePayment = new Payment(confirmationID, resUserID, currentDate);
                 makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
                 this.Hide();
                 makePayment.Show();     

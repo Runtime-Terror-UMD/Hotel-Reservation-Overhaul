@@ -24,9 +24,11 @@ namespace Hotel_Reservation_Overhaul
             lblError.Visible = true;
             lblError.Text = "Error: " + errorMessage;
         }
-        public ReservationList(int userID)
+        public ReservationList(int userID, DateTime current)
         {
             InitializeComponent();
+            currentDate = current;
+            
             resListDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             // gets user info
@@ -147,7 +149,7 @@ namespace Hotel_Reservation_Overhaul
                 // check that reservation not already paid
                 if (makeResPayment.amountDue > 0)
                 { // Passes confirmation ID and user ID to payment page
-                    var makePayment = new Payment(confirmationID, resUserID);
+                    var makePayment = new Payment(confirmationID, resUserID, currentDate);
                     makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
                     this.Hide();
                     makePayment.Show();
@@ -177,7 +179,7 @@ namespace Hotel_Reservation_Overhaul
             }
             else
             {
-                var newReservation = new CreateReservation(userInfo.userID, resUserID);
+                var newReservation = new CreateReservation(userInfo.userID, resUserID, currentDate);
                 newReservation.FormClosed += new FormClosedEventHandler(newReservation_FormClosed);
                 this.Hide();
                 newReservation.Show();
@@ -245,7 +247,7 @@ namespace Hotel_Reservation_Overhaul
                         else if (resInfo.status == "upcoming")
                         {
                             // if reservation is within 3 days
-                            if (((resInfo.startDate - DateTime.Today).TotalDays) <= getFileSettings.getCancelWindow())
+                            if (((resInfo.startDate - currentDate).TotalDays) <= getFileSettings.getCancelWindow())
                             {
                                 resInfo.totalPrice = (double)getFileSettings.getCancelCharge();
                             }
@@ -276,11 +278,11 @@ namespace Hotel_Reservation_Overhaul
                         // log cancellation
                         if(userInfo.isCustomer) 
                         {
-                            resInfo.logCancellation(userInfo.userID, userInfo.userID);
+                            resInfo.logCancellation(userInfo.userID, userInfo.userID, currentDate);
                         }
                         else
                         {
-                            resInfo.logCancellation(userInfo.userID, resUserID);
+                            resInfo.logCancellation(userInfo.userID, resUserID, currentDate);
                         }
                         GetData();
                     }

@@ -71,12 +71,6 @@
     <Compile Include="Pages\Account Settings.Designer.cs">
       <DependentUpon>Account Settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\EditHotels.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Pages\EditHotels.Designer.cs">
-      <DependentUpon>EditHotels.cs</DependentUpon>
-    </Compile>
     <Compile Include="Pages\History.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,9 +142,6 @@
     <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="Pages\Account Settings.resx">
       <DependentUpon>Account Settings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Pages\EditHotels.resx">
-      <DependentUpon>EditHotels.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\History.resx">
       <DependentUpon>History.cs</DependentUpon>
