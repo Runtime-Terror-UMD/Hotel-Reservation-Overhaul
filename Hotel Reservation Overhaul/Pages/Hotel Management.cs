@@ -16,10 +16,12 @@ namespace Hotel_Reservation_Overhaul.Pages
     public partial class HotelManagement : Form
     {
         private int UserID;
-        public HotelManagement(int userID)
+        DateTime currentDate;
+        public HotelManagement(int userID, DateTime current)
         {
             InitializeComponent();
-            userID = userID;
+            UserID = userID;
+            currentDate = current;
         }
         public void displayError(string message)
         {
@@ -234,7 +236,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                             // check for availability
                                             string combindstring = string.Join(",", packages);
                                             Reservation resInfo = new Reservation();
-                                            List<int> roomAvailable = resInfo.getAvailability(packages, occNum, hotelID, 1, combindstring);
+                                            List<int> roomAvailable = resInfo.getAvailability(packages, occNum, hotelID, 1, combindstring, currentDate);
                                             // no room available
                                             if(roomAvailable.Count == 0)
                                             {
@@ -264,7 +266,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                                 double price = calcPrice.calculatePrice(((checkIn - checkOut).TotalDays), pricePerNight);
                                                 int points = Convert.ToInt32(calcPrice.calculatePoints(((checkIn - checkOut).TotalDays)));
                                                 Reservation createReservation = new Reservation();
-                                                createReservation.makeReservation(hotelID, custID, custID, checkIn, checkOut, price, points, roomAvailable, occNum);
+                                                createReservation.makeReservation(hotelID, custID, custID, checkIn, checkOut, price, points, roomAvailable, occNum, currentDate);
                                             }
                                         }
                                     }
@@ -854,7 +856,7 @@ namespace Hotel_Reservation_Overhaul.Pages
 
         private void btnHotelSettings_Click(object sender, EventArgs e)
         {
-            var hotelSett = new HotelSettings(UserID);
+            var hotelSett = new HotelSettings(UserID, currentDate);
             hotelSett.FormClosed += new FormClosedEventHandler(hotelSett_FormClosed);
             this.Hide();
             hotelSett.Show();

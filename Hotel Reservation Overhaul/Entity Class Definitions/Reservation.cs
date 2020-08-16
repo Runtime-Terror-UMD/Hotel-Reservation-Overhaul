@@ -90,16 +90,16 @@ public class Reservation
     }
 
     // DESCRIPTION: Adds cancellation to activity log
-    public bool logCancellation(int cancelledBy, int userID)
+    public bool logCancellation(int cancelledBy, int userID, DateTime currentDate)
     {
         LoggedActivity logCancellation = new LoggedActivity();
-        if (logCancellation.logActivity(userID, 3, this.confirmatonID, DateTime.Today, cancelledBy)) 
+        if (logCancellation.logActivity(userID, 3, this.confirmatonID, currentDate, cancelledBy)) 
             return true;
         return false;
     }
 
     //DESCRIPTION: Gets availability for specified reservation request
-    public List<int> getAvailability(List<int> packages, int numGuests,int hotelID, int numRooms, string combindstring)
+    public List<int> getAvailability(List<int> packages, int numGuests,int hotelID, int numRooms, string combindstring, DateTime currentDate)
     {
         List<int> roomNumsAvailable = new List<int>();
         DBConnect checkAvailabilityConn = new DBConnect();
@@ -138,7 +138,7 @@ public class Reservation
     }
 
     // DESCRIPTION: Adds reservation to dbo.reservation and activity log
-    public int makeReservation(int locationID, int newResUserID, int resUserID, DateTime startDate, DateTime endDate, double newResPrice, int newResPoints, List<int> newResRoomList, int numGuests)
+    public int makeReservation(int locationID, int newResUserID, int resUserID, DateTime startDate, DateTime endDate, double newResPrice, int newResPoints, List<int> newResRoomList, int numGuests, DateTime currentDate)
     {
         DBConnect createResConn = new DBConnect();
         MySqlCommand createResCmd = new MySqlCommand();
@@ -158,7 +158,7 @@ public class Reservation
         createResCmd.Parameters.Add("@points", MySqlDbType.Int32).Value = newResPoints;
         createResCmd.Parameters.Add("@price", MySqlDbType.Decimal).Value = newResPrice;
         createResCmd.Parameters.Add("@status", MySqlDbType.VarChar, 45).Value = status;
-        createResCmd.Parameters.Add("@created", MySqlDbType.Date).Value = DateTime.Today;               //FIXME: ADD DATE PARAMETER
+        createResCmd.Parameters.Add("@created", MySqlDbType.Date).Value = currentDate;
         createResCmd.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = numGuests;            
 
         // insert one row for each room
@@ -169,7 +169,7 @@ public class Reservation
         }
 
         LoggedActivity logNewReservation = new LoggedActivity();
-        if (logNewReservation.logActivity(resUserID, 1, this.confirmatonID, DateTime.Today, newResUserID))
+        if (logNewReservation.logActivity(resUserID, 1, this.confirmatonID, currentDate, newResUserID))
         {
             return comfirmationID;
         }

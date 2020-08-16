@@ -14,10 +14,12 @@ namespace Hotel_Reservation_Overhaul.Pages
     public partial class HotelSettings : Form
     {
         private int UserID;
-        public HotelSettings(int userID)
+        DateTime currentDate;
+        public HotelSettings(int userID, DateTime current)
         {
             InitializeComponent();
             UserID = userID;
+            currentDate = current;
             //get hotel settings from file
             decimal minCharge, cancelFee;
             int cancelDays, notifyDays, pointDays;

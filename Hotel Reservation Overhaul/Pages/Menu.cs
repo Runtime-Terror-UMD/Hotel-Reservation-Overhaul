@@ -14,18 +14,22 @@ namespace Hotel_Reservation_Overhaul
     public partial class Menu : Form
     {
         public int UserID;
-        public Menu(Login loginInstance)
+        DateTime currentDate;
+        public Menu(Login loginInstance, DateTime current)
         {
             InitializeComponent();
+            currentDate = current;
         }
 
         // DESCRIPTION: Initializer. Shows/hides hotel management button based on isCustomer
-        public Menu(bool isCustomer, int userID, Login loginInstance)
+        public Menu(bool isCustomer, int userID, Login loginInstance, DateTime current)
         {
             InitializeComponent();
             UserID = userID;
             if (isCustomer == true)
                 btnHotelManagement.Visible = false;
+            currentDate = current;
+
         }
         //DESCRIPTION: Opens account settings page
         private void btnAccount_Click(object sender, EventArgs e)
@@ -47,7 +51,7 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Opens Reservation Management page
         private void btnReservations_Click(object sender, EventArgs e)
         {
-            var reservationMgmt = new ReservationList(UserID);
+            var reservationMgmt = new ReservationList(UserID, currentDate);
             reservationMgmt.FormClosed += new FormClosedEventHandler(resMgmt_FormClosed);
             this.Hide();
             reservationMgmt.Show();
@@ -55,7 +59,7 @@ namespace Hotel_Reservation_Overhaul
 
         private void btnHotelManagement_Click(object sender, EventArgs e)
         {
-            var hotelMgmt = new HotelManagement(UserID);
+            var hotelMgmt = new HotelManagement(UserID, currentDate);
             hotelMgmt.FormClosed += new FormClosedEventHandler(hotMgmt_FormClosed);
             this.Hide();
             hotelMgmt.Show();
