@@ -248,7 +248,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                                 if (nonAvailableDR.HasRows)
                                                 {
                                                     Reservation addToWaitlist = new Reservation();
-                                                    addToWaitlist.addToWaitlist(custID, hotelID, checkIn, checkOut, occNum, combindstring);
+                                                    addToWaitlist.addToWaitlist(custID, hotelID, checkIn, checkOut, occNum, 1, combindstring);
                                                 }
                                                 else
                                                 {
@@ -861,7 +861,7 @@ namespace Hotel_Reservation_Overhaul.Pages
 
         private void lstReports_SelectedIndexChanged_1(object sender, EventArgs e)
         {
-            if (lstReports.SelectedItem.ToString() == "Customer History")
+            if (lstReports.SelectedItem.ToString() == "Customer History" || lstReports.SelectedItem.ToString() == "Employee History")
             {
                 cboxHotel.Enabled = false;
             }
@@ -878,7 +878,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             }
             else
             {
-                if (lstReports.SelectedItem.ToString() == "Customer History")
+                if (lstReports.SelectedItem.ToString() == "Customer History" || lstReports.SelectedItem.ToString() == "Employee History")
                 {
                     // if no user ID entered
                     if (string.IsNullOrWhiteSpace(txtUser.Text))
@@ -886,19 +886,35 @@ namespace Hotel_Reservation_Overhaul.Pages
                         displayError("User ID not entered");
                     }
                     else
-                    {   Utilities customerReport = new Utilities();
+                    {   Utilities userReport = new Utilities();
                         // verify user ID exists
-                        if (customerReport.userIDExists(Convert.ToInt32(txtUser.Text)))
+                        if (userReport.userIDExists(Convert.ToInt32(txtUser.Text)))
                         {   // verify user ID is a customer account
-                            if (customerReport.isCustomer(Convert.ToInt32(txtUser.Text)))
-                            {   // pull report
-                                var customerHistory = new ReportViewer("customerHistory", Convert.ToInt32(txtUser.Text));
-                                this.Hide();
-                                customerHistory.Show();
-                            }
-                            else
+                            if (lstReports.SelectedItem.ToString() == "Customer History")
                             {
-                                displayError("User ID is not a customer");
+                                if (userReport.isCustomer(Convert.ToInt32(txtUser.Text)))
+                                {   // pull report
+                                    var customerHistory = new ReportViewer("customerHistory", Convert.ToInt32(txtUser.Text));
+                                    this.Hide();
+                                    customerHistory.Show();
+                                }
+                                else
+                                {
+                                    displayError("User ID is not a customer");
+                                }
+                            }
+                            else if (lstReports.SelectedItem.ToString() == "Employee History")
+                            {
+                                if (!(userReport.isCustomer(Convert.ToInt32(txtUser.Text))))
+                                {   // pull report
+                                    var employeeHistory = new ReportViewer("employeeHistory", Convert.ToInt32(txtUser.Text));
+                                    this.Hide();
+                                    employeeHistory.Show();
+                                }
+                                else
+                                {
+                                    displayError("User ID is not an emploee");
+                                }
                             }
                         }
                         else

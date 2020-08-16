@@ -207,8 +207,9 @@
             this.resListDataGrid.MultiSelect = false;
             this.resListDataGrid.Name = "resListDataGrid";
             this.resListDataGrid.ReadOnly = true;
-            this.resListDataGrid.RowHeadersWidth = 62;
+            this.resListDataGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.resListDataGrid.RowTemplate.Height = 28;
+            this.resListDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.resListDataGrid.Size = new System.Drawing.Size(794, 559);
             this.resListDataGrid.TabIndex = 10;
             // 
