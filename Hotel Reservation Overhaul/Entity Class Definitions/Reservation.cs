@@ -60,7 +60,6 @@ public class Reservation
 
         //close Data Reader
         dataReader.Close();
-        ReservationConn.CloseConnection();
     }
 
     public bool updateReservation(Reservation resInfo)
@@ -94,14 +93,8 @@ public class Reservation
     // DESCRIPTION: Adds cancellation to activity log
     public bool logCancellation(int cancelledBy, int userID)
     {
-        DBConnect cancelResConn = new DBConnect();
-        MySqlCommand cancelRes = new MySqlCommand(@"INSERT INTO `dbo`.`activitylog`(`userID`,`activityTypeID`,`refID`,`created`.`createdBy`)
-                                                    VALUES(@userID,3,@confirmationID,@created,@createdBy");
-        cancelRes.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
-        cancelRes.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = this.confirmatonID;
-        cancelRes.Parameters.Add("@created", MySqlDbType.Int32).Value = DateTime.Today;      //FIXME: Replace with date varialbe
-        cancelRes.Parameters.Add("@createdBy", MySqlDbType.Int32).Value = cancelledBy;
-        if (cancelResConn.NonQuery(cancelRes) > 0)
+        LoggedActivity logCancellation = new LoggedActivity();
+        if (logCancellation.logActivity(userID, 3, this.confirmatonID, DateTime.Today, cancelledBy)) 
             return true;
         return false;
     }
@@ -172,17 +165,12 @@ public class Reservation
             createResCmd.Parameters["@roomNum"].Value = newResRoomNum;
             createResConn.NonQuery(createResCmd);
         }
-        
-            // add to activity log
-            MySqlCommand logActivity = new MySqlCommand("INSERT INTO `dbo`.`activitylog`(`userID`,`activityTypeID`,`refID`,`created`,`createdBy`)VALUES(@userID, 1, @confirmationID, @date, @createdBy)");
-            logActivity.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = comfirmationID;
-            logActivity.Parameters.Add("@createdBy", MySqlDbType.Int32).Value = newResUserID;
-            logActivity.Parameters.Add("@userID", MySqlDbType.Int32).Value = resUserID;
-            logActivity.Parameters.Add("@date", MySqlDbType.Date).Value = DateTime.Today;      //FIXME: ADD DATE PARAMETER
-            if(createResConn.NonQuery(logActivity) > 0)
-            {
+
+        LoggedActivity logNewReservation = new LoggedActivity();
+        if(logNewReservation.logActivity(resUserID, 1, this.confirmatonID, DateTime.Today, newResUserID))
+        {
                 return comfirmationID;
-            }
+        }
             return -1;
     }
 
