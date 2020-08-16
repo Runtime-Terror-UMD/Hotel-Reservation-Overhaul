@@ -49,6 +49,8 @@
             this.lblCancelationFee = new System.Windows.Forms.Label();
             this.btnCancelationFee = new System.Windows.Forms.Button();
             this.grpRewards = new System.Windows.Forms.GroupBox();
+            this.txtAdjustPoints = new System.Windows.Forms.TextBox();
+            this.lblAdjustPoints = new System.Windows.Forms.Label();
             this.btnReset = new System.Windows.Forms.Button();
             this.txtCustomerRewards = new System.Windows.Forms.TextBox();
             this.lblCustomerPoints = new System.Windows.Forms.Label();
@@ -57,8 +59,6 @@
             this.lblCustomerID = new System.Windows.Forms.Label();
             this.btnCustomerID = new System.Windows.Forms.Button();
             this.lblError = new System.Windows.Forms.Label();
-            this.txtAdjustPoints = new System.Windows.Forms.TextBox();
-            this.lblAdjustPoints = new System.Windows.Forms.Label();
             this.grpHotelSettings.SuspendLayout();
             this.grpRewards.SuspendLayout();
             this.SuspendLayout();
@@ -129,6 +129,7 @@
             this.btnLogOut.TabIndex = 26;
             this.btnLogOut.Text = "Log Out";
             this.btnLogOut.UseVisualStyleBackColor = true;
+            this.btnLogOut.Click += new System.EventHandler(this.btnLogOut_Click);
             // 
             // grpHotelSettings
             // 
@@ -169,7 +170,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(210, 20);
             this.label2.TabIndex = 35;
-            this.label2.Text = "Notify Customer (days):";
+            this.label2.Text = "Waitlist Expiration:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btnNotifyDays
@@ -284,6 +285,26 @@
             this.grpRewards.TabStop = false;
             this.grpRewards.Text = "Rewards Points";
             // 
+            // txtAdjustPoints
+            // 
+            this.txtAdjustPoints.Location = new System.Drawing.Point(265, 90);
+            this.txtAdjustPoints.Name = "txtAdjustPoints";
+            this.txtAdjustPoints.Size = new System.Drawing.Size(100, 20);
+            this.txtAdjustPoints.TabIndex = 46;
+            this.txtAdjustPoints.Visible = false;
+            // 
+            // lblAdjustPoints
+            // 
+            this.lblAdjustPoints.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAdjustPoints.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblAdjustPoints.Location = new System.Drawing.Point(45, 90);
+            this.lblAdjustPoints.Name = "lblAdjustPoints";
+            this.lblAdjustPoints.Size = new System.Drawing.Size(210, 20);
+            this.lblAdjustPoints.TabIndex = 45;
+            this.lblAdjustPoints.Text = "Adjust Customer Points:";
+            this.lblAdjustPoints.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblAdjustPoints.Visible = false;
+            // 
             // btnReset
             // 
             this.btnReset.Location = new System.Drawing.Point(385, 58);
@@ -367,26 +388,6 @@
             this.lblError.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.lblError.Visible = false;
             // 
-            // txtAdjustPoints
-            // 
-            this.txtAdjustPoints.Location = new System.Drawing.Point(265, 90);
-            this.txtAdjustPoints.Name = "txtAdjustPoints";
-            this.txtAdjustPoints.Size = new System.Drawing.Size(100, 20);
-            this.txtAdjustPoints.TabIndex = 46;
-            this.txtAdjustPoints.Visible = false;
-            // 
-            // lblAdjustPoints
-            // 
-            this.lblAdjustPoints.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAdjustPoints.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblAdjustPoints.Location = new System.Drawing.Point(45, 90);
-            this.lblAdjustPoints.Name = "lblAdjustPoints";
-            this.lblAdjustPoints.Size = new System.Drawing.Size(210, 20);
-            this.lblAdjustPoints.TabIndex = 45;
-            this.lblAdjustPoints.Text = "Adjust Customer Points:";
-            this.lblAdjustPoints.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblAdjustPoints.Visible = false;
-            // 
             // HotelSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -400,7 +401,7 @@
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.btnReturn);
             this.Name = "HotelSettings";
-            this.Text = "HotelSettings";
+            this.Text = "Hotel Reservation: Hotel Settings";
             this.grpHotelSettings.ResumeLayout(false);
             this.grpHotelSettings.PerformLayout();
             this.grpRewards.ResumeLayout(false);

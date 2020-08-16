@@ -20,19 +20,22 @@ namespace Hotel_Reservation_Overhaul
         public bool waitlist = false;
         public int resUserID;
         public int userID;
+        public int roomNum = -1;
         public double pricePerNight;
         public double price;
-        public int refRoomNum;
         public int points;
         public string combindstring;
-        List<int> roomNumList = new List<int>();
+        private DateTime currentDate;
 
-        public CreateReservation(int UserID, int ResUserID )
+        public CreateReservation(int UserID, int ResUserID, DateTime current )
         {
             InitializeComponent();
+            currentDate = current;
             PopulateCheckBoxes();
             resUserID = ResUserID;
             userID = UserID;
+            monthStart.SelectionRange.Start = currentDate;
+            monthEnd.SelectionRange.Start = currentDate;
         }
 
         //public CreateReservation(int userID, int confirmationID)
@@ -77,7 +80,8 @@ namespace Hotel_Reservation_Overhaul
         private void PopulateCheckBoxes()
         {
             DBConnect checkBoxConn = new DBConnect();
-            MySqlCommand cmd = new MySqlCommand("SELECT packageName FROM dbo.package");
+            string checkBoxQuery = "SELECT packageName FROM dbo.package";
+            MySqlCommand cmd = new MySqlCommand(checkBoxQuery);
             checkBoxConn.OpenConnection();
             DataTable checkBoxDT = checkBoxConn.ExecuteDataTable(cmd);
 
@@ -100,7 +104,7 @@ namespace Hotel_Reservation_Overhaul
             startDate = monthStart.SelectionStart.Date;
 
             // if start date in past
-            if (startDate < DateTime.Today)                                     // FIXME: Change DateTime.Today to @Date variable
+            if (startDate < currentDate)
             {
                 displayError("Selected start date cannot be in the past");
                 lblStartDate.Text = "Start Date: ";
@@ -160,7 +164,7 @@ namespace Hotel_Reservation_Overhaul
             // verify fields are valid
             if (startDate == null) { displayError("Please select a start date"); }
             else if (endDate == null) { displayError("Please select an end date"); }
-            else if (startDate < DateTime.Today) { displayError("Selected start date cannot be in the past"); }
+            else if (startDate < currentDate) { displayError("Selected start date cannot be in the past"); }
             else if (endDate < startDate) { displayError("Selected end date is earlier than selected start date"); }
             else if (cboxNumGuests.SelectedItem == null) { displayError("Please select number of guests"); }
             else if (cboxHotel.SelectedItem == null) { displayError("Please select a hotel"); }
@@ -184,12 +188,9 @@ namespace Hotel_Reservation_Overhaul
                 // check for availability
                 Reservation resInfo = new Reservation();
                 int locationID = Convert.ToInt32(cboxHotel.SelectedValue);
-                int numGuests = Convert.ToInt32(cboxNumGuests.SelectedItem);
-                int numRooms = Convert.ToInt32(cboxNumRooms.SelectedItem);
-
-                roomNumList =  resInfo.getAvailability(packages, numGuests, locationID, numRooms, combindstring);
+                roomNum =  resInfo.getAvailability(packages, Convert.ToInt32(cboxNumGuests.SelectedItem), locationID, combindstring);
                 
-                if(roomNumList.Count != numRooms)
+                if(roomNum == -1)
                 {   // no room available, gets roomNum to reference for price 
                     DBConnect checkAvailabilityConn = new DBConnect();
                     MySqlCommand cmd = new MySqlCommand( @"select roomNum
@@ -197,19 +198,16 @@ namespace Hotel_Reservation_Overhaul
                                         where packageID in (" + combindstring + @") and locationID = @locationID
                                         group by roomNum
                                         having count(distinct packageID) = @numPackages limit 1");
-                    
-                    cmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = locationID;
-                    cmd.Parameters.Add("@numPackages", MySqlDbType.Int32).Value = packages.Count();
 
                     MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
                     if (nonAvailableDR.HasRows)
                     {
                         while (nonAvailableDR.Read())
                         {
-                            refRoomNum = Convert.ToInt32(nonAvailableDR["roomNum"]);
+                            roomNum = Convert.ToInt32(nonAvailableDR["roomNum"]);
                         }
                         Utilities getWLPricePerNight = new Utilities();
-                        pricePerNight = getWLPricePerNight.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), refRoomNum);
+                        pricePerNight = getWLPricePerNight.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), roomNum);
                         displayError("No room with those criteria are available. Your reservation will be added to the waitlist");
                         waitlist = true;
                     }            
@@ -224,8 +222,8 @@ namespace Hotel_Reservation_Overhaul
 
                 // calculate price and rewards
                 Utilities calcPrice = new Utilities();
-                pricePerNight = calcPrice.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), roomNumList[0]) * numRooms;
-                price = calcPrice.calculatePrice(((endDate.Value - startDate.Value).TotalDays), pricePerNight) * numRooms;
+                pricePerNight = calcPrice.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), roomNum);
+                price = calcPrice.calculatePrice(((endDate.Value - startDate.Value).TotalDays), pricePerNight);
                 points = Convert.ToInt32(calcPrice.calculatePoints(((endDate.Value - startDate.Value).TotalDays)));
 
                 // fill fields
@@ -249,8 +247,8 @@ namespace Hotel_Reservation_Overhaul
            
             if (waitlist == true)
             {
-                Waitlist addToWaitlist = new Waitlist();
-                addToWaitlist.addToWaitlist(resUserID, Convert.ToInt32(cboxHotel.SelectedItem), startDate.Value, endDate.Value, Convert.ToInt32(cboxNumGuests.SelectedItem), Convert.ToInt32(cboxNumRooms.SelectedItem), combindstring);
+                Reservation addToWaitlist = new Reservation();
+                addToWaitlist.addToWaitlist(resUserID, Convert.ToInt32(cboxHotel.SelectedItem), startDate.Value, endDate.Value, Convert.ToInt32(cboxNumGuests.SelectedItem), combindstring);
                 lblError.ForeColor = System.Drawing.Color.Green;
                 lblError.Text = "You have been added to the waitlist";
             }
@@ -258,10 +256,10 @@ namespace Hotel_Reservation_Overhaul
             else
             {   // Get next confirmation ID
                 Reservation createReservation = new Reservation();
-                int confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue), resUserID, userID, startDate.Value, endDate.Value, price, points, roomNumList);
-                var makePayment = new Payment(confirmationID, resUserID);
-                this.Hide();
-                makePayment.Show();     
+                int confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue), resUserID, userID, startDate.Value, endDate.Value, price, points, roomNum, currentDate);
+                    var makePayment = new Payment(confirmationID, resUserID, currentDate);
+                    this.Hide();
+                    makePayment.Show();     
             }
         }
 
