@@ -30,17 +30,13 @@ namespace Hotel_Reservation_Overhaul
         public string combindstring;
         public bool mod = false;
         List<int> roomNumList = new List<int>();
-        DateTime currentDate;
 
-        public CreateReservation(int UserID, int ResUserID, DateTime current)
+        public CreateReservation(int UserID, int ResUserID )
         {
             InitializeComponent();
             PopulateCheckBoxes();
             resUserID = ResUserID;
             userID = UserID;
-            currentDate = current;
-            monthStart.SelectionRange.Start = currentDate;
-            monthEnd.SelectionRange.End = currentDate;
         }
 
         // DESCRIPTION: Fills fields with reservation info for reservation to modify
@@ -122,7 +118,7 @@ namespace Hotel_Reservation_Overhaul
             startDate = monthStart.SelectionStart.Date;
 
             // if start date in past
-            if (startDate < currentDate)
+            if (startDate < DateTime.Today)                                     // FIXME: Change DateTime.Today to @Date variable
             {
                 displayError("Selected start date cannot be in the past");
                 lblStartDate.Text = "Start Date: ";
@@ -182,7 +178,7 @@ namespace Hotel_Reservation_Overhaul
             // verify fields are valid
             if (startDate == null) { displayError("Please select a start date"); }
             else if (endDate == null) { displayError("Please select an end date"); }
-            else if (startDate < currentDate) { displayError("Selected start date cannot be in the past"); }
+            else if (startDate < DateTime.Today) { displayError("Selected start date cannot be in the past"); }
             else if (endDate < startDate) { displayError("Selected end date is earlier than selected start date"); }
             else if (cboxNumGuests.SelectedItem == null) { displayError("Please select number of guests"); }
             else if (cboxHotel.SelectedItem == null) { displayError("Please select a hotel"); }
@@ -210,7 +206,7 @@ namespace Hotel_Reservation_Overhaul
                 int numGuests = Convert.ToInt32(cboxNumGuests.SelectedItem);
                 int numRooms = Convert.ToInt32(cboxNumRooms.SelectedItem);
 
-                roomNumList =  resInfo.getAvailability(packages, numGuests, locationID, numRooms, combindstring, currentDate);
+                roomNumList =  resInfo.getAvailability(packages, numGuests, locationID, numRooms, combindstring);
 
                 if (roomNumList.Count != numRooms)
                 {   // no room available, gets roomNum to reference for price 
@@ -291,11 +287,17 @@ namespace Hotel_Reservation_Overhaul
             else
             {   // Get next confirmation ID
                 Reservation createReservation = new Reservation();
-                int confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue), resUserID, userID, startDate.Value, endDate.Value, price, points, roomNumList, Convert.ToInt32(cboxNumGuests.SelectedItem), currentDate);
-                var makePayment = new Payment(confirmationID, resUserID, currentDate);
+                int confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue), resUserID, userID, startDate.Value, endDate.Value, price, points, roomNumList, Convert.ToInt32(cboxNumGuests.SelectedItem));
+                var makePayment = new Payment(confirmationID, resUserID);
+                makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
                 this.Hide();
                 makePayment.Show();     
             }
+        }
+
+        private void makePayment_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Show();
         }
 
         private void checkPackages_SelectedIndexChanged(object sender, EventArgs e)
@@ -325,10 +327,6 @@ namespace Hotel_Reservation_Overhaul
             checkPackages.Enabled = true;
             btnSubmit.Visible = true;
             btnMakeRes.Visible = false;
-            txtCostNightly.Text = "";
-            lblDeposit.Text = "";
-            lblSubTotal.Text = "";
-            cboxNumRooms.SelectedIndex = 0;
         }
         private void btnReturn_Click(object sender, EventArgs e)
         {

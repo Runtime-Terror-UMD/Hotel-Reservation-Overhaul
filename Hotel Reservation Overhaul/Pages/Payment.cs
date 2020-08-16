@@ -35,6 +35,12 @@ namespace Hotel_Reservation_Overhaul
         private void btnSubmit_Click(object sender, EventArgs e)
         {
 
-        }   
+        }
+
+        private void btnReturn_Click(object sender, EventArgs e)
+        {
+
+            this.Close();
+        }
     }
 }
