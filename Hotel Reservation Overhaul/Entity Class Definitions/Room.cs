@@ -1,6 +1,8 @@
 ﻿using Hotel_Reservation_Overhaul;
 using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 
 class Room
 {
@@ -66,5 +68,30 @@ class Room
             return true;
         }
         return false;
+    }
+
+    public List<int> roomPackages(int roomNum, int hotelID)
+    {
+        List<int> roomPacks = new List<int>();
+        DBConnect roomPacksConn = new DBConnect();
+        MySqlCommand getRoomPacks = new MySqlCommand(@"select packageID from relation_room_package
+                                                        where roomNum = @roomNum
+                                                        and locationID = @locationID");
+        getRoomPacks.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = roomNum;
+        getRoomPacks.Parameters.Add("@locationID", MySqlDbType.Int32).Value = hotelID;
+        MySqlDataReader roomPackList = roomPacksConn.ExecuteReader(getRoomPacks);
+        if (roomPackList.HasRows)
+        {
+            while (roomPackList.Read())
+            {
+                roomPacks.Add(Convert.ToInt32(roomPackList["packageID"]));
+            }
+            return roomPacks;
+        }
+        else
+        {
+            return roomPacks;
+        }
+
     }
 }

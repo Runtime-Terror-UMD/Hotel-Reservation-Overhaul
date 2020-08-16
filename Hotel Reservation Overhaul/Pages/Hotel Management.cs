@@ -264,7 +264,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                                 double price = calcPrice.calculatePrice(((checkIn - checkOut).TotalDays), pricePerNight);
                                                 int points = Convert.ToInt32(calcPrice.calculatePoints(((checkIn - checkOut).TotalDays)));
                                                 Reservation createReservation = new Reservation();
-                                                createReservation.makeReservation(hotelID, custID, custID, checkIn, checkOut, price, points, roomAvailable);
+                                                createReservation.makeReservation(hotelID, custID, custID, checkIn, checkOut, price, points, roomAvailable, occNum);
                                             }
                                         }
                                     }
