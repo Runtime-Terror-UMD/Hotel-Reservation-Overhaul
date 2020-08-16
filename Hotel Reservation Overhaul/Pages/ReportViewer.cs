@@ -19,9 +19,9 @@ namespace Hotel_Reservation_Overhaul.Pages
             DataTable ReportData = new DataTable();
             BindingSource bindingSource1 = new BindingSource();
 
-
             InitializeComponent();
-            if(report == "customerHistory")
+            reportDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            if (report == "customerHistory")
             {
                 lblDescribe.Text = "Customer History Report";
                 User userInfo = new User(userID);
@@ -40,7 +40,8 @@ namespace Hotel_Reservation_Overhaul.Pages
                                                          from activitylog al
                                                         join activitytype at
 	                                                    on at.activityTypeID = al.activityTypeID
-                                                        where al.userID = @userID");
+                                                        where al.userID = @userID
+                                                        and al.created BETWEEN @startDate and @endDate");
                     cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
                     ReportData = reportConn.ExecuteDataTable(cmd);
                     bindingSource1.DataSource = ReportData;
@@ -53,9 +54,9 @@ namespace Hotel_Reservation_Overhaul.Pages
                 }
 
             }
-            else if(report == "EmployeeHistory")
+            else if(report == "employeeHistory")
             {
-                lblDescribe.Text = "Employee  History Report";
+                lblDescribe.Text = "Employee History Report";
                 User userInfo = new User(userID);
                 lblAccountID.Text = userID.ToString();
                 lblFirstName.Text = userInfo.firstName;

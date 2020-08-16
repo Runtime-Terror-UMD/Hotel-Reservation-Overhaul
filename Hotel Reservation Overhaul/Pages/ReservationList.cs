@@ -17,6 +17,7 @@ namespace Hotel_Reservation_Overhaul
     {
         public User userInfo;
         public int resUserID = -1;
+        
 
         public void displayError(string errorMessage)
         {
@@ -26,6 +27,7 @@ namespace Hotel_Reservation_Overhaul
         public ReservationList(int userID)
         {
             InitializeComponent();
+            resListDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             // gets user info
             userInfo = new User(userID);
@@ -52,8 +54,7 @@ namespace Hotel_Reservation_Overhaul
             {
                 // build and execute query
                 DBConnect reservationListConn = new DBConnect();
-                string reservationListQuery = "SELECT r.confirmationID, r.startDate, r.endDate, loc.locationName  FROM dbo.reservation r join location loc on loc.locationID = r.locationID where r.userID = @userID";
-                MySqlCommand cmd = new MySqlCommand(reservationListQuery);
+                MySqlCommand cmd = new MySqlCommand("SELECT distinct r.confirmationID, r.startDate, r.endDate, loc.locationName  FROM dbo.reservation r join location loc on loc.locationID = r.locationID where r.userID = @userID");
                 cmd.Parameters.AddWithValue("@userID", resUserID);
                 DataSet resReport = reservationListConn.ExecuteDataSet(cmd);
 
@@ -238,7 +239,7 @@ namespace Hotel_Reservation_Overhaul
                             // issue refund payment
                             DBConnect issueRefundConn = new DBConnect();
                             MySqlCommand issueRefund = new MySqlCommand(@"INSERT INTO `dbo`.`payment` (`customerID`, `confirmationID`, `amountPaid`, `paymentMethod`, `usedRewards`)
-                                                                      VALUES (@customerID,@confirmationID, @refundAmt, 'refund', 0");
+                                                                        VALUES (@customerID,@confirmationID, @refundAmt, 'refund', 0");
                             issueRefund.Parameters.Add("@customerID", MySqlDbType.Int32).Value = resInfo.userID;
                             issueRefund.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = resInfo.confirmatonID;
                             issueRefund.Parameters.Add("@refundAmt", MySqlDbType.Decimal).Value = resInfo.amountDue;

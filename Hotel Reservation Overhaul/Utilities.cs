@@ -248,28 +248,32 @@ namespace Hotel_Reservation_Overhaul
             DBConnect getPointsBalanceConn = new DBConnect();
 
             // build query
-            string getPointsBalanceQuery = "SELECT pointsBalance from dbo.user where userid = @userID";
-            MySqlCommand cmd = new MySqlCommand(getPointsBalanceQuery);
+            MySqlCommand cmd = new MySqlCommand("SELECT pointsBalance from dbo.user where userid = @userID");
             cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
 
             //assign value to variable
             rewards = getPointsBalanceConn.intScalar(cmd);
-            getPointsBalanceConn.CloseConnection();
             return rewards;
         }
         //DESCRIPTION: Sets rewards points based on userid
-        public bool setRewardsPoints(int userID, int points)
+        public bool setRewardsPoints(int userID, int points, int createdBy)
         {
             // build query
-            string updatePointsQuery = "UPDATE `dbo`.`user` SET `pointsBalance` = @newPoints WHERE `userID` = @userID";
-            MySqlCommand cmd = new MySqlCommand(updatePointsQuery);
-            cmd.Parameters.Add("@userID", MySqlDbType.Int32, 45).Value = userID;
-            cmd.Parameters.Add("@newPoints", MySqlDbType.Int32, 45).Value = points;
-
+            MySqlCommand cmd = new MySqlCommand("UPDATE `dbo`.`user` SET `pointsBalance` = pointsBalance + @newPoints WHERE `userID` = @userID");
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
+            cmd.Parameters.Add("@newPoints", MySqlDbType.Int32).Value = points;
             DBConnect updatePoints = new DBConnect();
             if ((updatePoints.NonQuery(cmd)) > 0)
-                return true;
-            else
+            {
+                // add to rewards log
+                cmd.CommandText = @"INSERT INTO `dbo`.`reward_log` (`customerID`,`PointsAmount`,`createdBy`,`created`)
+                                    VALUES(@userID, @newPoints, @createdBy, @created)";
+                cmd.Parameters.Add("@createdBy", MySqlDbType.Int32).Value = createdBy;
+                cmd.Parameters.Add("@created", MySqlDbType.Date).Value = DateTime.Today;
+                if ((updatePoints.NonQuery(cmd)) > 0)
+                    return true;
+                return false;
+            }              
                 return false;
         }
 
@@ -338,9 +342,8 @@ namespace Hotel_Reservation_Overhaul
         public bool setFirstName(int userID, string firstName)
         {
             // build query
-            string updateFirstNameQuery = "UPDATE `dbo`.`user` SET `firstName` = @newfirstName WHERE `userID` = @userID";
-            MySqlCommand cmd = new MySqlCommand(updateFirstNameQuery);
-            cmd.Parameters.Add("@userID", MySqlDbType.VarChar, 45).Value = userID;
+            MySqlCommand cmd = new MySqlCommand("UPDATE `dbo`.`user` SET `firstName` = @newfirstName WHERE `userID` = @userID");
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
             cmd.Parameters.Add("@newFirstName", MySqlDbType.VarChar, 45).Value = firstName;
 
             DBConnect updateFirstName = new DBConnect();
@@ -353,9 +356,8 @@ namespace Hotel_Reservation_Overhaul
         public bool setLastName(int userID, string lastName)
         {
             // build query
-            string updateLastNameQuery = "UPDATE `dbo`.`user` SET `lastName` = @newLastName WHERE `userID` = @userID";
-            MySqlCommand cmd = new MySqlCommand(updateLastNameQuery);
-            cmd.Parameters.Add("@userID", MySqlDbType.VarChar, 45).Value = userID;
+            MySqlCommand cmd = new MySqlCommand("UPDATE `dbo`.`user` SET `lastName` = @newLastName WHERE `userID` = @userID");
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
             cmd.Parameters.Add("@newLastName", MySqlDbType.VarChar, 45).Value = lastName;
 
             DBConnect updateLastName = new DBConnect();
@@ -368,11 +370,9 @@ namespace Hotel_Reservation_Overhaul
         public bool setSecretQuestion(int userID, string secretQuestion)
         {
             // build query
-            string updateLastNameQuery = "UPDATE `dbo`.`user` SET `secretQuestion` = @newQuestion WHERE `userID` = @userID";
-            MySqlCommand cmd = new MySqlCommand(updateLastNameQuery);
-            cmd.Parameters.Add("@userID", MySqlDbType.VarChar, 45).Value = userID;
+            MySqlCommand cmd = new MySqlCommand("UPDATE `dbo`.`user` SET `secretQuestion` = @newQuestion WHERE `userID` = @userID");
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
             cmd.Parameters.Add("@newQuestion", MySqlDbType.VarChar, 250).Value = secretQuestion;
-
             DBConnect updatesecretQuestion = new DBConnect();
             if ((updatesecretQuestion.NonQuery(cmd)) > 0)
                 return true;
@@ -385,7 +385,7 @@ namespace Hotel_Reservation_Overhaul
             // build query
             string updateLastNameQuery = "UPDATE `dbo`.`user` SET `secretAnswer` = @newAnswer WHERE `userID` = @userID";
             MySqlCommand cmd = new MySqlCommand(updateLastNameQuery);
-            cmd.Parameters.Add("@userID", MySqlDbType.VarChar, 45).Value = userID;
+            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
             cmd.Parameters.Add("@newAnswer", MySqlDbType.VarChar, 250).Value = secretAnswer;
 
             DBConnect updatesecretAnswer = new DBConnect();
@@ -470,18 +470,21 @@ namespace Hotel_Reservation_Overhaul
             }
         }
 
+        // DESCRIPTION: calculates total price of reservation
         public double calculatePrice(double days, double pricePerNight)
         {
             double price =pricePerNight * days;
             return price;
         }
 
+        // DESCRIPTION: Calculates total points accrued by reservation
         public double calculatePoints(double days)
         {
             double points = days * getDailyPointAmount();
             return points;
         }
 
+        // DESCRIPTION: Gets price per night of roomNum at locationID
         public double getPricePerNight(int locationID, int roomNum)
         {
             DBConnect getPricePerNightConn = new DBConnect();
