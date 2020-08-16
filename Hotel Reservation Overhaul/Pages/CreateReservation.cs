@@ -20,11 +20,12 @@ namespace Hotel_Reservation_Overhaul
         public bool waitlist = false;
         public int resUserID;
         public int userID;
-        public int roomNum = -1;
         public double pricePerNight;
         public double price;
+        public int refRoomNum;
         public int points;
         public string combindstring;
+        List<int> roomNumList = new List<int>();
 
         public CreateReservation(int UserID, int ResUserID )
         {
@@ -76,8 +77,7 @@ namespace Hotel_Reservation_Overhaul
         private void PopulateCheckBoxes()
         {
             DBConnect checkBoxConn = new DBConnect();
-            string checkBoxQuery = "SELECT packageName FROM dbo.package";
-            MySqlCommand cmd = new MySqlCommand(checkBoxQuery);
+            MySqlCommand cmd = new MySqlCommand("SELECT packageName FROM dbo.package");
             checkBoxConn.OpenConnection();
             DataTable checkBoxDT = checkBoxConn.ExecuteDataTable(cmd);
 
@@ -184,9 +184,12 @@ namespace Hotel_Reservation_Overhaul
                 // check for availability
                 Reservation resInfo = new Reservation();
                 int locationID = Convert.ToInt32(cboxHotel.SelectedValue);
-                roomNum =  resInfo.getAvailability(packages, Convert.ToInt32(cboxNumGuests.SelectedItem), locationID, combindstring);
+                int numGuests = Convert.ToInt32(cboxNumGuests.SelectedItem);
+                int numRooms = Convert.ToInt32(cboxNumRooms.SelectedItem);
+
+                roomNumList =  resInfo.getAvailability(packages, numGuests, locationID, numRooms, combindstring);
                 
-                if(roomNum == -1)
+                if(roomNumList.Count != numRooms)
                 {   // no room available, gets roomNum to reference for price 
                     DBConnect checkAvailabilityConn = new DBConnect();
                     MySqlCommand cmd = new MySqlCommand( @"select roomNum
@@ -194,16 +197,19 @@ namespace Hotel_Reservation_Overhaul
                                         where packageID in (" + combindstring + @") and locationID = @locationID
                                         group by roomNum
                                         having count(distinct packageID) = @numPackages limit 1");
+                    
+                    cmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = locationID;
+                    cmd.Parameters.Add("@numPackages", MySqlDbType.Int32).Value = packages.Count();
 
                     MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
                     if (nonAvailableDR.HasRows)
                     {
                         while (nonAvailableDR.Read())
                         {
-                            roomNum = Convert.ToInt32(nonAvailableDR["roomNum"]);
+                            refRoomNum = Convert.ToInt32(nonAvailableDR["roomNum"]);
                         }
                         Utilities getWLPricePerNight = new Utilities();
-                        pricePerNight = getWLPricePerNight.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), roomNum);
+                        pricePerNight = getWLPricePerNight.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), refRoomNum);
                         displayError("No room with those criteria are available. Your reservation will be added to the waitlist");
                         waitlist = true;
                     }            
@@ -218,8 +224,8 @@ namespace Hotel_Reservation_Overhaul
 
                 // calculate price and rewards
                 Utilities calcPrice = new Utilities();
-                pricePerNight = calcPrice.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), roomNum);
-                price = calcPrice.calculatePrice(((endDate.Value - startDate.Value).TotalDays), pricePerNight);
+                pricePerNight = calcPrice.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), roomNumList[0]) * numRooms;
+                price = calcPrice.calculatePrice(((endDate.Value - startDate.Value).TotalDays), pricePerNight) * numRooms;
                 points = Convert.ToInt32(calcPrice.calculatePoints(((endDate.Value - startDate.Value).TotalDays)));
 
                 // fill fields
@@ -252,10 +258,10 @@ namespace Hotel_Reservation_Overhaul
             else
             {   // Get next confirmation ID
                 Reservation createReservation = new Reservation();
-                int confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue), resUserID, userID, startDate.Value, endDate.Value, price, points, roomNum);
-                    var makePayment = new Payment(confirmationID, resUserID);
-                    this.Hide();
-                    makePayment.Show();     
+                int confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue), resUserID, userID, startDate.Value, endDate.Value, price, points, roomNumList);
+                var makePayment = new Payment(confirmationID, resUserID);
+                this.Hide();
+                makePayment.Show();     
             }
         }
 

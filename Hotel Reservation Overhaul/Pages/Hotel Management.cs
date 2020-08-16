@@ -231,9 +231,9 @@ namespace Hotel_Reservation_Overhaul.Pages
                                             // check for availability
                                             string combindstring = string.Join(",", packages);
                                             Reservation resInfo = new Reservation();
-                                            int roomAvailable = resInfo.getAvailability(packages, occNum, hotelID, combindstring);
+                                            List<int> roomAvailable = resInfo.getAvailability(packages, occNum, hotelID, 1, combindstring);
                                             // no room available
-                                            if(roomAvailable == -1)
+                                            if(roomAvailable.Count == 0)
                                             {
                                                MessageBox.Show("No rooms with specified criteria. Please add user to waitlist");   // ADD YESNO MESSAGE BOX
                                                 DBConnect checkAvailabilityConn = new DBConnect();
@@ -257,7 +257,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                             {
                                                 // calculate price and create reservation
                                                 Utilities calcPrice = new Utilities();
-                                                double pricePerNight = calcPrice.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), roomAvailable);
+                                                double pricePerNight = calcPrice.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), roomAvailable[0]);
                                                 double price = calcPrice.calculatePrice(((checkIn - checkOut).TotalDays), pricePerNight);
                                                 int points = Convert.ToInt32(calcPrice.calculatePoints(((checkIn - checkOut).TotalDays)));
                                                 Reservation createReservation = new Reservation();
