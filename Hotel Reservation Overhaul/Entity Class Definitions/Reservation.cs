@@ -186,4 +186,14 @@ public class Reservation
             return false;
         }
     }
+
+    //  DESCRIPTION: 
+    public bool checkOut()
+    {
+
+    }
+    public bool checkIn()
+    {
+
+    }
 }
