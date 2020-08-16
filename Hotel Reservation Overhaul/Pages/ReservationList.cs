@@ -240,9 +240,13 @@ namespace Hotel_Reservation_Overhaul
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                             DateTime newEndDate = currentDate;       //FIXME: Replace with date variable
                             resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNum));
 =======
+=======
+                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
+>>>>>>> parent of 43aebde... resolving conflict
 =======
                             DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
 >>>>>>> parent of 43aebde... resolving conflict
