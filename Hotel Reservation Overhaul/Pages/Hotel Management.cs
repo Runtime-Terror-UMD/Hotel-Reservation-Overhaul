@@ -228,7 +228,8 @@ namespace Hotel_Reservation_Overhaul.Pages
                                     if (userInfo.isCustomer)
                                     {
                                         // if hotel ID exists
-                                        if(hotelExists(hotelID))
+                                        Location HoteExists = new Location();
+                                        if(HoteExists.hotelExists(hotelID))
                                         {
                                             // check for availability
                                             string combindstring = string.Join(",", packages);
@@ -351,8 +352,8 @@ namespace Hotel_Reservation_Overhaul.Pages
 
                                 else
                                 {   // check if hotel ID already exists in DB
-                                    bool alreadyExists = hotelExists(hotelID);
-                                    if (alreadyExists)
+                                    Location HotelExists = new Location();
+                                    if(HotelExists.hotelExists(hotelID))
                                     {
                                         hotelID = 0;
                                         throw new Exception("hotel already exists");
@@ -370,14 +371,8 @@ namespace Hotel_Reservation_Overhaul.Pages
                                         hotelState = fileLines[i].Substring(start).Trim();
 
                                         // insert hotel into database
-                                        DBConnect insertHotelConn = new DBConnect();
-                                        MySqlCommand insertHotel = new MySqlCommand(@"INSERT INTO `dbo`.`location` (`locationID`, `locationName`, `locationCity`,`locationState`)
-                                                                                  VALUES (@hotelID, @hotelName, @hotelCity, @hotelState");
-                                        insertHotel.Parameters.Add("@hotelID", MySqlDbType.Int32).Value = hotelID;
-                                        insertHotel.Parameters.Add("@hotelID", MySqlDbType.VarChar, 100).Value = hotelName;
-                                        insertHotel.Parameters.Add("@hotelID", MySqlDbType.VarChar, 45).Value = hotelCity;
-                                        insertHotel.Parameters.Add("@hotelID", MySqlDbType.VarChar, 45).Value = hotelState;
-                                        if(insertHotelConn.NonQuery(insertHotel) < 1)
+                                        Location insertHotel = new Location();
+                                        if(!(insertHotel.addLocation(hotelID, hotelName, hotelCity, hotelState)))
                                         {
                                             throw new Exception("Error inserting hotel into database. Contact database admin");
                                         }
@@ -397,7 +392,9 @@ namespace Hotel_Reservation_Overhaul.Pages
 
                                 position = fileLines[i].IndexOf(' ', start);
                                 bool successRoomNum = int.TryParse(fileLines[i].Substring(start, position - start + 1), out roomNum);
-                                bool RoomExists = roomExists(roomNum, hotelID);
+                                Room roomExists = new Room();
+                                bool RoomExists = roomExists.roomExists(roomNum, hotelID);
+
                                 // if roomNum exists at hotelID, do not add to DB
                                 if(RoomExists)
                                 {
@@ -462,8 +459,8 @@ namespace Hotel_Reservation_Overhaul.Pages
                                         }
                                         if (pack > 0)
                                         {
-                                            bool packExists = packageExists(pack);
-                                            if(!packExists)
+                                            Package packageExists = new Package(); 
+                                            if(!packageExists.packageExists(pack))
                                             {
                                                 throw new Exception("Invalid package ID.");
                                             }
@@ -485,40 +482,11 @@ namespace Hotel_Reservation_Overhaul.Pages
 
                                 //Add room to hotel in DB
 
-                                DBConnect insertRoomConn = new DBConnect();
-
-                                // insert room details to dbo.room
-                                MySqlCommand insertRoom = new MySqlCommand(@"INSERT INTO `dbo`.`room` (`roomNum`,`locationID`,`occupancy`,`pricePerNight`)
-                                                                             VALUES(@roomNum,@hotelId,@roomOcc,@roomCost)");
-                                insertRoom.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = roomNum;
-                                insertRoom.Parameters.Add("@hotelId", MySqlDbType.Int32).Value = hotelID;
-                                insertRoom.Parameters.Add("@roomOcc", MySqlDbType.Int32).Value = roomOcc;
-                                insertRoom.Parameters.Add("@roomCost", MySqlDbType.Decimal).Value = roomCost;
-                                if (insertRoomConn.NonQuery(insertRoom) < 1)
+                                Room addRoom = new Room();
+                                if (!(addRoom.addRoom(roomNum, hotelID, roomOcc, roomCost, roomPackages)))
                                 {
-                                    throw new Exception("Error creating reservation. Contact database admin");
+                                    throw new Exception("Invalid file format.");
                                 }
-                                else
-                                {                                 //insert packages-room relationship
-                                    MySqlCommand insertRoomPacks = new MySqlCommand(@"INSERT INTO `dbo`.`relation_room_package`(`roomNum`,`locationID`,`packageID`)
-                                                                                VALUES(@roomNum,@hotelId,@packID");
-                                    insertRoomPacks.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = roomNum;
-                                    insertRoom.Parameters.Add("@hotelId", MySqlDbType.Int32).Value = hotelID;
-
-                                    foreach (var pack in roomPackages)
-                                    {
-                                        insertRoomPacks.Parameters.Add("@packID", MySqlDbType.Int32).Value = pack;
-                                        if(insertRoomConn.NonQuery(insertRoomPacks) < 1)
-                                        {
-                                            throw new Exception("Error creating reservation. Contact database admin");
-                                        }
-                                    }
-                                }
-
-                            }
-                            else
-                            {
-                                throw new Exception("Invalid file format.");
                             }
                         }
                     }//end of file
@@ -579,13 +547,13 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 decimal packCost;
                                 position = fileLines[i].IndexOf(' ', start);
                                 bool successPackID = int.TryParse(fileLines[i].Substring(start, position - start + 1), out packID); //set packid
-                                bool packExists = packageExists(packID);
+                                Package packageExists = new Package();
                                 if (packID <= 0)
                                 {
                                     throw new Exception("Invalid package ID.");
                                 }
                                 //If package exists in DB, throw exception
-                                else if (packExists)
+                                else if (packageExists.packageExists(packID))
                                 {
                                     throw new Exception("Package already exists.");
                                 }
@@ -615,14 +583,11 @@ namespace Hotel_Reservation_Overhaul.Pages
                                         else
                                         {
                                             //add package to database
-                                            DBConnect insertPackageConn = new DBConnect();
-                                            MySqlCommand insertPackage = new MySqlCommand(@"INSERT INTO `dbo`.`package`(`packageID`,`packageName`,`pricePerNight`)
-                                                                                          VALUES(@packID >, @packName, @packCost)");
-                                            insertPackage.Parameters.Add("@packID", MySqlDbType.VarChar, 45).Value = packID;
-                                            insertPackage.Parameters.Add("@packName", MySqlDbType.VarChar, 45).Value = packName;
-                                            insertPackage.Parameters.Add("@packName", MySqlDbType.Decimal).Value = packCost;
-
-                                            packageCount++;
+                                            Package insertPackage = new Package();
+                                            if (insertPackage.addPackage(packID, packName, packCost))
+                                                packageCount++;
+                                            else
+                                                throw new Exception("Error inserting package to database");
                                         }
                                     }
                                 }
@@ -755,8 +720,8 @@ namespace Hotel_Reservation_Overhaul.Pages
                             else if (startCode == "H") //get line for hotel ID
                             {
                                 bool successHotel = int.TryParse(fileLines[i].Substring(start), out hotelID);
-                                bool HotelExists = hotelExists(hotelID);
-                                if(!successHotel || hotelID < 0 || !HotelExists) // IF HOTEL DOESNT EXIST THROW EXCEPTION
+                                Location HotelExists = new Location();
+                                if(!successHotel || hotelID < 0 || (!HotelExists.hotelExists(hotelID))) // IF HOTEL DOESNT EXIST THROW EXCEPTION
                                 {
                                     throw new Exception("Unable to retrieve hotel ID.");
                                 }
@@ -765,7 +730,8 @@ namespace Hotel_Reservation_Overhaul.Pages
                             {
                                 int roomNum;
                                 bool successRoom = int.TryParse(fileLines[i].Substring(start), out roomNum);
-                                bool RoomExists = roomExists(roomNum, hotelID);
+                                Room roomExists = new Room();
+                                bool RoomExists = roomExists.roomExists(roomNum, hotelID);
                                 // if room doesn't exist, throw exception
                                 if (!successRoom || roomNum < 0 || !RoomExists) 
                                 {
@@ -818,47 +784,7 @@ namespace Hotel_Reservation_Overhaul.Pages
         {
             System.Windows.Forms.Application.Exit();
         }
-
-        private bool hotelExists(int hotelID)
-        {
-            // checks to make sure hotelID does not exist in database
-            DBConnect checkForHotelConn = new DBConnect();
-            MySqlCommand checkForHotel = new MySqlCommand("SELECT COUNT(*) FROM dbo.location WHERE locationID = @hotelID");
-            checkForHotel.Parameters.Add("@hotelID", MySqlDbType.Int32).Value = hotelID;
-
-            // hotel already exists, set hotelID = 0
-            if (checkForHotelConn.intScalar(checkForHotel) > 0)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        private bool packageExists(int packID)
-        {
-            DBConnect verifyPackageConn = new DBConnect();
-            MySqlCommand verifyPackage = new MySqlCommand("SELECT COUNT(*) from dbo.package where packageID = @pack");
-            verifyPackage.Parameters.Add("@pack", MySqlDbType.Int32).Value = packID;
-            if (verifyPackageConn.intScalar(verifyPackage) > 0)
-            {
-                return true;
-            }
-            return false;
-        }
-        private bool roomExists(int roomNum, int hotelID)
-        {
-            DBConnect checkForRoomConn = new DBConnect();
-            MySqlCommand checkForRoom = new MySqlCommand("SELECT COUNT(*) FROM dbo.room where roomNum = @roomNum and locationID = @hotelID");
-            checkForRoom.Parameters.Add("@hotelID", MySqlDbType.Int32).Value = hotelID;
-            checkForRoom.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = roomNum;
-
-            if (checkForRoomConn.intScalar(checkForRoom) > 0)
-            {
-                return true;
-            }
-            return false;
-        }
-
+    
         private void lstReports_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             if (lstReports.SelectedItem.ToString() == "Customer History" || lstReports.SelectedItem.ToString() == "Employee History")
