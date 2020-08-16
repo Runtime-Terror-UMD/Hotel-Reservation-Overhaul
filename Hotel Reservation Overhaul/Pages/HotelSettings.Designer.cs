@@ -49,14 +49,16 @@
             this.lblCancelationFee = new System.Windows.Forms.Label();
             this.btnCancelationFee = new System.Windows.Forms.Button();
             this.grpRewards = new System.Windows.Forms.GroupBox();
+            this.btnReset = new System.Windows.Forms.Button();
             this.txtCustomerRewards = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.lblCustomerPoints = new System.Windows.Forms.Label();
             this.btnCustomerRewards = new System.Windows.Forms.Button();
             this.txtCustomerID = new System.Windows.Forms.TextBox();
             this.lblCustomerID = new System.Windows.Forms.Label();
             this.btnCustomerID = new System.Windows.Forms.Button();
             this.lblError = new System.Windows.Forms.Label();
-            this.btnReset = new System.Windows.Forms.Button();
+            this.txtAdjustPoints = new System.Windows.Forms.TextBox();
+            this.lblAdjustPoints = new System.Windows.Forms.Label();
             this.grpHotelSettings.SuspendLayout();
             this.grpRewards.SuspendLayout();
             this.SuspendLayout();
@@ -266,9 +268,11 @@
             // 
             // grpRewards
             // 
+            this.grpRewards.Controls.Add(this.txtAdjustPoints);
+            this.grpRewards.Controls.Add(this.lblAdjustPoints);
             this.grpRewards.Controls.Add(this.btnReset);
             this.grpRewards.Controls.Add(this.txtCustomerRewards);
-            this.grpRewards.Controls.Add(this.label3);
+            this.grpRewards.Controls.Add(this.lblCustomerPoints);
             this.grpRewards.Controls.Add(this.btnCustomerRewards);
             this.grpRewards.Controls.Add(this.txtCustomerID);
             this.grpRewards.Controls.Add(this.lblCustomerID);
@@ -280,33 +284,45 @@
             this.grpRewards.TabStop = false;
             this.grpRewards.Text = "Rewards Points";
             // 
+            // btnReset
+            // 
+            this.btnReset.Location = new System.Drawing.Point(385, 58);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(150, 25);
+            this.btnReset.TabIndex = 44;
+            this.btnReset.Text = "Clear Form";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Visible = false;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
             // txtCustomerRewards
             // 
-            this.txtCustomerRewards.Location = new System.Drawing.Point(265, 66);
+            this.txtCustomerRewards.Enabled = false;
+            this.txtCustomerRewards.Location = new System.Drawing.Point(265, 60);
             this.txtCustomerRewards.Name = "txtCustomerRewards";
             this.txtCustomerRewards.Size = new System.Drawing.Size(100, 20);
             this.txtCustomerRewards.TabIndex = 43;
             this.txtCustomerRewards.Visible = false;
             // 
-            // label3
+            // lblCustomerPoints
             // 
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label3.Location = new System.Drawing.Point(45, 66);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(210, 20);
-            this.label3.TabIndex = 41;
-            this.label3.Text = "Customer Rewards Points:";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label3.Visible = false;
+            this.lblCustomerPoints.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCustomerPoints.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblCustomerPoints.Location = new System.Drawing.Point(45, 60);
+            this.lblCustomerPoints.Name = "lblCustomerPoints";
+            this.lblCustomerPoints.Size = new System.Drawing.Size(210, 20);
+            this.lblCustomerPoints.TabIndex = 41;
+            this.lblCustomerPoints.Text = "Customer Rewards Points:";
+            this.lblCustomerPoints.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblCustomerPoints.Visible = false;
             // 
             // btnCustomerRewards
             // 
-            this.btnCustomerRewards.Location = new System.Drawing.Point(385, 62);
+            this.btnCustomerRewards.Location = new System.Drawing.Point(385, 88);
             this.btnCustomerRewards.Name = "btnCustomerRewards";
             this.btnCustomerRewards.Size = new System.Drawing.Size(150, 25);
             this.btnCustomerRewards.TabIndex = 42;
-            this.btnCustomerRewards.Text = "Set Rewards Points";
+            this.btnCustomerRewards.Text = "Add Rewards Points";
             this.btnCustomerRewards.UseVisualStyleBackColor = true;
             this.btnCustomerRewards.Visible = false;
             this.btnCustomerRewards.Click += new System.EventHandler(this.btnCustomerRewards_Click);
@@ -351,16 +367,25 @@
             this.lblError.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.lblError.Visible = false;
             // 
-            // btnReset
+            // txtAdjustPoints
             // 
-            this.btnReset.Location = new System.Drawing.Point(265, 93);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(100, 25);
-            this.btnReset.TabIndex = 44;
-            this.btnReset.Text = "Reset";
-            this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Visible = false;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            this.txtAdjustPoints.Location = new System.Drawing.Point(265, 90);
+            this.txtAdjustPoints.Name = "txtAdjustPoints";
+            this.txtAdjustPoints.Size = new System.Drawing.Size(100, 20);
+            this.txtAdjustPoints.TabIndex = 46;
+            this.txtAdjustPoints.Visible = false;
+            // 
+            // lblAdjustPoints
+            // 
+            this.lblAdjustPoints.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAdjustPoints.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblAdjustPoints.Location = new System.Drawing.Point(45, 90);
+            this.lblAdjustPoints.Name = "lblAdjustPoints";
+            this.lblAdjustPoints.Size = new System.Drawing.Size(210, 20);
+            this.lblAdjustPoints.TabIndex = 45;
+            this.lblAdjustPoints.Text = "Adjust Customer Points:";
+            this.lblAdjustPoints.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblAdjustPoints.Visible = false;
             // 
             // HotelSettings
             // 
@@ -408,12 +433,14 @@
         private System.Windows.Forms.Button btnPointsPerDay;
         private System.Windows.Forms.GroupBox grpRewards;
         private System.Windows.Forms.TextBox txtCustomerRewards;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblCustomerPoints;
         private System.Windows.Forms.Button btnCustomerRewards;
         private System.Windows.Forms.TextBox txtCustomerID;
         private System.Windows.Forms.Label lblCustomerID;
         private System.Windows.Forms.Button btnCustomerID;
         private System.Windows.Forms.Label lblError;
         private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.TextBox txtAdjustPoints;
+        private System.Windows.Forms.Label lblAdjustPoints;
     }
 }

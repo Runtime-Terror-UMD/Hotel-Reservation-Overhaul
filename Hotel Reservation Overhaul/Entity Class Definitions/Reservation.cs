@@ -56,6 +56,7 @@ public class Reservation
             amountPaid = Convert.ToDouble(dataReader["amountPaid"]);
             amountDue = Convert.ToDouble(dataReader["amountDue"]);
             status = dataReader["reservationStatus"].ToString();
+            numGuests = Convert.ToInt32(dataReader["numGuests"]);
             roomNumList.Add((Convert.ToInt32(dataReader["roomNum"])));
         }
 
@@ -98,8 +99,7 @@ public class Reservation
     }
 
     //DESCRIPTION: Gets availability for specified reservation request
-    //DESCRIPTION: Gets availability for specified reservation request
-    public List<int> getAvailability(List<int> packages, int numGuests, int hotelID, int numRooms, string combindstring)
+    public List<int> getAvailability(List<int> packages, int numGuests,int hotelID, int numRooms, string combindstring)
     {
         List<int> roomNumsAvailable = new List<int>();
         DBConnect checkAvailabilityConn = new DBConnect();
@@ -128,7 +128,7 @@ public class Reservation
             // gets roomNum(s) if available
             while (dataReader.Read())
             {
-                roomNumsAvailable.Add(Convert.ToInt32(dataReader["roomNum"]));
+                    roomNumsAvailable.Add(Convert.ToInt32(dataReader["roomNum"]));
             }
             dataReader.Close();
             checkAvailabilityConn.CloseConnection();

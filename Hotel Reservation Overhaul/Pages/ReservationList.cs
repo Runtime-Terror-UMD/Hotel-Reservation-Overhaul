@@ -15,8 +15,9 @@ namespace Hotel_Reservation_Overhaul
 {
     public partial class ReservationList : Form
     {
-        User userInfo;
+        public User userInfo;
         public int resUserID = -1;
+        
 
         public void displayError(string errorMessage)
         {
@@ -26,7 +27,7 @@ namespace Hotel_Reservation_Overhaul
         public ReservationList(int userID)
         {
             InitializeComponent();
-            resListDataGrid.MultiSelect = false;
+            resListDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             // gets user info
             userInfo = new User(userID);
@@ -53,8 +54,7 @@ namespace Hotel_Reservation_Overhaul
             {
                 // build and execute query
                 DBConnect reservationListConn = new DBConnect();
-                string reservationListQuery = "SELECT r.confirmationID, r.startDate, r.endDate, loc.locationName  FROM dbo.reservation r join location loc on loc.locationID = r.locationID where r.userID = @userID";
-                MySqlCommand cmd = new MySqlCommand(reservationListQuery);
+                MySqlCommand cmd = new MySqlCommand("SELECT distinct r.confirmationID, r.startDate, r.endDate, loc.locationName  FROM dbo.reservation r join location loc on loc.locationID = r.locationID where r.userID = @userID and r.reservationStatus <> 'cancelled'");
                 cmd.Parameters.AddWithValue("@userID", resUserID);
                 DataSet resReport = reservationListConn.ExecuteDataSet(cmd);
 
@@ -72,7 +72,6 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Logs out of system
         private void btnLogOut_Click(object sender, EventArgs e)
         {
-            //Application.OpenForms["Login"].Show();
             this.Close();
             Application.OpenForms["Menu"].Close();
         }
@@ -104,6 +103,7 @@ namespace Hotel_Reservation_Overhaul
                 {
                     displayError("Entered user ID is not customer");
                 }
+                else
                 // customer ID exists, pull report
                 {
                     GetData();
@@ -126,8 +126,7 @@ namespace Hotel_Reservation_Overhaul
             this.reservationTableAdapter.Fill(this.hotelmgmt.reservation);
 
         }
-
-
+        // DESCRIPTION: Gets confirmation ID of selected reservation row
         private int getConfirmationID()
         {
             int selectedrowindex = resListDataGrid.SelectedCells[0].RowIndex;
@@ -143,12 +142,20 @@ namespace Hotel_Reservation_Overhaul
                 // Pulls out confirmation ID from selected row
                 int confirmationID = getConfirmationID();
 
-                // Passes confirmation ID and user ID to payment page
-                var makePayment = new Payment(confirmationID, resUserID);
-                makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
-                this.Hide();
-                makePayment.Show();
+                Reservation makeResPayment = new Reservation(confirmationID);
 
+                // check that reservation not already paid
+                if (makeResPayment.amountDue > 0)
+                { // Passes confirmation ID and user ID to payment page
+                    var makePayment = new Payment(confirmationID, resUserID);
+                    makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
+                    this.Hide();
+                    makePayment.Show();
+                }
+                else
+                {
+                    displayError("This reservation has been paid in full");
+                }
             }
             else
             {
@@ -184,15 +191,31 @@ namespace Hotel_Reservation_Overhaul
 
         private void btnModify_Click(object sender, EventArgs e)
         {
-
+            if (resUserID == -1)
+            {
+                displayError("Please enter a customer ID");
+            }
+            else if (resListDataGrid.SelectedRows.Count < 1)
+            {
+                displayError("Please select a reservation");
+            }
+            else
+            {
+                // Pulls out confirmation ID from selected row
+                int confirmationID = getConfirmationID();
+                var modReservation = new CreateReservation(userInfo.userID, confirmationID, true);
+                this.Hide();
+                modReservation.Show();
+            }
         }
 
         // DESCRIPTION: Reservation cancellation process
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            Utilities getFileSettings = new Utilities();
             if (resListDataGrid.SelectedRows.Count > 0)
             {
-                string cancelMessage = "Please note, a 50.00 charge will apply to any reservation cancelled within 3 days of the start date. Continue with cancellation?";
+                string cancelMessage = "Please note, a " + getFileSettings.getCancelCharge() + " charge will apply to any reservation cancelled within " + getFileSettings.getCancelWindow() +" days of the start date. Continue with cancellation?";
                 var selectedOption = MessageBox.Show(cancelMessage, "Cancel reservation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (selectedOption == DialogResult.Yes)
                 {
@@ -213,8 +236,39 @@ namespace Hotel_Reservation_Overhaul
                         {
                             // update reservation info
                             Utilities recalc = new Utilities();
-                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+                            DateTime newEndDate = currentDate;       //FIXME: Replace with date variable
                             resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNum));
+=======
+=======
+                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
+>>>>>>> parent of 43aebde... resolving conflict
+=======
+                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
+>>>>>>> parent of 43aebde... resolving conflict
+=======
+                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
+>>>>>>> parent of 43aebde... resolving conflict
+=======
+                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
+>>>>>>> parent of 43aebde... resolving conflict
+=======
+                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
+>>>>>>> parent of 43aebde... resolving conflict
+=======
+                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
+>>>>>>> parent of 43aebde... resolving conflict
+=======
+                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
+>>>>>>> parent of 43aebde... resolving conflict
+                            resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNumList[0]));
+>>>>>>> parent of 43aebde... resolving conflict
                             resInfo.points = Convert.ToInt32(recalc.calculatePoints((newEndDate - resInfo.endDate).TotalDays));
                             resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
                             resInfo.status = "checked-out";
@@ -222,9 +276,9 @@ namespace Hotel_Reservation_Overhaul
                         else if (resInfo.status == "upcoming")
                         {
                             // if reservation is within 3 days
-                            if (((resInfo.startDate - DateTime.Today).TotalDays) <= 3)
+                            if (((resInfo.startDate - DateTime.Today).TotalDays) <= getFileSettings.getCancelWindow())
                             {
-                                resInfo.totalPrice = 50;
+                                resInfo.totalPrice = (double)getFileSettings.getCancelCharge();
                             }
                             else
                             {
@@ -258,7 +312,8 @@ namespace Hotel_Reservation_Overhaul
                         else
                         {
                             resInfo.logCancellation(userInfo.userID, resUserID);
-                        }                    
+                        }
+                        GetData();
                     }
                 }             
             }

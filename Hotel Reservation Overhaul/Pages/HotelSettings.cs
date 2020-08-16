@@ -209,12 +209,17 @@ namespace Hotel_Reservation_Overhaul.Pages
             int user;
             if(int.TryParse(txtCustomerID.Text, out user) && account.userIDExists(user))
             {
-                int rewardsPoints = account.getRewardsPoints(user);
+                User userInfo = new User(user);
+                int rewardsPoints = userInfo.rewardPoints;
                 txtCustomerRewards.Text = "" + rewardsPoints;
                 txtCustomerRewards.Visible = true;
                 btnCustomerRewards.Visible = true;
                 txtCustomerID.Enabled = false;
                 btnCustomerID.Enabled = false;
+                btnReset.Visible = true;
+                lblCustomerPoints.Visible = true;
+                txtAdjustPoints.Visible = true;
+                lblAdjustPoints.Visible = true;
             }
             else
             {
@@ -228,11 +233,17 @@ namespace Hotel_Reservation_Overhaul.Pages
             int rewards;
             int user;
             int.TryParse(txtCustomerID.Text, out user);
-            if (int.TryParse(txtCustomerRewards.Text, out rewards))
+            User userInfo = new User(user);
+            int points = userInfo.rewardPoints;
+            if (int.TryParse(txtAdjustPoints.Text, out rewards)) //rewards is the added/removed points amount
             {
-                if(rewards >= 0 && account.setRewardsPoints(user, rewards))
+                Reward addPoints = new Reward();             
+                if(points >= 0 && addPoints.setRewardsPoints(user, rewards, UserID))
                 {
                     displayMessage("Rewards points updated for " + user, false);
+                    txtCustomerRewards.Text = "" + points + rewards;
+                    txtAdjustPoints.Clear();
+                    //TODO: add rewards tracking here
                 }
                 else
                 {
@@ -251,7 +262,14 @@ namespace Hotel_Reservation_Overhaul.Pages
             btnCustomerID.Enabled = true;
             txtCustomerRewards.Visible = false;
             btnCustomerRewards.Visible = false;
+            txtAdjustPoints.Visible = false;
+            lblAdjustPoints.Visible = false;
+            lblCustomerPoints.Visible = false;
+            lblAdjustPoints.Visible = false;
+            btnReset.Visible = false;
             txtCustomerRewards.Clear();
+            txtAdjustPoints.Clear();
+            txtCustomerID.Clear();
         }
     }
 }
