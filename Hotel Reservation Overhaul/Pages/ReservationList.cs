@@ -236,7 +236,7 @@ namespace Hotel_Reservation_Overhaul
                             // update reservation info
                             Utilities recalc = new Utilities();
                             DateTime newEndDate = currentDate;       //FIXME: Replace with date variable
-                            resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNum));
+                            resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNumList[0]));
                             resInfo.points = Convert.ToInt32(recalc.calculatePoints((newEndDate - resInfo.endDate).TotalDays));
                             resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
                             resInfo.status = "checked-out";
@@ -258,16 +258,9 @@ namespace Hotel_Reservation_Overhaul
                         }
                         if (resInfo.amountDue < 0)
                         {
-                            // issue refund payment
-                            DBConnect issueRefundConn = new DBConnect();
-                            MySqlCommand issueRefund = new MySqlCommand(@"INSERT INTO `dbo`.`payment` (`customerID`, `confirmationID`, `amountPaid`, `paymentMethod`, `usedRewards`)
-                                                                      VALUES (@customerID,@confirmationID, @refundAmt, 'refund', 0");
-                            issueRefund.Parameters.Add("@customerID", MySqlDbType.Int32).Value = resInfo.userID;
-                            issueRefund.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = resInfo.confirmatonID;
-                            issueRefund.Parameters.Add("@refundAmt", MySqlDbType.Decimal).Value = resInfo.amountDue;
-                            issueRefundConn.NonQuery(issueRefund);
-                            resInfo.amountPaid = resInfo.amountDue + resInfo.amountPaid;
-                            resInfo.amountDue = 0;
+                            PaymentRecord issueRefund = new PaymentRecord();
+                            // system account issues refund payment
+                            issueRefund.makePayment(17, resInfo.confirmatonID, resInfo.amountDue, "refund", false);                                                     
                         }
                         // update reservation record
                         resInfo.updateReservation(resInfo);
