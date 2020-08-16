@@ -289,9 +289,15 @@ namespace Hotel_Reservation_Overhaul
                 Reservation createReservation = new Reservation();
                 int confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue), resUserID, userID, startDate.Value, endDate.Value, price, points, roomNumList, Convert.ToInt32(cboxNumGuests.SelectedItem));
                 var makePayment = new Payment(confirmationID, resUserID);
+                makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
                 this.Hide();
                 makePayment.Show();     
             }
+        }
+
+        private void makePayment_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Show();
         }
 
         private void checkPackages_SelectedIndexChanged(object sender, EventArgs e)

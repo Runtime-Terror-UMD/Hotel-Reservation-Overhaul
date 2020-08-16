@@ -414,7 +414,7 @@ namespace Hotel_Reservation_Overhaul
         {
             decimal cancelCharge;
             string[] fileLines = File.ReadAllLines("HotelSettings.txt");
-            if (decimal.TryParse(fileLines[1].Substring(fileLines[0].IndexOf(' ')), out cancelCharge))
+            if (decimal.TryParse(fileLines[1].Substring(fileLines[1].IndexOf(' ')), out cancelCharge))
             {
                 return cancelCharge;
             }
@@ -429,7 +429,7 @@ namespace Hotel_Reservation_Overhaul
         {
             int cancelWindow;
             string[] fileLines = File.ReadAllLines("HotelSettings.txt");
-            if (int.TryParse(fileLines[2].Substring(fileLines[0].IndexOf(' ')), out cancelWindow))
+            if (int.TryParse(fileLines[2].Substring(fileLines[2].IndexOf(' ')), out cancelWindow))
             {
                 return cancelWindow;
             }
@@ -444,7 +444,7 @@ namespace Hotel_Reservation_Overhaul
         {
             int points;
             string[] fileLines = File.ReadAllLines("HotelSettings.txt");
-            if (int.TryParse(fileLines[3].Substring(fileLines[0].IndexOf(' ')), out points))
+            if (int.TryParse(fileLines[3].Substring(fileLines[3].IndexOf(' ')), out points))
             {
                 return points;
             }
@@ -459,7 +459,7 @@ namespace Hotel_Reservation_Overhaul
         {
             int notifDays;
             string[] fileLines = File.ReadAllLines("HotelSettings.txt");
-            if (int.TryParse(fileLines[4].Substring(fileLines[0].IndexOf(' ')), out notifDays))
+            if (int.TryParse(fileLines[4].Substring(fileLines[4].IndexOf(' ')), out notifDays))
             {
                 return notifDays;
             }
