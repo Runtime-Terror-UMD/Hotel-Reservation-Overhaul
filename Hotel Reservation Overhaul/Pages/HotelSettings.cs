@@ -209,7 +209,8 @@ namespace Hotel_Reservation_Overhaul.Pages
             int user;
             if(int.TryParse(txtCustomerID.Text, out user) && account.userIDExists(user))
             {
-                int rewardsPoints = account.getRewardsPoints(user);
+                User userInfo = new User(user);
+                int rewardsPoints = userInfo.rewardPoints;
                 txtCustomerRewards.Text = "" + rewardsPoints;
                 txtCustomerRewards.Visible = true;
                 btnCustomerRewards.Visible = true;
@@ -232,14 +233,15 @@ namespace Hotel_Reservation_Overhaul.Pages
             int rewards;
             int user;
             int.TryParse(txtCustomerID.Text, out user);
-            int points = account.getRewardsPoints(user);
+            User userInfo = new User(user);
+            int points = userInfo.rewardPoints;
             if (int.TryParse(txtAdjustPoints.Text, out rewards)) //rewards is the added/removed points amount
             {
-                points = points + rewards;
-                if(points >= 0 && account.setRewardsPoints(user, points, UserID))
+                Reward addPoints = new Reward();             
+                if(points >= 0 && addPoints.setRewardsPoints(user, rewards, UserID))
                 {
                     displayMessage("Rewards points updated for " + user, false);
-                    txtCustomerRewards.Text = "" + points;
+                    txtCustomerRewards.Text = "" + points + rewards;
                     txtAdjustPoints.Clear();
                     //TODO: add rewards tracking here
                 }

@@ -8,7 +8,7 @@ class PaymentRecord
     private int confirmationID { get; set; }
     private double amount { get; set; }
 
-    PaymentRecord() { }
+    public PaymentRecord() { }
     PaymentRecord(int confirm, double amt)
     {
         //this.paymentID = ?? from database
