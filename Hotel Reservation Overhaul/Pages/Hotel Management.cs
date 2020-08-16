@@ -821,6 +821,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 if (userReport.isCustomer(Convert.ToInt32(txtUser.Text)))
                                 {   // pull report
                                     var customerHistory = new ReportViewer("customerHistory", Convert.ToInt32(txtUser.Text));
+                                    customerHistory.FormClosed += new FormClosedEventHandler(userHistory_FormClosed);
                                     this.Hide();
                                     customerHistory.Show();
                                 }
@@ -834,6 +835,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 if (!(userReport.isCustomer(Convert.ToInt32(txtUser.Text))))
                                 {   // pull report
                                     var employeeHistory = new ReportViewer("employeeHistory", Convert.ToInt32(txtUser.Text));
+                                    employeeHistory.FormClosed += new FormClosedEventHandler(userHistory_FormClosed);
                                     this.Hide();
                                     employeeHistory.Show();
                                 }
@@ -850,6 +852,11 @@ namespace Hotel_Reservation_Overhaul.Pages
                     }                  
                 }
             }
+        }
+
+        private void userHistory_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Show();
         }
 
         private void btnHotelSettings_Click(object sender, EventArgs e)
