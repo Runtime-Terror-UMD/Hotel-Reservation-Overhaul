@@ -252,6 +252,9 @@ namespace Hotel_Reservation_Overhaul
 =======
                             DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
 >>>>>>> parent of 43aebde... resolving conflict
+=======
+                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
+>>>>>>> parent of 43aebde... resolving conflict
                             resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNumList[0]));
 >>>>>>> parent of 43aebde... resolving conflict
                             resInfo.points = Convert.ToInt32(recalc.calculatePoints((newEndDate - resInfo.endDate).TotalDays));
