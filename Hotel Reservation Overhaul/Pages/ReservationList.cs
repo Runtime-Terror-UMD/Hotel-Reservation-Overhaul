@@ -17,15 +17,17 @@ namespace Hotel_Reservation_Overhaul
     {
         public User userInfo;
         public int resUserID = -1;
+        private DateTime currentDate;
 
         public void displayError(string errorMessage)
         {
             lblError.Visible = true;
             lblError.Text = "Error: " + errorMessage;
         }
-        public ReservationList(int userID)
+        public ReservationList(int userID, DateTime current)
         {
             InitializeComponent();
+            currentDate = current;
             resListDataGrid.MultiSelect = false;
 
             // gets user info
@@ -143,7 +145,7 @@ namespace Hotel_Reservation_Overhaul
                 int confirmationID = getConfirmationID();
 
                 // Passes confirmation ID and user ID to payment page
-                var makePayment = new Payment(confirmationID, resUserID);
+                var makePayment = new Payment(confirmationID, resUserID, currentDate);
                 makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
                 this.Hide();
                 makePayment.Show();
@@ -169,7 +171,7 @@ namespace Hotel_Reservation_Overhaul
             }
             else
             {
-                var newReservation = new CreateReservation(userInfo.userID, resUserID);
+                var newReservation = new CreateReservation(userInfo.userID, resUserID, currentDate);
                 newReservation.FormClosed += new FormClosedEventHandler(newReservation_FormClosed);
                 this.Hide();
                 newReservation.Show();
@@ -213,7 +215,7 @@ namespace Hotel_Reservation_Overhaul
                         {
                             // update reservation info
                             Utilities recalc = new Utilities();
-                            DateTime newEndDate = DateTime.Today;       //FIXME: Replace with date variable
+                            DateTime newEndDate = currentDate;       //FIXME: Replace with date variable
                             resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNum));
                             resInfo.points = Convert.ToInt32(recalc.calculatePoints((newEndDate - resInfo.endDate).TotalDays));
                             resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
@@ -222,7 +224,7 @@ namespace Hotel_Reservation_Overhaul
                         else if (resInfo.status == "upcoming")
                         {
                             // if reservation is within 3 days
-                            if (((resInfo.startDate - DateTime.Today).TotalDays) <= getFileSettings.getCancelWindow())
+                            if (((resInfo.startDate - currentDate).TotalDays) <= getFileSettings.getCancelWindow())
                             {
                                 resInfo.totalPrice = (double)getFileSettings.getCancelCharge();
                             }
@@ -253,11 +255,11 @@ namespace Hotel_Reservation_Overhaul
                         // log cancellation
                         if(userInfo.isCustomer) 
                         {
-                            resInfo.logCancellation(userInfo.userID, userInfo.userID);
+                            resInfo.logCancellation(userInfo.userID, userInfo.userID, currentDate);
                         }
                         else
                         {
-                            resInfo.logCancellation(userInfo.userID, resUserID);
+                            resInfo.logCancellation(userInfo.userID, resUserID, currentDate);
                         }                    
                     }
                 }             

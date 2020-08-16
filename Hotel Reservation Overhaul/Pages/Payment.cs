@@ -14,12 +14,15 @@ namespace Hotel_Reservation_Overhaul
     {
         User userInfo;
         Reservation resInfo;
-        public Payment(int confirmationID, int userID)
+        private DateTime currentDate;
+        public Payment(int confirmationID, int userID, DateTime current)
         {
             InitializeComponent();
+            currentDate = current;
             resInfo = new Reservation(confirmationID);
             userInfo = new User(userID);
             lblPoints.Text = "" + userInfo.rewardPoints;
+            dateTimePicker1.Value = currentDate;
         }
 
         private void btnLogOut_Click(object sender, EventArgs e)

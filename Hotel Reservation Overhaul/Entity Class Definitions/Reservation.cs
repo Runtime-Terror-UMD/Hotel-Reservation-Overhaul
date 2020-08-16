@@ -93,14 +93,14 @@ public class Reservation
     }
 
     // DESCRIPTION: Adds cancellation to activity log
-    public void logCancellation(int cancelledBy, int userID)
+    public void logCancellation(int cancelledBy, int userID, DateTime current)
     {
         DBConnect cancelResConn = new DBConnect();
         MySqlCommand cancelRes = new MySqlCommand(@"INSERT INTO `dbo`.`activitylog`(`userID`,`activityTypeID`,`refID`,`created`.`createdBy`)
                                                     VALUES(@userID,3,@confirmationID,@created,@createdBy");
         cancelRes.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
         cancelRes.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = this.confirmatonID;
-        cancelRes.Parameters.Add("@created", MySqlDbType.Int32).Value = DateTime.Today;      //FIXME: Replace with date varialbe
+        cancelRes.Parameters.Add("@created", MySqlDbType.Int32).Value = current;      //FIXME: Replace with date varialbe
         cancelRes.Parameters.Add("@createdBy", MySqlDbType.Int32).Value = cancelledBy;
         cancelResConn.NonQuery(cancelRes);
     }
@@ -140,7 +140,7 @@ public class Reservation
     }
 
     // DESCRIPTION: Adds reservation to dbo.reservation and activity log
-    public int makeReservation(int locationID, int newResUserID, int resUserID, DateTime startDate, DateTime endDate, double newResPrice, int newResPoints, int newResRoomNum)
+    public int makeReservation(int locationID, int newResUserID, int resUserID, DateTime startDate, DateTime endDate, double newResPrice, int newResPoints, int newResRoomNum, DateTime current)
     {
         DBConnect createResConn = new DBConnect();
         MySqlCommand createResCmd = new MySqlCommand("INSERT INTO `dbo`.`reservation`(`confirmationID`,`userID`,`locationID`,`roomNum`,`startDate`,`endDate`,`pointsAccumulated`,`price`,`amountDue`,`amountPaid`,`reservationStatus`,`created`)VALUES(@confirmationID,@userID,@locationID,@roomNum,@startDate,@endDate,@points,@price,@price,0,@status,@created)");
@@ -158,7 +158,7 @@ public class Reservation
         createResCmd.Parameters.Add("@points", MySqlDbType.Int32).Value = newResPoints;
         createResCmd.Parameters.Add("@price", MySqlDbType.Decimal).Value = newResPrice;
         createResCmd.Parameters.Add("@status", MySqlDbType.VarChar, 45).Value = "upcoming";
-        createResCmd.Parameters.Add("@created", MySqlDbType.Date).Value = DateTime.Today;               //FIXME: ADD DATE PARAMETER
+        createResCmd.Parameters.Add("@created", MySqlDbType.Date).Value = current;
 
         if (createResConn.NonQuery(createResCmd) > 0)
         {
@@ -167,7 +167,7 @@ public class Reservation
             logActivity.Parameters.Add("@confirmationID", MySqlDbType.Int32, 10).Value = comfirmationID;
             logActivity.Parameters.Add("@createdBy", MySqlDbType.Int32, 10).Value = newResUserID;
             logActivity.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = resUserID;
-            logActivity.Parameters.Add("@date", MySqlDbType.Date).Value = DateTime.Today;      //FIXME: ADD DATE PARAMETER
+            logActivity.Parameters.Add("@date", MySqlDbType.Date).Value = current;
             if(createResConn.NonQuery(logActivity) > 0)
             {
                 return comfirmationID;
