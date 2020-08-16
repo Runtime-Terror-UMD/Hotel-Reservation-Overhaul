@@ -55,6 +55,7 @@
             this.lblFileStatus = new System.Windows.Forms.Label();
             this.locationTableAdapter = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.locationTableAdapter();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.btnTime = new System.Windows.Forms.Button();
             this.grpReports.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).BeginInit();
@@ -66,8 +67,8 @@
             this.btnReturn.Location = new System.Drawing.Point(18, 18);
             this.btnReturn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnReturn.Name = "btnReturn";
-            this.btnReturn.Size = new System.Drawing.Size(112, 38);
-            this.btnReturn.TabIndex = 12;
+            this.btnReturn.Size = new System.Drawing.Size(75, 25);
+            this.btnReturn.TabIndex = 13;
             this.btnReturn.Text = "Return";
             this.btnReturn.UseVisualStyleBackColor = true;
             this.btnReturn.Click += new System.EventHandler(this.btnReturn_Click);
@@ -99,8 +100,8 @@
             this.btnLogOut.Location = new System.Drawing.Point(1046, 18);
             this.btnLogOut.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnLogOut.Name = "btnLogOut";
-            this.btnLogOut.Size = new System.Drawing.Size(112, 38);
-            this.btnLogOut.TabIndex = 13;
+            this.btnLogOut.Size = new System.Drawing.Size(75, 25);
+            this.btnLogOut.TabIndex = 14;
             this.btnLogOut.Text = "Log Out";
             this.btnLogOut.UseVisualStyleBackColor = true;
             this.btnLogOut.Click += new System.EventHandler(this.btnLogOut_Click);
@@ -149,6 +150,25 @@
             this.lblUsername.Text = "User ID:";
             this.lblUsername.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // lblHotel
+            // 
+            this.lblHotel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblHotel.Location = new System.Drawing.Point(235, 115);
+            this.lblHotel.Name = "lblHotel";
+            this.lblHotel.Size = new System.Drawing.Size(100, 20);
+            this.lblHotel.TabIndex = 0;
+            this.lblHotel.Text = "Hotel:";
+            this.lblHotel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // cboxHotel
+            // 
+            this.cboxHotel.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.locationBindingSource, "locationName", true));
+            this.cboxHotel.FormattingEnabled = true;
+            this.cboxHotel.Location = new System.Drawing.Point(335, 115);
+            this.cboxHotel.Name = "cboxHotel";
+            this.cboxHotel.Size = new System.Drawing.Size(200, 21);
+            this.cboxHotel.TabIndex = 10;
+            // 
             // locationBindingSource
             // 
             this.locationBindingSource.DataMember = "location";
@@ -175,8 +195,8 @@
             this.dateEnd.Location = new System.Drawing.Point(502, 108);
             this.dateEnd.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dateEnd.Name = "dateEnd";
-            this.dateEnd.Size = new System.Drawing.Size(298, 26);
-            this.dateEnd.TabIndex = 8;
+            this.dateEnd.Size = new System.Drawing.Size(200, 20);
+            this.dateEnd.TabIndex = 9;
             // 
             // lblStartDate
             // 
@@ -194,16 +214,16 @@
             this.txtUser.Location = new System.Drawing.Point(502, 159);
             this.txtUser.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtUser.Name = "txtUser";
-            this.txtUser.Size = new System.Drawing.Size(298, 26);
-            this.txtUser.TabIndex = 10;
+            this.txtUser.Size = new System.Drawing.Size(200, 20);
+            this.txtUser.TabIndex = 11;
             // 
             // dateStart
             // 
             this.dateStart.Location = new System.Drawing.Point(502, 38);
             this.dateStart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dateStart.Name = "dateStart";
-            this.dateStart.Size = new System.Drawing.Size(298, 26);
-            this.dateStart.TabIndex = 7;
+            this.dateStart.Size = new System.Drawing.Size(200, 20);
+            this.dateStart.TabIndex = 8;
             // 
             // lstReports
             // 
@@ -218,8 +238,8 @@
             this.lstReports.Location = new System.Drawing.Point(38, 38);
             this.lstReports.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.lstReports.Name = "lstReports";
-            this.lstReports.Size = new System.Drawing.Size(298, 244);
-            this.lstReports.TabIndex = 6;
+            this.lstReports.Size = new System.Drawing.Size(200, 160);
+            this.lstReports.TabIndex = 7;
             this.lstReports.SelectedIndexChanged += new System.EventHandler(this.lstReports_SelectedIndexChanged_1);
             // 
             // btnReport
@@ -228,14 +248,15 @@
             this.btnReport.Location = new System.Drawing.Point(870, 123);
             this.btnReport.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnReport.Name = "btnReport";
-            this.btnReport.Size = new System.Drawing.Size(150, 62);
-            this.btnReport.TabIndex = 11;
-            this.btnReport.Text = "Submit";
+            this.btnReport.Size = new System.Drawing.Size(100, 40);
+            this.btnReport.TabIndex = 12;
+            this.btnReport.Text = "Create Report";
             this.btnReport.UseVisualStyleBackColor = true;
             this.btnReport.Click += new System.EventHandler(this.btnReport_Click_1);
             // 
             // grpHotelSettings
             // 
+            this.grpHotelSettings.Controls.Add(this.btnTime);
             this.grpHotelSettings.Controls.Add(this.btnNewMaintenance);
             this.grpHotelSettings.Controls.Add(this.btnNewHotel);
             this.grpHotelSettings.Controls.Add(this.btnNewPackages);
@@ -256,8 +277,8 @@
             this.btnNewMaintenance.Location = new System.Drawing.Point(150, 185);
             this.btnNewMaintenance.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnNewMaintenance.Name = "btnNewMaintenance";
-            this.btnNewMaintenance.Size = new System.Drawing.Size(225, 77);
-            this.btnNewMaintenance.TabIndex = 8;
+            this.btnNewMaintenance.Size = new System.Drawing.Size(150, 50);
+            this.btnNewMaintenance.TabIndex = 4;
             this.btnNewMaintenance.Text = "New Maintainance File";
             this.btnNewMaintenance.UseVisualStyleBackColor = true;
             this.btnNewMaintenance.Click += new System.EventHandler(this.btnNewMaintenance_Click);
@@ -268,8 +289,8 @@
             this.btnNewHotel.Location = new System.Drawing.Point(412, 68);
             this.btnNewHotel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnNewHotel.Name = "btnNewHotel";
-            this.btnNewHotel.Size = new System.Drawing.Size(225, 77);
-            this.btnNewHotel.TabIndex = 7;
+            this.btnNewHotel.Size = new System.Drawing.Size(150, 50);
+            this.btnNewHotel.TabIndex = 2;
             this.btnNewHotel.Text = "New Hotel File";
             this.btnNewHotel.UseVisualStyleBackColor = true;
             this.btnNewHotel.Click += new System.EventHandler(this.btnNewHotel_Click);
@@ -280,8 +301,8 @@
             this.btnNewPackages.Location = new System.Drawing.Point(675, 68);
             this.btnNewPackages.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnNewPackages.Name = "btnNewPackages";
-            this.btnNewPackages.Size = new System.Drawing.Size(225, 77);
-            this.btnNewPackages.TabIndex = 6;
+            this.btnNewPackages.Size = new System.Drawing.Size(150, 50);
+            this.btnNewPackages.TabIndex = 3;
             this.btnNewPackages.Text = "New Packages";
             this.btnNewPackages.UseVisualStyleBackColor = true;
             this.btnNewPackages.Click += new System.EventHandler(this.btnNewPackages_Click);
@@ -292,8 +313,8 @@
             this.btnThirdParty.Location = new System.Drawing.Point(150, 68);
             this.btnThirdParty.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnThirdParty.Name = "btnThirdParty";
-            this.btnThirdParty.Size = new System.Drawing.Size(225, 77);
-            this.btnThirdParty.TabIndex = 5;
+            this.btnThirdParty.Size = new System.Drawing.Size(150, 50);
+            this.btnThirdParty.TabIndex = 1;
             this.btnThirdParty.Text = "Third-Party Reservation File";
             this.btnThirdParty.UseVisualStyleBackColor = true;
             this.btnThirdParty.Click += new System.EventHandler(this.btnThirdParty_Click);
@@ -304,8 +325,8 @@
             this.btnHotelSettings.Location = new System.Drawing.Point(412, 185);
             this.btnHotelSettings.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnHotelSettings.Name = "btnHotelSettings";
-            this.btnHotelSettings.Size = new System.Drawing.Size(225, 77);
-            this.btnHotelSettings.TabIndex = 3;
+            this.btnHotelSettings.Size = new System.Drawing.Size(150, 50);
+            this.btnHotelSettings.TabIndex = 5;
             this.btnHotelSettings.Text = "Edit Hotel Chain Settings";
             this.btnHotelSettings.UseVisualStyleBackColor = true;
             this.btnHotelSettings.Click += new System.EventHandler(this.btnHotelSettings_Click);
@@ -323,6 +344,17 @@
             this.lblFileStatus.Size = new System.Drawing.Size(600, 31);
             this.lblFileStatus.TabIndex = 21;
             this.lblFileStatus.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // btnTime
+            // 
+            this.btnTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTime.Location = new System.Drawing.Point(450, 120);
+            this.btnTime.Name = "btnTime";
+            this.btnTime.Size = new System.Drawing.Size(150, 50);
+            this.btnTime.TabIndex = 6;
+            this.btnTime.Text = "Go to Next Day";
+            this.btnTime.UseVisualStyleBackColor = true;
+            this.btnTime.Click += new System.EventHandler(this.btnTime_Click);
             // 
             // locationTableAdapter
             // 
@@ -386,5 +418,6 @@
         private System.Windows.Forms.BindingSource locationBindingSource;
         private hotelmgmtTableAdapters.locationTableAdapter locationTableAdapter;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.Button btnTime;
     }
 }
