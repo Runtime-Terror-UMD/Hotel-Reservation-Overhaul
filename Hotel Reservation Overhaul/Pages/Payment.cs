@@ -40,7 +40,7 @@ namespace Hotel_Reservation_Overhaul
             }
             else
                 lblDeposit.Text = "$0.00";
-            lblBalance.Text = "$" + resInfo.amountDue;
+            lblBalance.Text = "$" + resInfo.amountDue.ToString();
         }
 
         private void btnLogOut_Click(object sender, EventArgs e)
