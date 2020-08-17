@@ -13,7 +13,7 @@ namespace Hotel_Reservation_Overhaul.Pages
 {
     public partial class ReportViewer : Form
     {
-        public ReportViewer(string report, int userID)
+        public ReportViewer(string report, int userID, DateTime startDate, DateTime endDate)
         {
             DBConnect reportConn = new DBConnect();
             DataTable ReportData = new DataTable();
@@ -43,6 +43,8 @@ namespace Hotel_Reservation_Overhaul.Pages
                                                         where al.userID = @userID
                                                         and al.created BETWEEN @startDate and @endDate");
                     cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
+                    cmd.Parameters.Add("@startDate", MySqlDbType.Date).Value = startDate;
+                    cmd.Parameters.Add("@endDate", MySqlDbType.Date).Value = endDate;
                     ReportData = reportConn.ExecuteDataTable(cmd);
                     bindingSource1.DataSource = ReportData;
                     reportDataGrid.DataSource = bindingSource1;
@@ -74,8 +76,11 @@ namespace Hotel_Reservation_Overhaul.Pages
                                                              from activitylog al
                                                             join activitytype at
                                                                 on at.activityTypeID = al.activityTypeID
-                                                            where al.createdBy = @userID");
+                                                            where al.createdBy = @userID
+                                                            and al.created BETWEEN @startDate and @endDate");
                     cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
+                    cmd.Parameters.Add("@startDate", MySqlDbType.Date).Value = startDate;
+                    cmd.Parameters.Add("@endDate", MySqlDbType.Date).Value = endDate;
                     ReportData = reportConn.ExecuteDataTable(cmd);
                 }
 

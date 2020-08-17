@@ -822,7 +822,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                             {
                                 if (userReport.isCustomer(Convert.ToInt32(txtUser.Text)))
                                 {   // pull report
-                                    var customerHistory = new ReportViewer("customerHistory", Convert.ToInt32(txtUser.Text));
+                                    var customerHistory = new ReportViewer("customerHistory", Convert.ToInt32(txtUser.Text), dateStart.Value, dateEnd.Value);
                                     customerHistory.FormClosed += new FormClosedEventHandler(userHistory_FormClosed);
                                     this.Hide();
                                     customerHistory.Show();
@@ -836,7 +836,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                             {
                                 if (!(userReport.isCustomer(Convert.ToInt32(txtUser.Text))))
                                 {   // pull report
-                                    var employeeHistory = new ReportViewer("employeeHistory", Convert.ToInt32(txtUser.Text));
+                                    var employeeHistory = new ReportViewer("employeeHistory", Convert.ToInt32(txtUser.Text), dateStart.Value, dateEnd.Value);
                                     employeeHistory.FormClosed += new FormClosedEventHandler(userHistory_FormClosed);
                                     this.Hide();
                                     employeeHistory.Show();
