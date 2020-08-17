@@ -121,7 +121,7 @@ namespace Hotel_Reservation_Overhaul
             startDate = monthStart.SelectionStart.Date;
 
             // if start date in past
-            if (startDate < DateTime.Today)                                     // FIXME: Change DateTime.Today to @Date variable
+            if (startDate < currentDate)
             {
                 displayError("Selected start date cannot be in the past");
                 lblStartDate.Text = "Start Date: ";
@@ -325,6 +325,11 @@ namespace Hotel_Reservation_Overhaul
             lblSubTotal.Text = "";
             lblDeposit.Text = "";
             txtCostNightly.Text = "";
+            lblStartDate.Text = "";
+            lblEndDate.Text = "";
+            monthStart.SetDate(currentDate);
+            monthEnd.SetDate(currentDate);
+            lblError.Visible = false;
             cboxHotel.Enabled = true;
             cboxNumRooms.Enabled = true;
             cboxNumGuests.Enabled = true;
