@@ -152,7 +152,7 @@
             // txtCardNum
             // 
             this.txtCardNum.Location = new System.Drawing.Point(220, 136);
-            this.txtCardNum.MaxLength = 12;
+            this.txtCardNum.MaxLength = 16;
             this.txtCardNum.Name = "txtCardNum";
             this.txtCardNum.Size = new System.Drawing.Size(200, 20);
             this.txtCardNum.TabIndex = 2;
@@ -268,9 +268,9 @@
             this.lblrewardError.ForeColor = System.Drawing.Color.Red;
             this.lblrewardError.Location = new System.Drawing.Point(226, 309);
             this.lblrewardError.Name = "lblrewardError";
-            this.lblrewardError.Size = new System.Drawing.Size(181, 13);
+            this.lblrewardError.Size = new System.Drawing.Size(180, 13);
             this.lblrewardError.TabIndex = 28;
-            this.lblrewardError.Text = "Error message for redeeming rewards";
+            this.lblrewardError.Text = "Error: You don\' t have enough points";
             this.lblrewardError.Visible = false;
             // 
             // lblCardNumError

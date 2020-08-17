@@ -9,12 +9,6 @@ class PaymentRecord
     private double amount { get; set; }
 
     public PaymentRecord() { }
-    PaymentRecord(int confirm, double amt)
-    {
-        //this.paymentID = ?? from database
-        this.confirmationID = confirm;
-        this.amount = amt;
-    }
 
     // DESCRIPTION: Creates a payment record and updates the balance of the reservation 
     public bool makePayment(int userID, int confirmationID, double amountPaid, string paymentMethod, bool usedRewards)
@@ -26,8 +20,8 @@ class PaymentRecord
         makePayment.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
         makePayment.Parameters.Add("@confID", MySqlDbType.Int32).Value = confirmationID;
         makePayment.Parameters.Add("@amountPaid", MySqlDbType.Decimal).Value = amountPaid;
-        makePayment.Parameters.Add("@amountPaid", MySqlDbType.VarChar, 45).Value = paymentMethod;
-        makePayment.Parameters.Add("@amountPaid", MySqlDbType.Bit).Value = usedRewards;
+        makePayment.Parameters.Add("@paymentMethod", MySqlDbType.VarChar, 45).Value = paymentMethod;
+        makePayment.Parameters.Add("@usedRewards", MySqlDbType.Bit).Value = usedRewards;
 
         if (makePaymentConn.NonQuery(makePayment) > 0)
         {// update balance and amount paid on reservation
@@ -40,11 +34,6 @@ class PaymentRecord
                 return false;
         }
         return false;
-
-
-
-
-
 
     }
 }

@@ -395,11 +395,11 @@ namespace Hotel_Reservation_Overhaul
                 return false;
         }
         //  DESCRIPTION: get minimum charge for a hotel stay from file
-        public decimal getMinCharge()
+        public double getMinCharge()
         {
-            decimal minCharge;
+            double minCharge;
             string[] fileLines = File.ReadAllLines("HotelSettings.txt");
-            if(decimal.TryParse(fileLines[0].Substring(fileLines[0].IndexOf(' ')), out minCharge))
+            if(double.TryParse(fileLines[0].Substring(fileLines[0].IndexOf(' ')), out minCharge))
             {
                 return minCharge;
             }
