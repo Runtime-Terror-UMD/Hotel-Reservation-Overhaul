@@ -27,7 +27,7 @@ namespace Hotel_Reservation_Overhaul
         public double price;
         public int refRoomNum;
         public int points;
-        public string combindstring;
+        public string combinedstring;
         public bool mod = false;
         List<int> roomNumList = new List<int>();
         DateTime currentDate;
@@ -200,7 +200,7 @@ namespace Hotel_Reservation_Overhaul
                 }
                 
                 // put selected package IDs in list
-                combindstring = string.Join(",", packages);
+                combinedstring = string.Join(",", packages);
 
                 // check for availability
                 Reservation resInfo = new Reservation();
@@ -208,14 +208,14 @@ namespace Hotel_Reservation_Overhaul
                 int numGuests = Convert.ToInt32(cboxNumGuests.SelectedItem);
                 int numRooms = Convert.ToInt32(cboxNumRooms.SelectedItem);
 
-                roomNumList =  resInfo.getAvailability(packages, numGuests, locationID, numRooms, combindstring, currentDate);
+                roomNumList =  resInfo.getAvailability(packages, numGuests, locationID, numRooms, combinedstring, currentDate);
 
                 if (roomNumList.Count != numRooms)
                 {   // no room available, gets roomNum to reference for price 
                     DBConnect checkAvailabilityConn = new DBConnect();
                     MySqlCommand cmd = new MySqlCommand(@"select roomNum
                                         from dbo.relation_room_package rrp
-                                        where packageID in (" + combindstring + @") and locationID = @locationID
+                                        where packageID in (" + combinedstring + @") and locationID = @locationID
                                         group by roomNum
                                         having count(distinct packageID) = @numPackages limit 1");
 
@@ -281,7 +281,7 @@ namespace Hotel_Reservation_Overhaul
             {
                 // add request to waitlist
                 Waitlist addToWaitlist = new Waitlist();
-                addToWaitlist.addToWaitlist(resUserID, Convert.ToInt32(cboxHotel.SelectedItem), startDate.Value, endDate.Value, Convert.ToInt32(cboxNumGuests.SelectedItem), Convert.ToInt32(cboxNumRooms.SelectedItem), combindstring);
+                addToWaitlist.addToWaitlist(resUserID, Convert.ToInt32(cboxHotel.SelectedItem), startDate.Value, endDate.Value, Convert.ToInt32(cboxNumGuests.SelectedItem), Convert.ToInt32(cboxNumRooms.SelectedItem), combinedstring);
                 lblError.ForeColor = System.Drawing.Color.Green;
                 lblError.Text = "You have been added to the waitlist";
             }

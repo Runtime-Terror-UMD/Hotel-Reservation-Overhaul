@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 
 public class Reservation
@@ -99,25 +100,16 @@ public class Reservation
     }
 
     //DESCRIPTION: Gets availability for specified reservation request
-    public List<int> getAvailability(List<int> packages, int numGuests,int hotelID, int numRooms, string combindstring, DateTime currentDate)
+    public List<int> getAvailability(List<int> packages, int numGuests,int hotelID, int numRooms, string combinedstring, DateTime currentDate)
     {
         List<int> roomNumsAvailable = new List<int>();
         DBConnect checkAvailabilityConn = new DBConnect();
         // Select available rooms at location not in maintenance
-        MySqlCommand cmd = new MySqlCommand(@"select rrp.roomNum
-                                                from dbo.relation_room_package rrp
-                                                join dbo.room room
-                                                    on room.locationID = rrp.locationID
-                                                    and room.roomNum = rrp.roomNum
-                                                where rrp.packageID in  (" + combindstring + @") and rrp.locationID =  @locationID
-                                                and rrp.roomNum not in (select roomNum from dbo.reservation where  @startDate between startDate and endDate and reservationStatus <> 'cancelled' and locationID = @locationID)
-                                                and rrp.roomNum not in (select roomNum from dbo.maintenance where locationID =  @locationID and maintenanceDate BETWEEN @startDate and @endDate) 
-                                                group by rrp.roomNum
-                                                having(count(distinct rrp.packageID) = @numPackages and(sum(room.occupancy) > @numGuests)) limit @numRooms");
-
-        cmd.Parameters.Add("@startDate", MySqlDbType.DateTime).Value = startDate;
-        cmd.Parameters.Add("@endDate", MySqlDbType.DateTime).Value = endDate;
-        cmd.Parameters.Add("@numPackages", MySqlDbType.Int32).Value = packages.Count;
+        MySqlCommand cmd = new MySqlCommand("SELECT rrp.roomNum,group_concat(packageID separator \", \") as packages from dbo.relation_room_package rrp join dbo.room room on room.locationID = rrp.locationID and room.roomNum = rrp.roomNum where rrp.locationID = @locationID and rrp.roomNum not in (select roomNum from dbo.reservation where @startDate between startDate and endDate and reservationStatus <> 'cancelled' and locationID = @locationID) and rrp.roomNum not in (select roomNum from dbo.maintenance where locationID = @locationID and maintenanceDate BETWEEN @startDate and @endDate) group by rrp.roomNum having(packages = @packages and(sum(room.occupancy) >= @numGuests)) limit @numRooms");
+            
+        cmd.Parameters.Add("@startDate", MySqlDbType.Date).Value = startDate;
+        cmd.Parameters.Add("@endDate", MySqlDbType.Date).Value = endDate;
+        cmd.Parameters.Add("@packages", MySqlDbType.VarChar).Value = combinedstring;
         cmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = hotelID;
         cmd.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = numGuests;
         cmd.Parameters.Add("@numRooms", MySqlDbType.Int32).Value = numRooms;
