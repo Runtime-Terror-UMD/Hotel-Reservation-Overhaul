@@ -116,7 +116,10 @@ namespace Hotel_Reservation_Overhaul
                 if (proceed)
                 {
                     PaymentRecord payment = new PaymentRecord();
-                    payment.makePayment(userInfo.userID, resInfo.reservationID, double.Parse(txtPrice.Text), cboxMethod.SelectedItem.ToString(), this.appliedReward);
+                    if(payment.makePayment(userInfo.userID, resInfo.confirmatonID, double.Parse(txtPrice.Text), cboxMethod.SelectedItem.ToString(), this.appliedReward))
+                    {
+                        MessageBox.Show("Your payment was successful!");
+                    }
                     if (dateTimePicker1.Value == resInfo.endDate)
                     {
                         //update amount due and deposit amount

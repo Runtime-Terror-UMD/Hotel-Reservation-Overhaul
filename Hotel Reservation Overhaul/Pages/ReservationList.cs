@@ -262,16 +262,8 @@ namespace Hotel_Reservation_Overhaul
                         }
                         if (resInfo.amountDue < 0)
                         {
-                            // issue refund payment
-                            DBConnect issueRefundConn = new DBConnect();
-                            MySqlCommand issueRefund = new MySqlCommand(@"INSERT INTO `dbo`.`payment` (`customerID`, `confirmationID`, `amountPaid`, `paymentMethod`, `usedRewards`)
-                                                                      VALUES (@customerID,@confirmationID, @refundAmt, 'refund', 0)");
-                            issueRefund.Parameters.Add("@customerID", MySqlDbType.Int32).Value = resInfo.userID;
-                            issueRefund.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = resInfo.confirmatonID;
-                            issueRefund.Parameters.Add("@refundAmt", MySqlDbType.Decimal).Value = resInfo.amountDue;
-                            issueRefundConn.NonQuery(issueRefund);
-                            resInfo.amountPaid = resInfo.amountDue + resInfo.amountPaid;
-                            resInfo.amountDue = 0;
+                            PaymentRecord issueRefund = new PaymentRecord();
+                            issueRefund.makePayment(17, resInfo.confirmatonID, resInfo.amountDue, "refund", false);
                         }
                         // update reservation record
                         resInfo.updateReservation(resInfo);

@@ -25,6 +25,11 @@ class PaymentRecord
 
         if (makePaymentConn.NonQuery(makePayment) > 0)
         {// update balance and amount paid on reservation
+            if(usedRewards)
+            {
+                Reward updateRewards = new Reward();
+                updateRewards.setRewardsPoints(userID, -50, userID);
+            }
             Reservation payReservation = new Reservation(confirmationID);
             payReservation.amountDue = payReservation.amountDue - amountPaid;
             payReservation.amountPaid = payReservation.amountPaid + amountPaid;
