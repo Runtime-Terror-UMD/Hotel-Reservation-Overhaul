@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 
 public class Reservation
@@ -99,25 +100,16 @@ public class Reservation
     }
 
     //DESCRIPTION: Gets availability for specified reservation request
-    public List<int> getAvailability(List<int> packages, int numGuests,int hotelID, int numRooms, string combindstring, DateTime currentDate)
+    public List<int> getAvailability(List<int> packages, int numGuests,int hotelID, int numRooms, string combinedstring, DateTime currentDate, DateTime resStart, DateTime resEnd)
     {
         List<int> roomNumsAvailable = new List<int>();
         DBConnect checkAvailabilityConn = new DBConnect();
         // Select available rooms at location not in maintenance
-        MySqlCommand cmd = new MySqlCommand(@"select rrp.roomNum
-                                                from dbo.relation_room_package rrp
-                                                join dbo.room room
-                                                    on room.locationID = rrp.locationID
-                                                    and room.roomNum = rrp.roomNum
-                                                where rrp.packageID in  (" + combindstring + @") and rrp.locationID =  @locationID
-                                                and rrp.roomNum not in (select roomNum from dbo.reservation where  @startDate between startDate and endDate and reservationStatus <> 'cancelled' and locationID = @locationID)
-                                                and rrp.roomNum not in (select roomNum from dbo.maintenance where locationID =  @locationID and maintenanceDate BETWEEN @startDate and @endDate) 
-                                                group by rrp.roomNum
-                                                having(count(distinct rrp.packageID) = @numPackages and(sum(room.occupancy) > @numGuests)) limit @numRooms");
-
-        cmd.Parameters.Add("@startDate", MySqlDbType.DateTime).Value = startDate;
-        cmd.Parameters.Add("@endDate", MySqlDbType.DateTime).Value = endDate;
-        cmd.Parameters.Add("@numPackages", MySqlDbType.Int32).Value = packages.Count;
+        MySqlCommand cmd = new MySqlCommand("SELECT rrp.roomNum,group_concat(packageID separator \",\") as packages from dbo.relation_room_package rrp join dbo.room room on room.locationID = rrp.locationID and room.roomNum = rrp.roomNum where rrp.locationID = @locationID and rrp.roomNum not in (select roomNum from dbo.reservation where @startDate between startDate and endDate and reservationStatus <> 'cancelled' and locationID = @locationID) and rrp.roomNum not in (select roomNum from dbo.maintenance where locationID = @locationID and maintenanceDate BETWEEN @startDate and @endDate) group by rrp.roomNum having(packages = @packages and(sum(room.occupancy) >= @numGuests)) limit @numRooms");
+            
+        cmd.Parameters.Add("@startDate", MySqlDbType.Date).Value = resStart;
+        cmd.Parameters.Add("@endDate", MySqlDbType.Date).Value = resEnd;
+        cmd.Parameters.Add("@packages", MySqlDbType.VarChar).Value = combinedstring;
         cmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = hotelID;
         cmd.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = numGuests;
         cmd.Parameters.Add("@numRooms", MySqlDbType.Int32).Value = numRooms;
@@ -128,26 +120,27 @@ public class Reservation
             // gets roomNum(s) if available
             while (dataReader.Read())
             {
-                    roomNumsAvailable.Add(Convert.ToInt32(dataReader["roomNum"]));
+                roomNumsAvailable.Add(Convert.ToInt32(dataReader["roomNum"]));
             }
             dataReader.Close();
-            checkAvailabilityConn.CloseConnection();
             return roomNumsAvailable;
         }
-        return roomNumsAvailable;
+        else
+        {
+            return roomNumsAvailable;
+        }
     }
 
     // DESCRIPTION: Adds reservation to dbo.reservation and activity log
     public int makeReservation(int locationID, int newResUserID, int resUserID, DateTime startDate, DateTime endDate, double newResPrice, int newResPoints, List<int> newResRoomList, int numGuests, DateTime currentDate)
     {
+        int confirmationID = -1;
         DBConnect createResConn = new DBConnect();
-        MySqlCommand createResCmd = new MySqlCommand();
-        createResCmd.CommandText = "INSERT INTO `dbo`.`reservation`(`confirmationID`,`userID`,`locationID`,`roomNum`,`startDate`,`endDate`,`pointsAccumulated`,`price`,`amountDue`,`amountPaid`,`reservationStatus`,`created`,`numGuests`) VALUES(@confirmationID,@userID,@locationID,@roomNum,@startDate,@endDate,@points,@price,@price,0,@status,@created,@numGuests)";
-
+        MySqlCommand createResCmd = new MySqlCommand("INSERT INTO `dbo`.`reservation`(`confirmationID`,`userID`,`locationID`,`roomNum`,`startDate`,`endDate`,`pointsAccumulated`,`price`,`amountDue`,`amountPaid`,`reservationStatus`,`created`,`numGuests`) VALUES(@confirmationID,@userID,@locationID,@roomNum,@startDate,@endDate,@points,@price,@price,0,@status,@created,@numGuests)");
+       
         DBConnect getNextConfConn = new DBConnect();
         MySqlCommand cmd = new MySqlCommand("select confirmationID from dbo.reservation order by confirmationID desc limit 1");
-        int confirmationID = getNextConfConn.intScalar(cmd) + 1;
-        string status = "upcoming";
+        confirmationID = getNextConfConn.intScalar(cmd) + 1;
 
         createResCmd.Parameters.Add("@roomNum", MySqlDbType.Int32);
         createResCmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = locationID;
@@ -157,7 +150,7 @@ public class Reservation
         createResCmd.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = confirmationID;
         createResCmd.Parameters.Add("@points", MySqlDbType.Int32).Value = newResPoints;
         createResCmd.Parameters.Add("@price", MySqlDbType.Decimal).Value = newResPrice;
-        createResCmd.Parameters.Add("@status", MySqlDbType.VarChar, 45).Value = status;
+        createResCmd.Parameters.Add("@status", MySqlDbType.VarChar, 45).Value = "upcoming";
         createResCmd.Parameters.Add("@created", MySqlDbType.Date).Value = currentDate;
         createResCmd.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = numGuests;            
 
@@ -167,7 +160,6 @@ public class Reservation
             createResCmd.Parameters["@roomNum"].Value = newResRoomNum;
             createResConn.NonQuery(createResCmd);
         }
-
         return confirmationID;
     }
 

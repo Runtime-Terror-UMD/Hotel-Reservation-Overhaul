@@ -236,26 +236,25 @@ namespace Hotel_Reservation_Overhaul.Pages
                                             // check for availability
                                             string combindstring = string.Join(",", packages);
                                             Reservation resInfo = new Reservation();
-                                            List<int> roomAvailable = resInfo.getAvailability(packages, occNum, hotelID, 1, combindstring, currentDate);
+                                            List<int> roomAvailable = resInfo.getAvailability(packages, occNum, hotelID, 1, combindstring, currentDate,checkIn,checkOut);
                                             // no room available
                                             if(roomAvailable.Count == 0)
                                             {
-                                               MessageBox.Show("No rooms with specified criteria. Please add user to waitlist");   // ADD YESNO MESSAGE BOX
-                                                DBConnect checkAvailabilityConn = new DBConnect();
-                                                MySqlCommand cmd = new MySqlCommand(@"select roomNum
-                                                                                    from dbo.relation_room_package rrp
-                                                                                    where packageID in (" + combindstring + @") and locationID = @locationID
-                                                                                    group by roomNum
-                                                                                    having count(distinct packageID) = @numPackages limit 1");
-                                                MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
-                                                if (nonAvailableDR.HasRows)
+                                                var selectedOption = MessageBox.Show("No rooms with specified criteria. Please add user to waitlist?", "No rooms available", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                                if (selectedOption == DialogResult.Yes)
                                                 {
-                                                    Waitlist addToWaitlist = new Waitlist();
-                                                    addToWaitlist.addToWaitlist(custID, hotelID, checkIn, checkOut, occNum, 1, combindstring);
-                                                }
-                                                else
-                                                {
-                                                    MessageBox.Show("No room with those criteria are available. Reservation will be added to the waitlist");
+                                                    DBConnect checkAvailabilityConn = new DBConnect();
+                                                    MySqlCommand cmd = new MySqlCommand("SELECT rrp.roomNum, group_concat(packageID separator \",\") as packages from dbo.relation_room_package rrp where rrp.locationID =  @locationID group by rrp.roomNum having(packages= @packages) limit 1");
+                                                    MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
+                                                    if (nonAvailableDR.HasRows)
+                                                    {
+                                                        Waitlist addToWaitlist = new Waitlist();
+                                                        addToWaitlist.addToWaitlist(custID, hotelID, checkIn, checkOut, occNum, 1, combindstring);
+                                                    }
+                                                    else
+                                                    {
+                                                        MessageBox.Show("Error adding reservation to waitlist");
+                                                    }
                                                 }
                                             }
                                             else
@@ -813,6 +812,10 @@ namespace Hotel_Reservation_Overhaul.Pages
                     {
                         displayError("User ID not entered");
                     }
+                    else if (int.TryParse(txtUser.Text, out _) == false)
+                    {
+                        displayError("Numeric data not entered");
+                    }                  
                     else
                     {   Utilities userReport = new Utilities();
                         // verify user ID exists
