@@ -208,19 +208,15 @@ namespace Hotel_Reservation_Overhaul
                 int numGuests = Convert.ToInt32(cboxNumGuests.SelectedItem);
                 int numRooms = Convert.ToInt32(cboxNumRooms.SelectedItem);
 
-                roomNumList =  resInfo.getAvailability(packages, numGuests, locationID, numRooms, combinedstring, currentDate);
+                roomNumList =  resInfo.getAvailability(packages, numGuests, locationID, numRooms, combinedstring, currentDate, startDate.Value, endDate.Value);
 
                 if (roomNumList.Count != numRooms)
                 {   // no room available, gets roomNum to reference for price 
                     DBConnect checkAvailabilityConn = new DBConnect();
-                    MySqlCommand cmd = new MySqlCommand(@"select roomNum
-                                        from dbo.relation_room_package rrp
-                                        where packageID in (" + combinedstring + @") and locationID = @locationID
-                                        group by roomNum
-                                        having count(distinct packageID) = @numPackages limit 1");
+                    MySqlCommand cmd = new MySqlCommand("SELECT rrp.roomNum, group_concat(packageID separator \",\") as packages from dbo.relation_room_package rrp where rrp.locationID =  @locationID group by rrp.roomNum having(packages= @packages) limit 1");
 
                     cmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = locationID;
-                    cmd.Parameters.Add("@numPackages", MySqlDbType.Int32).Value = packages.Count();
+                    cmd.Parameters.Add("@packages", MySqlDbType.Int32).Value = combinedstring;
 
                     MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
                     if (nonAvailableDR.HasRows)
@@ -246,6 +242,7 @@ namespace Hotel_Reservation_Overhaul
                 {
                     // calculate price and rewards
                     pricePerNight = calcPrice.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), roomNumList[0]) * numRooms;
+                    lblError.Visible = false;
                 }
                 price = calcPrice.calculatePrice(((endDate.Value - startDate.Value).TotalDays), pricePerNight) * numRooms;
                 points = Convert.ToInt32(calcPrice.calculatePoints(((endDate.Value - startDate.Value).TotalDays)));
@@ -255,8 +252,8 @@ namespace Hotel_Reservation_Overhaul
                 lblDeposit.Text = getDeposit.getMinCharge().ToString();
                 txtCostNightly.Text = pricePerNight.ToString();
                 lblSubTotal.Text = price.ToString(); //+ Convert.ToDouble(getDeposit.getMinCharge())).ToString();
-                lblError.Visible = false;
                 cboxHotel.Enabled = false;
+                cboxNumRooms.Enabled = false;
                 cboxNumGuests.Enabled = false;
                 monthStart.Enabled = false;
                 monthEnd.Enabled = false;
@@ -327,6 +324,7 @@ namespace Hotel_Reservation_Overhaul
             cboxHotel.SelectedIndex = 0;
             cboxNumGuests.SelectedIndex = 0;
             cboxHotel.Enabled = true;
+            cboxNumRooms.Enabled = true;
             cboxNumGuests.Enabled = true;
             monthStart.Enabled = true;
             monthEnd.Enabled = true;
