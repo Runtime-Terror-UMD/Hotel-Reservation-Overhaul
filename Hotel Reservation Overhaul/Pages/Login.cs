@@ -14,12 +14,13 @@ namespace Hotel_Reservation_Overhaul
 {
     public partial class Login : Form
     {
-        private Utilities verifyCredentials = new Utilities();
-        private DateTime currentDay;
+        Utilities verifyCredentials = new Utilities();
+        DateTime currentDate;
+
         public Login()
         {
             InitializeComponent();
-            currentDay = DateTime.Today;
+            currentDate = DateTime.Today;
         }
 
         // DESCRIPTION: Utility function for error display
@@ -106,14 +107,14 @@ namespace Hotel_Reservation_Overhaul
                         if(isCustomer(txtUsername.Text))
                         {
                             // re-drecit to menu, hide hotel management button
-                            var menuScreen = new Menu(true, verifyCredentials.getUserIDFromUsername(txtUsername.Text), this, currentDay);
+                            var menuScreen = new Menu(true, verifyCredentials.getUserIDFromUsername(txtUsername.Text), this, currentDate);
                             menuScreen.FormClosed += new FormClosedEventHandler(menuScreen_FormClosed);
                             this.Hide();
                             menuScreen.Show();
                         }
                         else
                         {   // re-drecit to menu, show hotel management button
-                            var menuScreen = new Menu(false, verifyCredentials.getUserIDFromUsername(txtUsername.Text), this, currentDay);
+                            var menuScreen = new Menu(false, verifyCredentials.getUserIDFromUsername(txtUsername.Text), this, currentDate);
                             menuScreen.FormClosed += new FormClosedEventHandler(menuScreen_FormClosed);
                             this.Hide();
                             menuScreen.Show();

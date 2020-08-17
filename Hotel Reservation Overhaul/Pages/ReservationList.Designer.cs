@@ -40,27 +40,27 @@
             this.lblCustDesc = new System.Windows.Forms.Label();
             this.txtCustomerSearch = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
-            this.resListDataGrid = new System.Windows.Forms.DataGridView();
-            this.hotelmgmtBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.hotelmgmt = new Hotel_Reservation_Overhaul.hotelmgmt();
             this.lblError = new System.Windows.Forms.Label();
             this.reservationBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.reservationTableAdapter = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.reservationTableAdapter();
             this.dboDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.reservationBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.locationBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.resListDataGrid = new System.Windows.Forms.DataGridView();
+            this.hotelmgmt = new Hotel_Reservation_Overhaul.hotelmgmt();
+            this.hotelmgmtBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.reservationTableAdapter = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.reservationTableAdapter();
             this.locationTableAdapter = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.locationTableAdapter();
             this.ConfirmationID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StartDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EndDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Location = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.resListDataGrid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmtBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.reservationBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dboDataSetBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.reservationBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.resListDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmtBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // lblDescribe
@@ -116,7 +116,7 @@
             this.btnModify.Name = "btnModify";
             this.btnModify.Size = new System.Drawing.Size(225, 77);
             this.btnModify.TabIndex = 2;
-            this.btnModify.Text = "View/Modify Reservation";
+            this.btnModify.Text = "Modify Reservation";
             this.btnModify.UseVisualStyleBackColor = true;
             this.btnModify.Visible = false;
             this.btnModify.Click += new System.EventHandler(this.btnModify_Click);
@@ -189,6 +189,32 @@
             this.btnSearch.Visible = false;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
+            // lblError
+            // 
+            this.lblError.AutoSize = true;
+            this.lblError.ForeColor = System.Drawing.Color.Red;
+            this.lblError.Location = new System.Drawing.Point(371, 816);
+            this.lblError.Name = "lblError";
+            this.lblError.Size = new System.Drawing.Size(48, 20);
+            this.lblError.TabIndex = 11;
+            this.lblError.Text = "Error:";
+            this.lblError.Visible = false;
+            // 
+            // reservationBindingSource
+            // 
+            this.reservationBindingSource.DataMember = "reservation";
+            this.reservationBindingSource.DataSource = this.hotelmgmtBindingSource;
+            // 
+            // reservationBindingSource1
+            // 
+            this.reservationBindingSource1.DataMember = "reservation";
+            this.reservationBindingSource1.DataSource = this.hotelmgmtBindingSource;
+            // 
+            // locationBindingSource
+            // 
+            this.locationBindingSource.DataMember = "location";
+            this.locationBindingSource.DataSource = this.hotelmgmtBindingSource;
+            // 
             // resListDataGrid
             // 
             this.resListDataGrid.AllowUserToAddRows = false;
@@ -211,45 +237,19 @@
             this.resListDataGrid.Size = new System.Drawing.Size(794, 559);
             this.resListDataGrid.TabIndex = 10;
             // 
-            // hotelmgmtBindingSource
-            // 
-            this.hotelmgmtBindingSource.DataSource = this.hotelmgmt;
-            this.hotelmgmtBindingSource.Position = 0;
-            // 
             // hotelmgmt
             // 
             this.hotelmgmt.DataSetName = "hotelmgmt";
             this.hotelmgmt.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
-            // lblError
+            // hotelmgmtBindingSource
             // 
-            this.lblError.AutoSize = true;
-            this.lblError.ForeColor = System.Drawing.Color.Red;
-            this.lblError.Location = new System.Drawing.Point(371, 816);
-            this.lblError.Name = "lblError";
-            this.lblError.Size = new System.Drawing.Size(48, 20);
-            this.lblError.TabIndex = 11;
-            this.lblError.Text = "Error:";
-            this.lblError.Visible = false;
-            // 
-            // reservationBindingSource
-            // 
-            this.reservationBindingSource.DataMember = "reservation";
-            this.reservationBindingSource.DataSource = this.hotelmgmtBindingSource;
+            this.hotelmgmtBindingSource.DataSource = this.hotelmgmt;
+            this.hotelmgmtBindingSource.Position = 0;
             // 
             // reservationTableAdapter
             // 
             this.reservationTableAdapter.ClearBeforeFill = true;
-            // 
-            // reservationBindingSource1
-            // 
-            this.reservationBindingSource1.DataMember = "reservation";
-            this.reservationBindingSource1.DataSource = this.hotelmgmtBindingSource;
-            // 
-            // locationBindingSource
-            // 
-            this.locationBindingSource.DataMember = "location";
-            this.locationBindingSource.DataSource = this.hotelmgmtBindingSource;
             // 
             // locationTableAdapter
             // 
@@ -313,13 +313,13 @@
             this.Name = "ReservationList";
             this.Text = "Hotel Reservation: Reservation List";
             this.Load += new System.EventHandler(this.ReservationList_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.resListDataGrid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmtBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.reservationBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dboDataSetBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.reservationBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.resListDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmtBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

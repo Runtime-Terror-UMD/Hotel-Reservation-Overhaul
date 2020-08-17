@@ -72,7 +72,7 @@
             // btnReservations
             // 
             this.btnReservations.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReservations.Location = new System.Drawing.Point(150, 200);
+            this.btnReservations.Location = new System.Drawing.Point(150, 250);
             this.btnReservations.Name = "btnReservations";
             this.btnReservations.Size = new System.Drawing.Size(200, 50);
             this.btnReservations.TabIndex = 1;
@@ -83,7 +83,7 @@
             // btnRewards
             // 
             this.btnRewards.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRewards.Location = new System.Drawing.Point(450, 200);
+            this.btnRewards.Location = new System.Drawing.Point(450, 250);
             this.btnRewards.Name = "btnRewards";
             this.btnRewards.Size = new System.Drawing.Size(200, 50);
             this.btnRewards.TabIndex = 2;
@@ -93,7 +93,7 @@
             // btnAccount
             // 
             this.btnAccount.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAccount.Location = new System.Drawing.Point(450, 300);
+            this.btnAccount.Location = new System.Drawing.Point(450, 350);
             this.btnAccount.Name = "btnAccount";
             this.btnAccount.Size = new System.Drawing.Size(200, 50);
             this.btnAccount.TabIndex = 4;
@@ -104,7 +104,7 @@
             // btnHistory
             // 
             this.btnHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHistory.Location = new System.Drawing.Point(150, 300);
+            this.btnHistory.Location = new System.Drawing.Point(150, 350);
             this.btnHistory.Name = "btnHistory";
             this.btnHistory.Size = new System.Drawing.Size(200, 50);
             this.btnHistory.TabIndex = 3;
@@ -115,7 +115,7 @@
             // btnHotelManagement
             // 
             this.btnHotelManagement.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHotelManagement.Location = new System.Drawing.Point(300, 400);
+            this.btnHotelManagement.Location = new System.Drawing.Point(300, 450);
             this.btnHotelManagement.Name = "btnHotelManagement";
             this.btnHotelManagement.Size = new System.Drawing.Size(200, 50);
             this.btnHotelManagement.TabIndex = 5;
@@ -125,14 +125,13 @@
             // 
             // lblNotification
             // 
-            this.lblNotification.BackColor = System.Drawing.SystemColors.Window;
             this.lblNotification.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblNotification.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNotification.Location = new System.Drawing.Point(250, 100);
+            this.lblNotification.Location = new System.Drawing.Point(200, 100);
             this.lblNotification.Name = "lblNotification";
-            this.lblNotification.Size = new System.Drawing.Size(300, 25);
+            this.lblNotification.Size = new System.Drawing.Size(400, 75);
             this.lblNotification.TabIndex = 0;
-            this.lblNotification.Text = "Current Date:";
+            this.lblNotification.Text = "No new notifications.";
             this.lblNotification.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // Menu

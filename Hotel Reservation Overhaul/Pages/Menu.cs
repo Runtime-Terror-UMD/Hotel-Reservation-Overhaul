@@ -14,7 +14,7 @@ namespace Hotel_Reservation_Overhaul
     public partial class Menu : Form
     {
         public int UserID;
-        private DateTime currentDate;
+        DateTime currentDate;
         public Menu(Login loginInstance, DateTime current)
         {
             InitializeComponent();
@@ -29,7 +29,7 @@ namespace Hotel_Reservation_Overhaul
             if (isCustomer == true)
                 btnHotelManagement.Visible = false;
             currentDate = current;
-            lblNotification.Text = "Today's date: " + currentDate;
+
         }
         //DESCRIPTION: Opens account settings page
         private void btnAccount_Click(object sender, EventArgs e)
@@ -77,7 +77,7 @@ namespace Hotel_Reservation_Overhaul
 
         private void btnHistory_Click(object sender, EventArgs e)
         {
-            var history = new History(currentDate);
+            var history = new History();
             history.FormClosed += new FormClosedEventHandler(history_FormClosed);
             this.Hide();
             history.Show();

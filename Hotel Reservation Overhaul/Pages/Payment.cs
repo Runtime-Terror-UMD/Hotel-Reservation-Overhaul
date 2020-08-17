@@ -230,5 +230,11 @@ namespace Hotel_Reservation_Overhaul
                     lblrewardError.Visible = false;
             }
         }
+
+        private void btnReturn_Click(object sender, EventArgs e)
+        {
+
+            this.Close();
+        }
     }
 }

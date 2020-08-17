@@ -28,7 +28,8 @@ namespace Hotel_Reservation_Overhaul
         {
             InitializeComponent();
             currentDate = current;
-            resListDataGrid.MultiSelect = false;
+            
+            resListDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             // gets user info
             userInfo = new User(userID);
@@ -55,8 +56,7 @@ namespace Hotel_Reservation_Overhaul
             {
                 // build and execute query
                 DBConnect reservationListConn = new DBConnect();
-                string reservationListQuery = "SELECT r.confirmationID, r.startDate, r.endDate, loc.locationName  FROM dbo.reservation r join location loc on loc.locationID = r.locationID where r.userID = @userID";
-                MySqlCommand cmd = new MySqlCommand(reservationListQuery);
+                MySqlCommand cmd = new MySqlCommand("SELECT distinct r.confirmationID, r.startDate, r.endDate, loc.locationName  FROM dbo.reservation r join location loc on loc.locationID = r.locationID where r.userID = @userID and r.reservationStatus <> 'cancelled'");
                 cmd.Parameters.AddWithValue("@userID", resUserID);
                 DataSet resReport = reservationListConn.ExecuteDataSet(cmd);
 
@@ -74,7 +74,6 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Logs out of system
         private void btnLogOut_Click(object sender, EventArgs e)
         {
-            //Application.OpenForms["Login"].Show();
             this.Close();
             Application.OpenForms["Menu"].Close();
         }
@@ -106,6 +105,7 @@ namespace Hotel_Reservation_Overhaul
                 {
                     displayError("Entered user ID is not customer");
                 }
+                else
                 // customer ID exists, pull report
                 {
                     GetData();
@@ -128,7 +128,7 @@ namespace Hotel_Reservation_Overhaul
             this.reservationTableAdapter.Fill(this.hotelmgmt.reservation);
 
         }
-
+        // DESCRIPTION: Gets confirmation ID of selected reservation row
         private int getConfirmationID()
         {
             int selectedrowindex = resListDataGrid.SelectedCells[0].RowIndex;
@@ -144,12 +144,21 @@ namespace Hotel_Reservation_Overhaul
                 // Pulls out confirmation ID from selected row
                 int confirmationID = getConfirmationID();
 
-                // Passes confirmation ID and user ID to payment page
-                var makePayment = new Payment(confirmationID, resUserID, currentDate, false);
-                makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
-                this.Hide();
-                makePayment.Show();
+                Reservation makeResPayment = new Reservation(confirmationID);
 
+
+                // check that reservation not already paid
+                if (makeResPayment.amountDue > 0)
+                { // Passes confirmation ID and user ID to payment page
+                    var makePayment = new Payment(confirmationID, resUserID, currentDate,false);
+                    makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
+                    this.Hide();
+                    makePayment.Show();
+                }
+                else
+                {
+                    displayError("This reservation has been paid in full");
+                }
             }
             else
             {
@@ -185,7 +194,22 @@ namespace Hotel_Reservation_Overhaul
 
         private void btnModify_Click(object sender, EventArgs e)
         {
-
+            if (resUserID == -1)
+            {
+                displayError("Please enter a customer ID");
+            }
+            else if (resListDataGrid.SelectedRows.Count < 1)
+            {
+                displayError("Please select a reservation");
+            }
+            else
+            {
+                // Pulls out confirmation ID from selected row
+                int confirmationID = getConfirmationID();
+                var modReservation = new CreateReservation(userInfo.userID, confirmationID, true);
+                this.Hide();
+                modReservation.Show();
+            }
         }
 
         // DESCRIPTION: Reservation cancellation process
@@ -216,7 +240,7 @@ namespace Hotel_Reservation_Overhaul
                             // update reservation info
                             Utilities recalc = new Utilities();
                             DateTime newEndDate = currentDate;       //FIXME: Replace with date variable
-                            resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNum));
+                            resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNumList[0]));
                             resInfo.points = Convert.ToInt32(recalc.calculatePoints((newEndDate - resInfo.endDate).TotalDays));
                             resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
                             resInfo.status = "checked-out";
@@ -241,7 +265,7 @@ namespace Hotel_Reservation_Overhaul
                             // issue refund payment
                             DBConnect issueRefundConn = new DBConnect();
                             MySqlCommand issueRefund = new MySqlCommand(@"INSERT INTO `dbo`.`payment` (`customerID`, `confirmationID`, `amountPaid`, `paymentMethod`, `usedRewards`)
-                                                                      VALUES (@customerID,@confirmationID, @refundAmt, 'refund', 0");
+                                                                      VALUES (@customerID,@confirmationID, @refundAmt, 'refund', 0)");
                             issueRefund.Parameters.Add("@customerID", MySqlDbType.Int32).Value = resInfo.userID;
                             issueRefund.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = resInfo.confirmatonID;
                             issueRefund.Parameters.Add("@refundAmt", MySqlDbType.Decimal).Value = resInfo.amountDue;
@@ -260,7 +284,8 @@ namespace Hotel_Reservation_Overhaul
                         else
                         {
                             resInfo.logCancellation(userInfo.userID, resUserID, currentDate);
-                        }                    
+                        }
+                        GetData();
                     }
                 }             
             }
