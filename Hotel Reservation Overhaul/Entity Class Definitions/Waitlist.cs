@@ -29,12 +29,13 @@ public class Waitlist
 
         addToWL.Parameters.Add("@waitlistID", MySqlDbType.Int32).Value = waitlistID;
         addToWL.Parameters.Add("@locationID", MySqlDbType.Int32).Value = wlLocationID;
-        addToWL.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = wlUserID;
+        addToWL.Parameters.Add("@userID", MySqlDbType.Int32).Value = wlUserID;
         addToWL.Parameters.Add("@startDate", MySqlDbType.Date).Value = wlStartDate;
         addToWL.Parameters.Add("@endDate", MySqlDbType.Date).Value = wlEndDate;
         addToWL.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = wlNumGuests;
         addToWL.Parameters.Add("@numRooms", MySqlDbType.Int32).Value = wlNumRooms;
         addToWL.Parameters.Add("@packages", MySqlDbType.VarChar, 45).Value = combinedString;
+       
         if (addToWLConn.NonQuery(addToWL) > 0)
         {
             return true;
