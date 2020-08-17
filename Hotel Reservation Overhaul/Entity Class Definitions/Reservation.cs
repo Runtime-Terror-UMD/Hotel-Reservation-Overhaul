@@ -146,7 +146,7 @@ public class Reservation
 
         DBConnect getNextConfConn = new DBConnect();
         MySqlCommand cmd = new MySqlCommand("select confirmationID from dbo.reservation order by confirmationID desc limit 1");
-        int comfirmationID = getNextConfConn.intScalar(cmd) + 1;
+        int confirmationID = getNextConfConn.intScalar(cmd) + 1;
         string status = "upcoming";
 
         createResCmd.Parameters.Add("@roomNum", MySqlDbType.Int32);
@@ -154,7 +154,7 @@ public class Reservation
         createResCmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = resUserID;
         createResCmd.Parameters.Add("@startDate", MySqlDbType.Date).Value = startDate;
         createResCmd.Parameters.Add("@endDate", MySqlDbType.Date).Value = endDate;
-        createResCmd.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = comfirmationID;
+        createResCmd.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = confirmationID;
         createResCmd.Parameters.Add("@points", MySqlDbType.Int32).Value = newResPoints;
         createResCmd.Parameters.Add("@price", MySqlDbType.Decimal).Value = newResPrice;
         createResCmd.Parameters.Add("@status", MySqlDbType.VarChar, 45).Value = status;
@@ -168,7 +168,7 @@ public class Reservation
             createResConn.NonQuery(createResCmd);
         }
 
-        return -1;
+        return confirmationID;
     }
 
     // DESCRIPTION: Adds request to dbo.waitlist
@@ -184,16 +184,14 @@ public class Reservation
         addToWL.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = wlNumGuests;
         addToWL.Parameters.Add("@packages", MySqlDbType.VarChar, 45).Value = combinedString;
         if (addToWLConn.NonQuery(addToWL) > 0)
-
-
-        LoggedActivity logNewReservation = new LoggedActivity();
-
         {
-            return comfirmationID;
+
+            LoggedActivity logNewReservation = new LoggedActivity();
+            return true;
         }
         else
         {
-            return -1;
+            return false;
         }
     }
 }

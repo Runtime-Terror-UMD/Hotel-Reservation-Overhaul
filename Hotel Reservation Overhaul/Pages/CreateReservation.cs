@@ -254,7 +254,7 @@ namespace Hotel_Reservation_Overhaul
                 Utilities getDeposit = new Utilities();
                 lblDeposit.Text = getDeposit.getMinCharge().ToString();
                 txtCostNightly.Text = pricePerNight.ToString();
-                lblSubTotal.Text = (price + Convert.ToDouble(getDeposit.getMinCharge())).ToString();
+                lblSubTotal.Text = price.ToString(); //+ Convert.ToDouble(getDeposit.getMinCharge())).ToString();
                 lblError.Visible = false;
                 cboxHotel.Enabled = false;
                 cboxNumGuests.Enabled = false;
@@ -293,7 +293,7 @@ namespace Hotel_Reservation_Overhaul
                      
 
                 int confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue), resUserID, userID, startDate.Value, endDate.Value, price, points, roomNumList, Convert.ToInt32(cboxNumGuests.SelectedItem), currentDate);
-                var makePayment = new Payment(confirmationID, resUserID, currentDate);
+                var makePayment = new Payment(confirmationID, resUserID, currentDate, true);
                 makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
                 this.Hide();
                 makePayment.Show();     
