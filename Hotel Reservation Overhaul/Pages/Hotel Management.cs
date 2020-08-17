@@ -812,6 +812,10 @@ namespace Hotel_Reservation_Overhaul.Pages
                     {
                         displayError("User ID not entered");
                     }
+                    else if (int.TryParse(txtUser.Text, out _) == false)
+                    {
+                        displayError("Numeric data not entered");
+                    }                  
                     else
                     {   Utilities userReport = new Utilities();
                         // verify user ID exists

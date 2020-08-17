@@ -143,7 +143,7 @@
             this.lblUsername.Name = "lblUsername";
             this.lblUsername.Size = new System.Drawing.Size(150, 31);
             this.lblUsername.TabIndex = 0;
-            this.lblUsername.Text = "Username:";
+            this.lblUsername.Text = "User ID:";
             this.lblUsername.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblHotel

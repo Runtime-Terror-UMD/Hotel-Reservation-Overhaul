@@ -39,6 +39,7 @@ namespace Hotel_Reservation_Overhaul
             resUserID = ResUserID;
             userID = UserID;
             currentDate = current;
+            cboxHotel.SelectedIndex = -1;
         }
 
         // DESCRIPTION: Fills fields with reservation info for reservation to modify
@@ -251,7 +252,7 @@ namespace Hotel_Reservation_Overhaul
                 Utilities getDeposit = new Utilities();
                 lblDeposit.Text = getDeposit.getMinCharge().ToString();
                 txtCostNightly.Text = pricePerNight.ToString();
-                lblSubTotal.Text = price.ToString(); //+ Convert.ToDouble(getDeposit.getMinCharge())).ToString();
+                lblSubTotal.Text = (price + getDeposit.getMinCharge()).ToString();
                 cboxHotel.Enabled = false;
                 cboxNumRooms.Enabled = false;
                 cboxNumGuests.Enabled = false;
@@ -286,9 +287,6 @@ namespace Hotel_Reservation_Overhaul
             else
             {   // Get next confirmation ID
                 Reservation createReservation = new Reservation();
-
-                     
-
                 int confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue), resUserID, userID, startDate.Value, endDate.Value, price, points, roomNumList, Convert.ToInt32(cboxNumGuests.SelectedItem), currentDate);
                 var makePayment = new Payment(confirmationID, resUserID, currentDate, true);
                 makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
@@ -321,8 +319,12 @@ namespace Hotel_Reservation_Overhaul
                 checkPackages.SetItemChecked(indexChecked, false);
             }
             checkPackages.SetItemChecked(0, true);
-            cboxHotel.SelectedIndex = 0;
-            cboxNumGuests.SelectedIndex = 0;
+            cboxHotel.SelectedIndex = -1;
+            cboxNumGuests.SelectedIndex = -1;
+            cboxNumRooms.SelectedIndex = -1;
+            lblSubTotal.Text = "";
+            lblDeposit.Text = "";
+            txtCostNightly.Text = "";
             cboxHotel.Enabled = true;
             cboxNumRooms.Enabled = true;
             cboxNumGuests.Enabled = true;
