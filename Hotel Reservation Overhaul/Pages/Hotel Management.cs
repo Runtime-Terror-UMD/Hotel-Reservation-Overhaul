@@ -753,7 +753,27 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 }
                                 else
                                 {
+                                    // check if there are any rooms currently checked out that are in maintenance 
+                                    Utilities getRoomPackages = new Utilities();
+                                    DBConnect getMaintenanceRoomsConn = new DBConnect();
+                                    MySqlCommand getMaintenanceRooms = new MySqlCommand(@"select confirmationID from dbo.reservation r
+                                                                                        join dbo.maintenance m
+	                                                                                        on m.maintenanceDate between r.startDate and r.endDate
+                                                                                            and m.locationID = r.locationID
+                                                                                            and m.roomNum = r.roomNum
+                                                                                        where r.reservationStatus = 'checked-in'");
+                                    DataTable maintenanceRooms = getMaintenanceRoomsConn.ExecuteDataTable(getMaintenanceRooms);
+                                    
+                                    foreach(DataRow row in maintenanceRooms.Rows)
+                                    {
+                                        Reservation maintenaceRes = new Reservation(Convert.ToInt32(row["confirmationID"]));
+                                        foreach(int maintenanceRoomNum in maintenaceRes.roomNumList)
+                                        {
+                                            //maintenaceRes
+                                        }
+                                    }
                                     maintainCount++;
+
                                 }
                             }
                             else

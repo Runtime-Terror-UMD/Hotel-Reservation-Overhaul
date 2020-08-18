@@ -50,4 +50,34 @@ public class User
         dataReader.Close();
         UserProfileConn.CloseConnection();
     }
+
+    public bool updateUser(User userinfo)
+    {
+        DBConnect updateUserConn = new DBConnect();
+        MySqlCommand updateUserCmd = new MySqlCommand(@"UPDATE `dbo`.`user`
+                                                        SET
+                                                        firstName = @firstName,
+                                                        lastName = @lastName,
+                                                        email = @email,
+                                                        secretQuestion = @secretQuestion,
+                                                        secretAnswer= @secretAnswer,
+                                                        username = @userName,
+                                                        password = @password,
+                                                        pointsBalance = @points
+                                                        WHERE userID = @userID;");
+        updateUserCmd.Parameters.Add("@firstName", MySqlDbType.VarChar, 45).Value = userinfo.firstName;
+        updateUserCmd.Parameters.Add("@lastName", MySqlDbType.VarChar, 45).Value = userinfo.lastName;
+        updateUserCmd.Parameters.Add("@email", MySqlDbType.VarChar, 45).Value = userinfo.email;
+        updateUserCmd.Parameters.Add("@secretQuestion", MySqlDbType.VarChar, 45).Value = userinfo.secretQuestion;
+        updateUserCmd.Parameters.Add("@secretAnswer", MySqlDbType.VarChar, 45).Value = userinfo.secretAnswer;
+        updateUserCmd.Parameters.Add("@userName", MySqlDbType.VarChar, 45).Value = userinfo.username;
+        updateUserCmd.Parameters.Add("@password", MySqlDbType.VarChar, 45).Value = userinfo.password;
+        updateUserCmd.Parameters.Add("@points", MySqlDbType.Int32).Value = userinfo.pointsBalance;
+        updateUserCmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userinfo.userID;
+        if (updateUserConn.NonQuery(updateUserCmd) > 0)
+            return true;
+        return false;
+    }
+
 }
+

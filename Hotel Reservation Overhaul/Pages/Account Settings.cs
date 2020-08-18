@@ -13,13 +13,14 @@ namespace Hotel_Reservation_Overhaul.Pages
     public partial class AccountSettings : Form
     {
         private int UserID;
+        User userInfo;
         public AccountSettings(int userID)
         {
             InitializeComponent();
             UserID = userID;
             lblAccountID.Text = "" + UserID;
             Utilities accountInfo = new Utilities();
-            User userInfo = new User(userID);
+            userInfo = new User(userID);
             lblUsername.Text = userInfo.username;
             lblRewardsPoints.Text = "" + userInfo.rewardPoints;
             lblEmail.Text = userInfo.email;
@@ -37,30 +38,47 @@ namespace Hotel_Reservation_Overhaul.Pages
         //DESCRIPTION: changes the name of the user
         private void btnChangeName_Click(object sender, EventArgs e)
         {
-            Utilities accountInfo = new Utilities();
-            string newFirstName = txtFirstName.Text;
-            string newLastName = txtLastName.Text;
-            if(accountInfo.setFirstName(UserID, newFirstName) && accountInfo.setLastName(UserID, newLastName))
+            if(string.IsNullOrWhiteSpace(txtFirstName.Text))
             {
-                MessageBox.Show("Full name was successfully changed.");
+                //throw error
+            }
+            else if (string.IsNullOrWhiteSpace(txtLastName.Text))
+            {
+                //throw error
             }
             else
             {
-                MessageBox.Show("Full name was not changed.");
-            }
-            txtFirstName.Text = accountInfo.getFirstName(UserID);
-            txtLastName.Text = accountInfo.getLastName(UserID);
+                User oldNames = new User(UserID);
+
+                userInfo.firstName = txtFirstName.Text;
+                userInfo.lastName = txtLastName.Text;
+                if(userInfo.updateUser(userInfo))
+                {
+                    MessageBox.Show("Full name was successfully changed.");
+                    txtFirstName.Text = userInfo.firstName.ToString();
+                    txtLastName.Text = userInfo.lastName.ToString();
+                }
+                else
+                {
+                    MessageBox.Show("Error updating name");
+                    txtFirstName.Text = oldNames.firstName.ToString();
+                    txtLastName.Text = oldNames.lastName.ToString();
+                }
+            } 
         }
 
         //DESCRIPTION: changes the password if the original password matches
         private void btnChangePassword_Click(object sender, EventArgs e)
         {
-            Utilities accountInfo = new Utilities();
-            string oldPassword = txtCurrentPassword.Text;
-            string newPassword = txtNewPassword.Text;
-            if (accountInfo.passwordMatches(UserID, oldPassword))
+            if(string.IsNullOrWhiteSpace(txtNewPassword.Text))
             {
-                if(accountInfo.updatePassword(UserID, newPassword))
+                //throw error
+            }
+            Utilities accountInfo = new Utilities();
+            if (accountInfo.passwordMatches(UserID, txtCurrentPassword.Text))
+            {
+                userInfo.password = txtNewPassword.Text;
+                if(userInfo.updateUser(userInfo))
                 {
                     MessageBox.Show("Account password changed successfully.");
                 }
@@ -80,12 +98,20 @@ namespace Hotel_Reservation_Overhaul.Pages
         private void btnChangeQuestion_Click(object sender, EventArgs e)
         {
             Utilities accountInfo = new Utilities();
-            string currentans = txtCurrentAnswer.Text;
-            string newquest = txtNewQuestion.Text;
-            string newans = txtNewAnswer.Text;
-            if(accountInfo.secretAnswerMatches(UserID, currentans))
+            if(string.IsNullOrWhiteSpace(txtCurrentAnswer.Text))
             {
-                if (accountInfo.setSecretQuestion(UserID, newquest) && accountInfo.setSecretAnswer(UserID, newans))
+                //throw error
+            }    
+            else if(string.IsNullOrWhiteSpace(txtNewQuestion.Text))
+            {
+                // throw error
+            }
+            else if(userInfo.secretAnswer == txtCurrentAnswer.Text)
+            {
+                userInfo.secretQuestion = txtNewQuestion.Text;
+                userInfo.secretAnswer = txtNewAnswer.Text;
+                
+                if(userInfo.updateUser(userInfo))
                 {
                     MessageBox.Show("Account secret question and answer has been change successfully.");
                 }
@@ -101,7 +127,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             txtCurrentAnswer.Clear();
             txtNewAnswer.Clear();
             txtNewQuestion.Clear();
-            lblCurrentQuestion.Text = accountInfo.getSecretQuestion(UserID);
+            lblCurrentQuestion.Text = userInfo.secretQuestion.ToString();
         }
 
         private void btnLogOut_Click(object sender, EventArgs e)
