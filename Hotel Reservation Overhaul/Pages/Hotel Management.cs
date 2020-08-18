@@ -22,6 +22,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             InitializeComponent();
             UserID = userID;
             currentDate = current;
+            fillCBoxHotel();
         }
         public void displayError(string message)
         {
@@ -786,11 +787,18 @@ namespace Hotel_Reservation_Overhaul.Pages
             System.Windows.Forms.Application.Exit();
         }
     
+        //DESCRIPTION: Disables fields depending on type of report
         private void lstReports_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             if (lstReports.SelectedItem.ToString() == "Customer History" || lstReports.SelectedItem.ToString() == "Employee History")
             {
                 cboxHotel.Enabled = false;
+                txtUser.Enabled = true;
+            }
+            else if (lstReports.SelectedItem.ToString() == "Reward Summary" || lstReports.SelectedItem.ToString() == "Occupancy Summary" || lstReports.SelectedItem.ToString() == "Customer Summary")
+            {
+                txtUser.Enabled = false;
+                cboxHotel.Enabled = true;
             }
         }
 
@@ -846,7 +854,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 }
                                 else
                                 {
-                                    displayError("User ID is not an emploee");
+                                    displayError("User ID is not an employee");
                                 }
                             }
                         }
@@ -856,6 +864,18 @@ namespace Hotel_Reservation_Overhaul.Pages
                         }
                     }                  
                 }
+                else
+                {
+                    if (cboxHotel.SelectedIndex == -1)
+                    {
+                        displayError("Please select a hotel");
+                    }
+                    else
+                    {
+                       //open summary reports
+                    }
+                }    
+
             }
         }
 
@@ -874,6 +894,24 @@ namespace Hotel_Reservation_Overhaul.Pages
         void hotelSett_FormClosed(object sender, EventArgs e)
         {
             this.Show();
+        }
+
+        // DESCRIPTION: Fills hotel combo-box
+        private void fillCBoxHotel()
+        {
+            DBConnect fillCBoxConn = new DBConnect();
+            MySqlCommand fillCBox = new MySqlCommand("select locationID, locationName from dbo.location");
+            DataTable hotelDT = fillCBoxConn.ExecuteDataTable(fillCBox);
+          
+            DataRow row = hotelDT.NewRow();
+            row[0] = 0;
+            row[1] = "All";
+            hotelDT.Rows.InsertAt(row, 0);
+
+            //Assign DataTable as DataSource.
+            cboxHotel.DataSource = hotelDT;
+            cboxHotel.DisplayMember = "locationName";
+            cboxHotel.ValueMember = "locationID";
         }
     }
 }

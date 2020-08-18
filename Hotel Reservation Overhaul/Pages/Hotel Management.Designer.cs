@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnReturn = new System.Windows.Forms.Button();
             this.lblDescribe = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
@@ -37,6 +38,8 @@
             this.lblUsername = new System.Windows.Forms.Label();
             this.lblHotel = new System.Windows.Forms.Label();
             this.cboxHotel = new System.Windows.Forms.ComboBox();
+            this.locationBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.hotelmgmt = new Hotel_Reservation_Overhaul.hotelmgmt();
             this.lblEndDate = new System.Windows.Forms.Label();
             this.dateEnd = new System.Windows.Forms.DateTimePicker();
             this.lblStartDate = new System.Windows.Forms.Label();
@@ -52,7 +55,10 @@
             this.btnHotelSettings = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.lblFileStatus = new System.Windows.Forms.Label();
+            this.locationTableAdapter = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.locationTableAdapter();
             this.grpReports.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).BeginInit();
             this.grpHotelSettings.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -150,11 +156,22 @@
             // 
             // cboxHotel
             // 
+            this.cboxHotel.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.locationBindingSource, "locationName", true));
             this.cboxHotel.FormattingEnabled = true;
             this.cboxHotel.Location = new System.Drawing.Point(335, 115);
             this.cboxHotel.Name = "cboxHotel";
             this.cboxHotel.Size = new System.Drawing.Size(200, 21);
             this.cboxHotel.TabIndex = 9;
+            // 
+            // locationBindingSource
+            // 
+            this.locationBindingSource.DataMember = "location";
+            this.locationBindingSource.DataSource = this.hotelmgmt;
+            // 
+            // hotelmgmt
+            // 
+            this.hotelmgmt.DataSetName = "hotelmgmt";
+            this.hotelmgmt.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // lblEndDate
             // 
@@ -202,7 +219,11 @@
             this.lstReports.FormattingEnabled = true;
             this.lstReports.Items.AddRange(new object[] {
             "Customer History",
-            "Employee History"});
+           "Employee History",
+            "Reward Summary",
+            "Occupancy Summary",
+            "Customer Summary"});
+            this.lstReports.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lstReports.Location = new System.Drawing.Point(25, 25);
             this.lstReports.Name = "lstReports";
             this.lstReports.Size = new System.Drawing.Size(200, 160);
@@ -302,6 +323,10 @@
             this.lblFileStatus.TabIndex = 21;
             this.lblFileStatus.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
+            // locationTableAdapter
+            // 
+            this.locationTableAdapter.ClearBeforeFill = true;
+            // 
             // HotelManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -318,6 +343,8 @@
             this.Text = "Hotel Reservation: Hotel Management";
             this.grpReports.ResumeLayout(false);
             this.grpReports.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).EndInit();
             this.grpHotelSettings.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -349,5 +376,8 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Label lblFileStatus;
         private System.Windows.Forms.Label lblError;
+        private hotelmgmt hotelmgmt;
+        private System.Windows.Forms.BindingSource locationBindingSource;
+        private hotelmgmtTableAdapters.locationTableAdapter locationTableAdapter;
     }
 }
