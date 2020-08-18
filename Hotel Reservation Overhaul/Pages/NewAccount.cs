@@ -56,10 +56,18 @@ namespace Hotel_Reservation_Overhaul
             {
                 displayError("Username is required");
             }
+            else if (verifyNewAccount.isValidEmail(txtUsername.Text))
+            {
+                displayError("Username cannot be an email address");
+            }
             // if password  not entered
             else if (string.IsNullOrWhiteSpace(txtPassword.Text))
             {
                 displayError("Password is required");
+            }
+            else if((txtPassword.Text.Length) > 45)
+            {
+                displayError("Password cannot exceed 45 characters");
             }
             // if email not entered
             else if (string.IsNullOrWhiteSpace(txtEmail.Text))
