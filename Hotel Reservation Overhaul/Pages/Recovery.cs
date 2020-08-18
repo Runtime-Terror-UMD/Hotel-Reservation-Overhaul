@@ -15,10 +15,11 @@ namespace Hotel_Reservation_Overhaul
     {
         private int typeToRecover;
         public int userID;
+        User userInfo;
 
         //DESCRIPTION: Displays different buttons/text depending on which recovery option was selected
         public Recovery(string recoveryType)
-        {
+        {   
             this.AcceptButton = this.btnVerifyAcct;
             if (recoveryType == "password")
             {
@@ -82,8 +83,7 @@ namespace Hotel_Reservation_Overhaul
             cmd.Parameters["@userid"].Value = userID;
 
             secretQuestion = displaySecretQuestionConn.stringScalar(cmd);
-
-            displaySecretQuestionConn.CloseConnection();
+            userInfo = new User(userID);
             return secretQuestion;
         }
 
@@ -97,9 +97,8 @@ namespace Hotel_Reservation_Overhaul
 
             // check that secret answer matches secret question
 
-            if (recoveryVerification.secretAnswerMatches(userID, txtSAns.Text))
+            if (userInfo.secretAnswer == txtSAns.Text)
             {
-
                 if (typeToRecover == 1)
                 {
                     // if new password field empty
@@ -111,17 +110,22 @@ namespace Hotel_Reservation_Overhaul
                     else
                     {
                         // reset password
-
-                        recoveryVerification.updatePassword(txtUser.Text, txtPassword.Text);
-                        lblError.Text = "Your password has been updated";
-                        lblError.ForeColor = System.Drawing.Color.Green;
-                        lblError.Visible = true;
+                        userInfo.password = txtPassword.Text;
+                        if(userInfo.updateUser(userInfo))
+                        {
+                            lblError.Text = "Your password has been updated";
+                            lblError.ForeColor = System.Drawing.Color.Green;
+                            lblError.Visible = true;
+                        }
+                        else
+                        {
+                            displayError("Unable to update password");
+                        }
                     }
                 }
                 else
                 {
-                    Utilities getUsername = new Utilities();
-                    txtPassword.Text = getUsername.getUsername(userID);
+                    txtPassword.Text = userInfo.username.ToString();
                 }
             }
             else
