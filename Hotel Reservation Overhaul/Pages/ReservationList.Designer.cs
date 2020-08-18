@@ -42,34 +42,33 @@
             this.btnSearch = new System.Windows.Forms.Button();
             this.lblError = new System.Windows.Forms.Label();
             this.reservationBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.hotelmgmtBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.hotelmgmt = new Hotel_Reservation_Overhaul.hotelmgmt();
             this.dboDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.reservationBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.locationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.resListDataGrid = new System.Windows.Forms.DataGridView();
-            this.hotelmgmt = new Hotel_Reservation_Overhaul.hotelmgmt();
-            this.hotelmgmtBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.reservationTableAdapter = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.reservationTableAdapter();
-            this.locationTableAdapter = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.locationTableAdapter();
             this.ConfirmationID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StartDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EndDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Location = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.reservationTableAdapter = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.reservationTableAdapter();
+            this.locationTableAdapter = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.locationTableAdapter();
             ((System.ComponentModel.ISupportInitialize)(this.reservationBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmtBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dboDataSetBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.reservationBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.resListDataGrid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmtBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // lblDescribe
             // 
             this.lblDescribe.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDescribe.Location = new System.Drawing.Point(300, 92);
-            this.lblDescribe.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDescribe.Location = new System.Drawing.Point(200, 60);
             this.lblDescribe.Name = "lblDescribe";
-            this.lblDescribe.Size = new System.Drawing.Size(600, 31);
+            this.lblDescribe.Size = new System.Drawing.Size(400, 20);
             this.lblDescribe.TabIndex = 7;
             this.lblDescribe.Text = "Manage your reservations.";
             this.lblDescribe.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -77,20 +76,18 @@
             // lblTitle
             // 
             this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.Location = new System.Drawing.Point(300, 23);
-            this.lblTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTitle.Location = new System.Drawing.Point(200, 15);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(600, 62);
+            this.lblTitle.Size = new System.Drawing.Size(400, 40);
             this.lblTitle.TabIndex = 8;
             this.lblTitle.Text = "Hotel Reservation System";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // btnLogOut
             // 
-            this.btnLogOut.Location = new System.Drawing.Point(1046, 18);
-            this.btnLogOut.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnLogOut.Location = new System.Drawing.Point(697, 12);
             this.btnLogOut.Name = "btnLogOut";
-            this.btnLogOut.Size = new System.Drawing.Size(112, 38);
+            this.btnLogOut.Size = new System.Drawing.Size(75, 25);
             this.btnLogOut.TabIndex = 9;
             this.btnLogOut.Text = "Log Out";
             this.btnLogOut.UseVisualStyleBackColor = true;
@@ -99,10 +96,9 @@
             // btnNew
             // 
             this.btnNew.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNew.Location = new System.Drawing.Point(900, 154);
-            this.btnNew.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnNew.Location = new System.Drawing.Point(600, 100);
             this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(225, 77);
+            this.btnNew.Size = new System.Drawing.Size(150, 50);
             this.btnNew.TabIndex = 1;
             this.btnNew.Text = "Book New Reservation";
             this.btnNew.UseVisualStyleBackColor = true;
@@ -111,10 +107,9 @@
             // btnModify
             // 
             this.btnModify.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnModify.Location = new System.Drawing.Point(900, 636);
-            this.btnModify.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnModify.Location = new System.Drawing.Point(600, 413);
             this.btnModify.Name = "btnModify";
-            this.btnModify.Size = new System.Drawing.Size(225, 77);
+            this.btnModify.Size = new System.Drawing.Size(150, 50);
             this.btnModify.TabIndex = 2;
             this.btnModify.Text = "Modify Reservation";
             this.btnModify.UseVisualStyleBackColor = true;
@@ -124,10 +119,9 @@
             // btnCancel
             // 
             this.btnCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.Location = new System.Drawing.Point(900, 487);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnCancel.Location = new System.Drawing.Point(600, 317);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(225, 77);
+            this.btnCancel.Size = new System.Drawing.Size(150, 50);
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel Reservation";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -135,10 +129,9 @@
             // 
             // btnReturn
             // 
-            this.btnReturn.Location = new System.Drawing.Point(18, 18);
-            this.btnReturn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnReturn.Location = new System.Drawing.Point(12, 12);
             this.btnReturn.Name = "btnReturn";
-            this.btnReturn.Size = new System.Drawing.Size(112, 38);
+            this.btnReturn.Size = new System.Drawing.Size(75, 25);
             this.btnReturn.TabIndex = 5;
             this.btnReturn.Text = "Return";
             this.btnReturn.UseVisualStyleBackColor = true;
@@ -147,10 +140,9 @@
             // btnPay
             // 
             this.btnPay.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPay.Location = new System.Drawing.Point(900, 315);
-            this.btnPay.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnPay.Location = new System.Drawing.Point(600, 205);
             this.btnPay.Name = "btnPay";
-            this.btnPay.Size = new System.Drawing.Size(225, 77);
+            this.btnPay.Size = new System.Drawing.Size(150, 50);
             this.btnPay.TabIndex = 3;
             this.btnPay.Text = "Pay for Reservation";
             this.btnPay.UseVisualStyleBackColor = true;
@@ -159,10 +151,9 @@
             // lblCustDesc
             // 
             this.lblCustDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCustDesc.Location = new System.Drawing.Point(75, 769);
-            this.lblCustDesc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblCustDesc.Location = new System.Drawing.Point(50, 500);
             this.lblCustDesc.Name = "lblCustDesc";
-            this.lblCustDesc.Size = new System.Drawing.Size(270, 31);
+            this.lblCustDesc.Size = new System.Drawing.Size(180, 20);
             this.lblCustDesc.TabIndex = 0;
             this.lblCustDesc.Text = "Seach Customer:";
             this.lblCustDesc.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -170,19 +161,17 @@
             // 
             // txtCustomerSearch
             // 
-            this.txtCustomerSearch.Location = new System.Drawing.Point(375, 769);
-            this.txtCustomerSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtCustomerSearch.Location = new System.Drawing.Point(250, 500);
             this.txtCustomerSearch.Name = "txtCustomerSearch";
-            this.txtCustomerSearch.Size = new System.Drawing.Size(298, 26);
+            this.txtCustomerSearch.Size = new System.Drawing.Size(200, 20);
             this.txtCustomerSearch.TabIndex = 5;
             this.txtCustomerSearch.Visible = false;
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(712, 769);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnSearch.Location = new System.Drawing.Point(475, 500);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(112, 31);
+            this.btnSearch.Size = new System.Drawing.Size(75, 20);
             this.btnSearch.TabIndex = 6;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -193,9 +182,10 @@
             // 
             this.lblError.AutoSize = true;
             this.lblError.ForeColor = System.Drawing.Color.Red;
-            this.lblError.Location = new System.Drawing.Point(371, 816);
+            this.lblError.Location = new System.Drawing.Point(247, 530);
+            this.lblError.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblError.Name = "lblError";
-            this.lblError.Size = new System.Drawing.Size(48, 20);
+            this.lblError.Size = new System.Drawing.Size(32, 13);
             this.lblError.TabIndex = 11;
             this.lblError.Text = "Error:";
             this.lblError.Visible = false;
@@ -204,6 +194,16 @@
             // 
             this.reservationBindingSource.DataMember = "reservation";
             this.reservationBindingSource.DataSource = this.hotelmgmtBindingSource;
+            // 
+            // hotelmgmtBindingSource
+            // 
+            this.hotelmgmtBindingSource.DataSource = this.hotelmgmt;
+            this.hotelmgmtBindingSource.Position = 0;
+            // 
+            // hotelmgmt
+            // 
+            this.hotelmgmt.DataSetName = "hotelmgmt";
+            this.hotelmgmt.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // reservationBindingSource1
             // 
@@ -227,33 +227,16 @@
             this.EndDate,
             this.Location});
             this.resListDataGrid.DataSource = this.hotelmgmt;
-            this.resListDataGrid.Location = new System.Drawing.Point(75, 154);
+            this.resListDataGrid.Location = new System.Drawing.Point(50, 100);
+            this.resListDataGrid.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.resListDataGrid.MultiSelect = false;
             this.resListDataGrid.Name = "resListDataGrid";
             this.resListDataGrid.ReadOnly = true;
             this.resListDataGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.resListDataGrid.RowTemplate.Height = 28;
             this.resListDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.resListDataGrid.Size = new System.Drawing.Size(794, 559);
+            this.resListDataGrid.Size = new System.Drawing.Size(529, 363);
             this.resListDataGrid.TabIndex = 10;
-            // 
-            // hotelmgmt
-            // 
-            this.hotelmgmt.DataSetName = "hotelmgmt";
-            this.hotelmgmt.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // hotelmgmtBindingSource
-            // 
-            this.hotelmgmtBindingSource.DataSource = this.hotelmgmt;
-            this.hotelmgmtBindingSource.Position = 0;
-            // 
-            // reservationTableAdapter
-            // 
-            this.reservationTableAdapter.ClearBeforeFill = true;
-            // 
-            // locationTableAdapter
-            // 
-            this.locationTableAdapter.ClearBeforeFill = true;
             // 
             // ConfirmationID
             // 
@@ -291,11 +274,19 @@
             this.Location.ReadOnly = true;
             this.Location.Width = 150;
             // 
+            // reservationTableAdapter
+            // 
+            this.reservationTableAdapter.ClearBeforeFill = true;
+            // 
+            // locationTableAdapter
+            // 
+            this.locationTableAdapter.ClearBeforeFill = true;
+            // 
             // ReservationList
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1176, 863);
+            this.ClientSize = new System.Drawing.Size(784, 566);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.resListDataGrid);
             this.Controls.Add(this.btnSearch);
@@ -309,17 +300,16 @@
             this.Controls.Add(this.lblDescribe);
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.btnLogOut);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "ReservationList";
             this.Text = "Hotel Reservation: Reservation List";
             this.Load += new System.EventHandler(this.ReservationList_Load);
             ((System.ComponentModel.ISupportInitialize)(this.reservationBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmtBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dboDataSetBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.reservationBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.resListDataGrid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.hotelmgmtBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
