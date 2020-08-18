@@ -189,19 +189,9 @@ namespace Hotel_Reservation_Overhaul
             {
                 // get selected packages
                 Utilities calcPrice = new Utilities();
-                List<int> packages = new List<int>();
 
-                foreach (int indexChecked in checkPackages.CheckedIndices)
-                {
-                    if (checkPackages.GetItemCheckState(indexChecked) == CheckState.Checked)
-                    {
-                        packages.Add(indexChecked + 1);
-                        lblError.Visible = true;
-                    }
-                }
-                
                 // put selected package IDs in list
-                combinedstring = string.Join(",", packages);
+                combinedstring = getSelectedPackages();
 
                 // check for availability
                 Reservation resInfo = new Reservation();
@@ -213,31 +203,38 @@ namespace Hotel_Reservation_Overhaul
 
                 if (roomNumList.Count != numRooms)
                 {   // no room available, gets roomNum to reference for price 
-                    DBConnect checkAvailabilityConn = new DBConnect();
-                    MySqlCommand cmd = new MySqlCommand("SELECT rrp.roomNum, group_concat(packageID separator \",\") as packages from dbo.relation_room_package rrp where rrp.locationID =  @locationID group by rrp.roomNum having(packages= @packages) limit 1");
-
-                    cmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = locationID;
-                    cmd.Parameters.Add("@packages", MySqlDbType.Int32).Value = combinedstring;
-
-                    MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
-                    if (nonAvailableDR.HasRows)
+                    if (mod)
                     {
-                        while (nonAvailableDR.Read())
-                        {
-                            refRoomNum = Convert.ToInt32(nonAvailableDR["roomNum"]);
-                        }
-                        Utilities getWLPricePerNight = new Utilities();
-                        pricePerNight = getWLPricePerNight.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), refRoomNum);
-                        displayError("No room with those criteria are available. Your reservation will be added to the waitlist");
-                        waitlist = true;
+                        displayError("Modifications unavailable");
                     }
                     else
                     {
-                        displayError("No room with those criteria exists");
-                        return;
+                        DBConnect checkAvailabilityConn = new DBConnect();
+                        MySqlCommand cmd = new MySqlCommand("SELECT rrp.roomNum, group_concat(packageID separator \",\") as packages from dbo.relation_room_package rrp where rrp.locationID =  @locationID group by rrp.roomNum having(packages= @packages) limit 1");
+
+                        cmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = locationID;
+                        cmd.Parameters.Add("@packages", MySqlDbType.Int32).Value = combinedstring;
+
+                        MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
+                        if (nonAvailableDR.HasRows)
+                        {
+                            while (nonAvailableDR.Read())
+                            {
+                                refRoomNum = Convert.ToInt32(nonAvailableDR["roomNum"]);
+                            }
+                            Utilities getWLPricePerNight = new Utilities();
+                            pricePerNight = getWLPricePerNight.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), refRoomNum);
+                            displayError("No room with those criteria are available. Your reservation will be added to the waitlist");
+                            waitlist = true;
+                        }
+                        else
+                        {
+                            displayError("No room with those criteria exists");
+                            return;
+                        }
+                        nonAvailableDR.Close();
+                        checkAvailabilityConn.CloseConnection();
                     }
-                    nonAvailableDR.Close();
-                    checkAvailabilityConn.CloseConnection();
                 }
                 else
                 {
@@ -338,23 +335,41 @@ namespace Hotel_Reservation_Overhaul
             checkPackages.Enabled = true;
             btnSubmit.Visible = true;
             btnMakeRes.Visible = false;
+            btnModify.Visible = false;
         }
         private void btnReturn_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
+        //DESCRIPTION: Gets packages selected by user
+        private string  getSelectedPackages()
+        {
+            List<int> packages = new List<int>();
+
+            foreach (int indexChecked in checkPackages.CheckedIndices)
+            {
+                if (checkPackages.GetItemCheckState(indexChecked) == CheckState.Checked)
+                {
+                    packages.Add(indexChecked + 1);
+                    lblError.Visible = true;
+                }
+            }
+            string selectedPackages = string.Join(",", packages);
+            return selectedPackages;
+        }
+
         private void btnModify_Click(object sender, EventArgs e)
         {
-            modResInfo.locationID = Convert.ToInt32(cboxHotel.SelectedValue);
-            modResInfo.numGuests = Convert.ToInt32(cboxNumGuests.SelectedItem);
-            modResInfo.startDate = startDate.Value;
-            modResInfo.endDate = endDate.Value;
-            modResInfo.roomNumList = roomNumList;
-            modResInfo.totalPrice = price;
-            modResInfo.amountDue = price - modResInfo.amountPaid;
-            modResInfo.points = points;
-            modResInfo.updateReservation(modResInfo);
+                modResInfo.locationID = Convert.ToInt32(cboxHotel.SelectedValue);
+                modResInfo.numGuests = Convert.ToInt32(cboxNumGuests.SelectedItem);
+                modResInfo.startDate = startDate.Value;
+                modResInfo.endDate = endDate.Value;
+                modResInfo.roomNumList = roomNumList;
+                modResInfo.totalPrice = price;
+                modResInfo.amountDue = price - modResInfo.amountPaid;
+                modResInfo.points = points;
+                modResInfo.updateReservation(modResInfo);
         }
     }
 }
