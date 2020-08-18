@@ -187,19 +187,52 @@ public class Reservation
         }
     }
 
-    //  DESCRIPTION: 
-    public bool checkOut(DateTime currentDate)
+    //DESCRIPTION: 
+    public void dailyCheckOut(DateTime currentDate)
     {
-        Utilities getInfo = new Utilities();
-        if(endDate != currentDate)
+        DBConnect checkinConn = new DBConnect();
+        MySqlCommand cmd = new MySqlCommand("SELECT * from dbo.reservation where status = 'checked-in' and endDate = currentDate");
+        checkinConn.OpenConnection();
+        DataTable checkInDT = checkinConn.ExecuteDataTable(cmd);
+
+        foreach (DataRow row in checkInDT.Rows)
         {
-            this.endDate = currentDate;
-            double pricePerNight = getInfo.getPricePerNight(locationID, roomNum);
-            totalPrice = pricePerNight * 
+            int confirmationID = Convert.ToInt32(row["confirmationID"]);
+            Reservation checkInRes = new Reservation(confirmationID);
+            checkInRes.checkInReservation();
         }
     }
-    public bool checkIn()
+    public bool checkOutReservation()
     {
+        //add checkout activity log
+        //update customer rewards point balance
+        //charge customer remaining balance on reservation
+        status = "checked-out";
+        if (updateReservation(this))
+            return true;
+        return false;
+    }
 
+    public bool checkInReservation()
+    {
+        status = "checked-in";
+        if (updateReservation(this))
+            return true;
+        return false;
+    }
+
+    public void dailyCheckIn(DateTime currentDate)
+    {
+        DBConnect checkinConn = new DBConnect();
+        MySqlCommand cmd = new MySqlCommand("SELECT * from dbo.reservation where status = 'upcoming' and startDate = currentDate");
+        checkinConn.OpenConnection();
+        DataTable checkInDT = checkinConn.ExecuteDataTable(cmd);
+
+        foreach (DataRow row in checkInDT.Rows)
+        {
+            int confirmationID = Convert.ToInt32(row["confirmationID"]);
+            Reservation checkInRes = new Reservation(confirmationID);
+            checkInRes.checkInReservation();
+        }
     }
 }
