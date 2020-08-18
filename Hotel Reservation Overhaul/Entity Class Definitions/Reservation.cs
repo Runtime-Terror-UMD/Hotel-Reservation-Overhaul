@@ -210,6 +210,33 @@ public class Reservation
         status = "checked-out";
         if (updateReservation(this))
             return true;
+        }
+        return false;
+    }
+
+    //DESCRIPTION: 
+    public void dailyCheckOut(DateTime currentDate)
+    {
+        DBConnect checkinConn = new DBConnect();
+        MySqlCommand cmd = new MySqlCommand("SELECT * from dbo.reservation where status = 'checked-in' and endDate = currentDate");
+        checkinConn.OpenConnection();
+        DataTable checkInDT = checkinConn.ExecuteDataTable(cmd);
+
+        foreach (DataRow row in checkInDT.Rows)
+        {
+            int confirmationID = Convert.ToInt32(row["confirmationID"]);
+            Reservation checkInRes = new Reservation(confirmationID);
+            checkInRes.checkInReservation();
+        }
+    }
+    public bool checkOutReservation()
+    {
+        //add checkout activity log
+        //update customer rewards point balance
+        //charge customer remaining balance on reservation
+        status = "checked-out";
+        if (updateReservation(this))
+            return true;
         return false;
     }
 
