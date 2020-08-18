@@ -9,18 +9,27 @@ using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Hotel_Reservation_Overhaul
 {
     public partial class Login : Form
     {
-        Utilities verifyCredentials = new Utilities();
-        DateTime currentDate;
-
+        private Utilities verifyCredentials = new Utilities();
+        private DateTime currentDate;
         public Login()
         {
             InitializeComponent();
-            currentDate = DateTime.Today;
+            DateTime current;
+            string[] fileLines = File.ReadAllLines("HotelSettings.txt");
+            if (DateTime.TryParse(fileLines[5].Substring(fileLines[0].IndexOf(' ')), out current))
+            {
+                currentDate = current;
+            }
+            else
+            {
+                currentDate = DateTime.Today;
+            }
         }
 
         // DESCRIPTION: Utility function for error display
@@ -159,7 +168,8 @@ namespace Hotel_Reservation_Overhaul
 
         public void updateDate(DateTime newDay)
         {
-            currentDay = newDay;
+            currentDate = newDay;
         }
+
     }
 }
