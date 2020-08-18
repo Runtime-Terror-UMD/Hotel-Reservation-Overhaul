@@ -89,6 +89,10 @@ namespace Hotel_Reservation_Overhaul
             {
                 displayError("Customer ID not entered");
             }
+            else if(int.TryParse(txtCustomerSearch.Text, out _) == false)
+            {
+                displayError("Numeric data not entered");
+            }
             else
             {
                 // check that customer ID exists

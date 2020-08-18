@@ -162,7 +162,7 @@ namespace Hotel_Reservation_Overhaul
                 if(proceed)
                 {
                     PaymentRecord payment = new PaymentRecord();
-                    payment.makePayment(userInfo.userID, resInfo.reservationID, double.Parse(txtPrice.Text), cboxMethod.SelectedItem.ToString(), this.appliedReward);
+                    payment.makePayment(userInfo.userID, resInfo.confirmatonID, double.Parse(txtPrice.Text), cboxMethod.SelectedItem.ToString(), this.appliedReward);
                     MessageBox.Show("Your payment was successful");
                 }
             }
