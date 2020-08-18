@@ -361,15 +361,22 @@ namespace Hotel_Reservation_Overhaul
 
         private void btnModify_Click(object sender, EventArgs e)
         {
+            if (!(checkFreeUpgrade.Checked))
+            {
+                modResInfo.totalPrice = price;
+
+            }
+            else
+            {
                 modResInfo.locationID = Convert.ToInt32(cboxHotel.SelectedValue);
                 modResInfo.numGuests = Convert.ToInt32(cboxNumGuests.SelectedItem);
                 modResInfo.startDate = startDate.Value;
                 modResInfo.endDate = endDate.Value;
                 modResInfo.roomNumList = roomNumList;
-                modResInfo.totalPrice = price;
                 modResInfo.amountDue = price - modResInfo.amountPaid;
                 modResInfo.points = points;
-                modResInfo.updateReservation(modResInfo);
+            }
+            modResInfo.updateReservation(modResInfo);
         }
     }
 }
