@@ -163,27 +163,4 @@ public class Reservation
         return confirmationID;
     }
 
-    // DESCRIPTION: Adds request to dbo.waitlist
-    public bool addToWaitlist(int wlUserID, int wlLocationID, DateTime wlStartDate, DateTime wlEndDate, int wlNumGuests, string combinedString)
-    {
-        DBConnect addToWLConn = new DBConnect();
-        MySqlCommand addToWL = new MySqlCommand(@"INSERT INTO `dbo`.`waitlist`(`customerID`,`locationID`,`startDate`,`endDate`,`numGuests`,`packages`)
-                                                  VALUES(@userID, @locationID, @startDate, @endDate, @numGuests,@packages)");
-        addToWL.Parameters.Add("@locationID", MySqlDbType.Int32).Value = wlLocationID;
-        addToWL.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = wlUserID;
-        addToWL.Parameters.Add("@startDate", MySqlDbType.Date).Value = wlStartDate;
-        addToWL.Parameters.Add("@endDate", MySqlDbType.Date).Value = wlEndDate;
-        addToWL.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = wlNumGuests;
-        addToWL.Parameters.Add("@packages", MySqlDbType.VarChar, 45).Value = combinedString;
-        if (addToWLConn.NonQuery(addToWL) > 0)
-        {
-
-            LoggedActivity logNewReservation = new LoggedActivity();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
 }
