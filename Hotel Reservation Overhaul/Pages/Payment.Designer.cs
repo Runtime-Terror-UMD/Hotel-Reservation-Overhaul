@@ -354,7 +354,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(796, 561);
+            this.ClientSize = new System.Drawing.Size(796, 549);
             this.Controls.Add(this.lblApplyReward);
             this.Controls.Add(this.lblAmountError);
             this.Controls.Add(this.groupPaymentDetails);
