@@ -491,5 +491,7 @@ namespace Hotel_Reservation_Overhaul
             double pricePerNight = getPricePerNightConn.doubleScalar(getPricePerNight);
             return pricePerNight;
         }
+
+        
     }
 }

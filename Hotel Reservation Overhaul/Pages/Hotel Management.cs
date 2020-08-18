@@ -17,7 +17,7 @@ namespace Hotel_Reservation_Overhaul.Pages
     {
         private int UserID;
         Menu menuWind;
-        private DateTime currentDate { get { return currentDate; } set { } }
+        private DateTime currentDate;
         public HotelManagement(int userID, DateTime current, Menu window)
         {
             InitializeComponent();
@@ -928,8 +928,37 @@ namespace Hotel_Reservation_Overhaul.Pages
 
         private void btnTime_Click(object sender, EventArgs e)
         {
+            Reservation updateRes = new Reservation();
+
+            //checkout reservations
+            //updateRes.dailyCheckOut(currentDate);
+
+            //increment to next day
             currentDate = currentDate.AddDays(1);
+
+            //update settings file
+            string[] fileLines = File.ReadAllLines("HotelSettings.txt");
+            using (StreamWriter sw = File.AppendText("tempHotelSettings.txt"))
+            {
+                for (int i = 0; i < fileLines.Length; i++)
+                {
+                    if (i == 5)
+                    {
+                        sw.WriteLine("HotelCurrentDate= " + currentDate);
+                    }
+                    else
+                    {
+                        sw.WriteLine(fileLines[i]);
+                    }
+                }
+            }
+            File.Replace("tempHotelSettings.txt", "HotelSettings.txt", null);
+
+            //update other pages
             menuWind.updateDate(currentDate);
+            //checkin reservations
+            //updateRes.dailyCheckIn(currentDate);
+            //update waitlist
         }
     }
 }

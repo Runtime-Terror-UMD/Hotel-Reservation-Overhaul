@@ -9,17 +9,27 @@ using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Hotel_Reservation_Overhaul
 {
     public partial class Login : Form
     {
         private Utilities verifyCredentials = new Utilities();
-        private DateTime currentDay;
+        private DateTime currentDate;
         public Login()
         {
             InitializeComponent();
-            currentDay = DateTime.Today;
+            DateTime current;
+            string[] fileLines = File.ReadAllLines("HotelSettings.txt");
+            if (DateTime.TryParse(fileLines[5].Substring(fileLines[0].IndexOf(' ')), out current))
+            {
+                currentDate = current;
+            }
+            else
+            {
+                currentDate = DateTime.Today;
+            }
         }
 
         // DESCRIPTION: Utility function for error display
@@ -106,14 +116,14 @@ namespace Hotel_Reservation_Overhaul
                         if(isCustomer(txtUsername.Text))
                         {
                             // re-drecit to menu, hide hotel management button
-                            var menuScreen = new Menu(true, verifyCredentials.getUserIDFromUsername(txtUsername.Text), this, currentDay);
+                            var menuScreen = new Menu(true, verifyCredentials.getUserIDFromUsername(txtUsername.Text), this, currentDate);
                             menuScreen.FormClosed += new FormClosedEventHandler(menuScreen_FormClosed);
                             this.Hide();
                             menuScreen.Show();
                         }
                         else
                         {   // re-drecit to menu, show hotel management button
-                            var menuScreen = new Menu(false, verifyCredentials.getUserIDFromUsername(txtUsername.Text), this, currentDay);
+                            var menuScreen = new Menu(false, verifyCredentials.getUserIDFromUsername(txtUsername.Text), this, currentDate);
                             menuScreen.FormClosed += new FormClosedEventHandler(menuScreen_FormClosed);
                             this.Hide();
                             menuScreen.Show();
@@ -158,7 +168,8 @@ namespace Hotel_Reservation_Overhaul
 
         public void updateDate(DateTime newDay)
         {
-            currentDay = newDay;
+            currentDate = newDay;
         }
+
     }
 }
