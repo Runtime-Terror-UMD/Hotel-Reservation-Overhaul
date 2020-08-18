@@ -242,7 +242,7 @@ namespace Hotel_Reservation_Overhaul
                     pricePerNight = calcPrice.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), roomNumList[0]) * numRooms;
                     lblError.Visible = false;
                 }
-                price = calcPrice.calculatePrice(((endDate.Value - startDate.Value).TotalDays), pricePerNight) * numRooms;
+                price = calcPrice.calculatePrice(((endDate.Value - startDate.Value).TotalDays), pricePerNight);
                 points = Convert.ToInt32(calcPrice.calculatePoints(((endDate.Value - startDate.Value).TotalDays)));
                 
                 // fill fields
