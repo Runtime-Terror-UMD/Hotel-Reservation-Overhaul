@@ -100,7 +100,7 @@ public class Reservation
     }
 
     //DESCRIPTION: Gets availability for specified reservation request
-    public List<int> getAvailability(List<int> packages, int numGuests,int hotelID, int numRooms, string combinedstring, DateTime currentDate, DateTime resStart, DateTime resEnd)
+    public List<int> getAvailability(int numGuests,int hotelID, int numRooms, string combinedstring, DateTime currentDate, DateTime resStart, DateTime resEnd)
     {
         List<int> roomNumsAvailable = new List<int>();
         DBConnect checkAvailabilityConn = new DBConnect();
