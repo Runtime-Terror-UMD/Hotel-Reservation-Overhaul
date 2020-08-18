@@ -236,7 +236,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                             // check for availability
                                             string combindstring = string.Join(",", packages);
                                             Reservation resInfo = new Reservation();
-                                            List<int> roomAvailable = resInfo.getAvailability(packages, occNum, hotelID, 1, combindstring, currentDate,checkIn,checkOut);
+                                            List<int> roomAvailable = resInfo.getAvailability(occNum, hotelID, 1, combindstring, currentDate,checkIn,checkOut);
                                             // no room available
                                             if(roomAvailable.Count == 0)
                                             {
