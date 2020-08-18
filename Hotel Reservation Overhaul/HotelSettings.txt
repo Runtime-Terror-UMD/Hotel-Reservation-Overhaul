@@ -3,3 +3,4 @@ CancelFee= 50.00
 CancelationFeeDays= 3
 PointsPerDay= 25
 NotifyCustomerDays= 3
+HotelCurrentDate= 
