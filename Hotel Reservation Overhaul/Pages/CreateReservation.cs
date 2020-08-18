@@ -364,7 +364,8 @@ namespace Hotel_Reservation_Overhaul
             if (!(checkFreeUpgrade.Checked))
             {
                 modResInfo.totalPrice = price;
-
+                LoggedActivity employeeUpdate = new LoggedActivity();
+                employeeUpdate.logActivity(resUserID, 2, modResInfo.confirmatonID, currentDate, resUserID);
             }
             else
             {
@@ -375,6 +376,8 @@ namespace Hotel_Reservation_Overhaul
                 modResInfo.roomNumList = roomNumList;
                 modResInfo.amountDue = price - modResInfo.amountPaid;
                 modResInfo.points = points;
+                LoggedActivity customerUpdate = new LoggedActivity();
+                customerUpdate.logActivity(modResInfo.userID, 2, modResInfo.confirmatonID, currentDate, modResInfo.userID);
             }
             modResInfo.updateReservation(modResInfo);
         }
