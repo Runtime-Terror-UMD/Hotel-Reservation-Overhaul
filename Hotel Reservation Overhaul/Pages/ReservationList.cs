@@ -211,9 +211,15 @@ namespace Hotel_Reservation_Overhaul
                 // Pulls out confirmation ID from selected row
                 int confirmationID = getConfirmationID();
                 var modReservation = new CreateReservation(userInfo.userID, confirmationID, true);
+                modReservation.FormClosed += new FormClosedEventHandler(modReservation_FormClosed);
                 this.Hide();
                 modReservation.Show();
             }
+        }
+
+        private void modReservation_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Show();
         }
 
         // DESCRIPTION: Reservation cancellation process
