@@ -23,7 +23,6 @@ namespace Hotel_Reservation_Overhaul.Pages
             InitializeComponent();
             UserID = userID;
             currentDate = current;
-            UserID = userID;
             menuWind = window;
         }
         public void displayError(string message)
