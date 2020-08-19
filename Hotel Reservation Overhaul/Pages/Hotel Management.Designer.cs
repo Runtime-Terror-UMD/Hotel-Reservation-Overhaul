@@ -191,7 +191,7 @@
             "Reward Summary",
             "Occupancy Summary",
             "Customer Summary"});
-            this.lstReports.Location = new System.Drawing.Point(38, 38);
+            this.lstReports.Location = new System.Drawing.Point(25, 25);
             this.lstReports.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.lstReports.Name = "lstReports";
             this.lstReports.Size = new System.Drawing.Size(200, 160);
@@ -310,17 +310,6 @@
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
-            // btnTime
-            // 
-            this.btnTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTime.Location = new System.Drawing.Point(450, 120);
-            this.btnTime.Name = "btnTime";
-            this.btnTime.Size = new System.Drawing.Size(150, 50);
-            this.btnTime.TabIndex = 6;
-            this.btnTime.Text = "Go To Next Day";
-            this.btnTime.UseVisualStyleBackColor = true;
-            this.btnTime.Click += new System.EventHandler(this.btnTime_Click);
             // 
             // HotelManagement
             // 
