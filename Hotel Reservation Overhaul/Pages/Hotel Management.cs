@@ -22,7 +22,6 @@ namespace Hotel_Reservation_Overhaul.Pages
             InitializeComponent();
             UserID = userID;
             currentDate = current;
-            fillCBoxHotel();
         }
         public void displayError(string message)
         {
@@ -813,13 +812,11 @@ namespace Hotel_Reservation_Overhaul.Pages
         {
             if (lstReports.SelectedItem.ToString() == "Customer History" || lstReports.SelectedItem.ToString() == "Employee History")
             {
-                cboxHotel.Enabled = false;
                 txtUser.Enabled = true;
             }
             else if (lstReports.SelectedItem.ToString() == "Reward Summary" || lstReports.SelectedItem.ToString() == "Occupancy Summary" || lstReports.SelectedItem.ToString() == "Customer Summary")
             {
                 txtUser.Enabled = false;
-                cboxHotel.Enabled = true;
             }
         }
 
@@ -887,35 +884,28 @@ namespace Hotel_Reservation_Overhaul.Pages
                 }
                 else
                 {
-                    if (cboxHotel.SelectedIndex == -1)
-                    {
-                        displayError("Please select a hotel");
-                    }
-                    else
-                    {
                         //open summary reports
                         if (lstReports.SelectedItem.ToString() == "Reward Summary")
                         {
-                            var rewardSummary = new RewardsSummary(dateStart.Value, dateEnd.Value);
+                            var rewardSummary = new Summary_Reports(dateStart.Value, dateEnd.Value);
                             rewardSummary.FormClosed += new FormClosedEventHandler(rewardSummary_FormClosed);
                             this.Hide();
                             rewardSummary.Show();
                         }
                         else if (lstReports.SelectedItem.ToString() == "Occupancy Summary")
                         {
-                            var occupancySummary = new OccupancySummary(dateStart.Value, dateEnd.Value, cboxHotel.SelectedText);
+                            var occupancySummary = new Summary_Reports(dateStart.Value, dateEnd.Value);
                             occupancySummary.FormClosed += new FormClosedEventHandler(occupancySummary_FormClosed);
                             this.Hide();
                             occupancySummary.Show();
                         }
                         else// if (lstReports.SelectedItem.ToString() == "Customer Summary")
                         {
-                            var customerSummary = new CustomerSummary(dateStart.Value, dateEnd.Value);
+                            var customerSummary = new Summary_Reports(dateStart.Value, dateEnd.Value);
                             customerSummary.FormClosed += new FormClosedEventHandler(customerSummary_FormClosed);
                             this.Hide();
                             customerSummary.Show();
                         }
-                    }
                 }    
 
             }
@@ -952,24 +942,6 @@ namespace Hotel_Reservation_Overhaul.Pages
         void hotelSett_FormClosed(object sender, EventArgs e)
         {
             this.Show();
-        }
-
-        // DESCRIPTION: Fills hotel combo-box
-        private void fillCBoxHotel()
-        {
-            DBConnect fillCBoxConn = new DBConnect();
-            MySqlCommand fillCBox = new MySqlCommand("select locationID, locationName from dbo.location");
-            DataTable hotelDT = fillCBoxConn.ExecuteDataTable(fillCBox);
-          
-            DataRow row = hotelDT.NewRow();
-            row[0] = 0;
-            row[1] = "All";
-            hotelDT.Rows.InsertAt(row, 0);
-
-            //Assign DataTable as DataSource.
-            cboxHotel.DataSource = hotelDT;
-            cboxHotel.DisplayMember = "locationName";
-            cboxHotel.ValueMember = "locationID";
-        }
+        }       
     }
 }

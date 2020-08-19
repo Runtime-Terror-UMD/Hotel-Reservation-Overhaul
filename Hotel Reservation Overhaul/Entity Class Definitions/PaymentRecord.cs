@@ -36,6 +36,7 @@ class PaymentRecord
 
             // get payment ID
             makePayment.CommandText = "SELECT paymentID from dbo.payment where customerID = @userID and confirmationID = @confID and amountPaid = @amountPAid and paymentMethod = @paymentMethod and usedRewards = @usedRewards and created = @created and ccNum = @ccNum";
+
             int payID = makePaymentConn.intScalar(makePayment);
             
             // log payment
