@@ -970,7 +970,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             Reservation updateRes = new Reservation();
 
             //checkout reservations
-            //updateRes.dailyCheckOut(currentDate);
+            updateRes.dailyCheckOut(currentDate);
 
             //increment to next day
             currentDate = currentDate.AddDays(1);
@@ -996,8 +996,11 @@ namespace Hotel_Reservation_Overhaul.Pages
             //update other pages
             menuWind.updateDate(currentDate);
             //checkin reservations
-            //updateRes.dailyCheckIn(currentDate);
+            updateRes.dailyCheckIn(currentDate);
             //update waitlist
+            Waitlist updateWait = new Waitlist();
+            updateWait.dailyPurgeWaitlist(currentDate);
+            updateWait.dailyWaitlistUpdate(currentDate);
         }
     }
 }

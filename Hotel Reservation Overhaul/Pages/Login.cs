@@ -22,7 +22,7 @@ namespace Hotel_Reservation_Overhaul
             InitializeComponent();
             DateTime current;
             string[] fileLines = File.ReadAllLines("HotelSettings.txt");
-            if (DateTime.TryParse(fileLines[5].Substring(fileLines[0].IndexOf(' ')), out current))
+            if (DateTime.TryParse(fileLines[5].Substring(fileLines[5].IndexOf(' ')), out current))
             {
                 currentDate = current;
             }

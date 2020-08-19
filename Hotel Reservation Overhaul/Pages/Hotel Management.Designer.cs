@@ -46,6 +46,7 @@
             this.lstReports = new System.Windows.Forms.ListBox();
             this.btnReport = new System.Windows.Forms.Button();
             this.grpHotelSettings = new System.Windows.Forms.GroupBox();
+            this.btnTime = new System.Windows.Forms.Button();
             this.btnNewMaintenance = new System.Windows.Forms.Button();
             this.btnNewHotel = new System.Windows.Forms.Button();
             this.btnNewPackages = new System.Windows.Forms.Button();
@@ -235,8 +236,8 @@
             "Reward Summary",
             "Occupancy Summary",
             "Customer Summary"});
-            this.lstReports.Location = new System.Drawing.Point(38, 38);
-            this.lstReports.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.lstReports.Location = new System.Drawing.Point(25, 25);
+            this.lstReports.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lstReports.Name = "lstReports";
             this.lstReports.Size = new System.Drawing.Size(200, 160);
             this.lstReports.TabIndex = 7;
@@ -270,6 +271,17 @@
             this.grpHotelSettings.TabIndex = 20;
             this.grpHotelSettings.TabStop = false;
             this.grpHotelSettings.Text = "Hotel Settings";
+            // 
+            // btnTime
+            // 
+            this.btnTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTime.Location = new System.Drawing.Point(450, 120);
+            this.btnTime.Name = "btnTime";
+            this.btnTime.Size = new System.Drawing.Size(150, 50);
+            this.btnTime.TabIndex = 6;
+            this.btnTime.Text = "Go to Next Day";
+            this.btnTime.UseVisualStyleBackColor = true;
+            this.btnTime.Click += new System.EventHandler(this.btnTime_Click);
             // 
             // btnNewMaintenance
             // 
@@ -344,17 +356,6 @@
             this.lblFileStatus.Size = new System.Drawing.Size(600, 31);
             this.lblFileStatus.TabIndex = 21;
             this.lblFileStatus.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // btnTime
-            // 
-            this.btnTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTime.Location = new System.Drawing.Point(450, 120);
-            this.btnTime.Name = "btnTime";
-            this.btnTime.Size = new System.Drawing.Size(150, 50);
-            this.btnTime.TabIndex = 6;
-            this.btnTime.Text = "Go to Next Day";
-            this.btnTime.UseVisualStyleBackColor = true;
-            this.btnTime.Click += new System.EventHandler(this.btnTime_Click);
             // 
             // locationTableAdapter
             // 
