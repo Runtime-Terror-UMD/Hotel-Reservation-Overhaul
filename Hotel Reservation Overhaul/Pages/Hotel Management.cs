@@ -16,11 +16,11 @@ namespace Hotel_Reservation_Overhaul.Pages
     public partial class HotelManagement : Form
     {
         private int UserID;
-        DateTime currentDate;
-        public HotelManagement(int userID, DateTime current)
+        Menu menuWind;
+        private DateTime currentDate;
+        public HotelManagement(int userID, DateTime current, Menu window)
         {
             InitializeComponent();
-            UserID = userID;
             currentDate = current;
             UserID = userID;
             menuWind = window;
@@ -40,7 +40,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             resFile.InitialDirectory = @"C:\";
             if (resFile.ShowDialog() == DialogResult.OK)
             {
-                DateTime fileDate = new DateTime(2020, 1, 1);
+                DateTime fileDate = currentDate;
                 int numReserv = 0; //count number of reservations in file
                 try
                 {
@@ -312,7 +312,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             resFile.InitialDirectory = @"C:\";
             if (resFile.ShowDialog() == DialogResult.OK)
             {
-                DateTime fileDate = new DateTime(2020, 1, 1);
+                DateTime fileDate = currentDate;
                 int hotelCount = 0;
                 try
                 {
@@ -514,7 +514,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             resFile.InitialDirectory = @"C:\";
             if (resFile.ShowDialog() == DialogResult.OK)
             {
-                DateTime fileDate = new DateTime(2020, 1, 1);
+                DateTime fileDate = currentDate;
                 int packageCount = 0;
                 try
                 {
@@ -671,7 +671,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             resFile.InitialDirectory = @"C:\";
             if (resFile.ShowDialog() == DialogResult.OK)
             {
-                DateTime fileDate = new DateTime(2020, 1, 1);
+                DateTime fileDate = currentDate;
                 int maintainCount = 0;
                 try
                 {
@@ -946,6 +946,45 @@ namespace Hotel_Reservation_Overhaul.Pages
         void hotelSett_FormClosed(object sender, EventArgs e)
         {
             this.Show();
-        }       
+        }
+
+
+        private void btnTime_Click(object sender, EventArgs e)
+        {
+            Reservation updateRes = new Reservation();
+
+            //checkout reservations
+            updateRes.dailyCheckOut(currentDate);
+
+            //increment to next day
+            currentDate = currentDate.AddDays(1);
+
+            //update settings file
+            string[] fileLines = File.ReadAllLines("HotelSettings.txt");
+            using (StreamWriter sw = File.AppendText("tempHotelSettings.txt"))
+            {
+                for (int i = 0; i < fileLines.Length; i++)
+                {
+                    if (i == 5)
+                    {
+                        sw.WriteLine("HotelCurrentDate= " + currentDate);
+                    }
+                    else
+                    {
+                        sw.WriteLine(fileLines[i]);
+                    }
+                }
+            }
+            File.Replace("tempHotelSettings.txt", "HotelSettings.txt", null);
+
+            //update other pages
+            menuWind.updateDate(currentDate);
+            //checkin reservations
+            updateRes.dailyCheckIn(currentDate);
+            //update waitlist
+            Waitlist updateWait = new Waitlist();
+            updateWait.dailyPurgeWaitlist(currentDate);
+            updateWait.dailyWaitlistUpdate(currentDate);
+        }
     }
 }

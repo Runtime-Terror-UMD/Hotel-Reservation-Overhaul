@@ -191,4 +191,86 @@ public class Reservation
         return confirmationID;
     }
 
+    // DESCRIPTION: Adds request to dbo.waitlist
+    public bool addToWaitlist(int wlUserID, int wlLocationID, DateTime wlStartDate, DateTime wlEndDate, int wlNumGuests, string combinedString)
+    {
+        DBConnect addToWLConn = new DBConnect();
+        MySqlCommand addToWL = new MySqlCommand(@"INSERT INTO `dbo`.`waitlist`(`customerID`,`locationID`,`startDate`,`endDate`,`numGuests`,`packages`)
+                                                  VALUES(@userID, @locationID, @startDate, @endDate, @numGuests,@packages)");
+        addToWL.Parameters.Add("@locationID", MySqlDbType.Int32).Value = wlLocationID;
+        addToWL.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = wlUserID;
+        addToWL.Parameters.Add("@startDate", MySqlDbType.Date).Value = wlStartDate;
+        addToWL.Parameters.Add("@endDate", MySqlDbType.Date).Value = wlEndDate;
+        addToWL.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = wlNumGuests;
+        addToWL.Parameters.Add("@packages", MySqlDbType.VarChar, 45).Value = combinedString;
+        if (addToWLConn.NonQuery(addToWL) > 0)
+        {
+
+            LoggedActivity logNewReservation = new LoggedActivity();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    //DESCRIPTION: 
+    public void dailyCheckOut(DateTime currentDate)
+    {
+        DBConnect checkinConn = new DBConnect();
+        MySqlCommand cmd = new MySqlCommand("SELECT * from dbo.reservation where reservationStatus = 'checked-in' and endDate = @currentDate");
+        cmd.Parameters.Add("@currentDate", MySqlDbType.DateTime).Value = currentDate;
+        checkinConn.OpenConnection();
+        DataTable checkInDT = checkinConn.ExecuteDataTable(cmd);
+
+        foreach (DataRow row in checkInDT.Rows)
+        {
+            int confirmationID = Convert.ToInt32(row["confirmationID"]);
+            Reservation checkInRes = new Reservation(confirmationID);
+            checkInRes.checkOutReservation(currentDate);
+        }
+    }
+    public bool checkOutReservation(DateTime currentDate)
+    {
+        //add checkout activity log
+        LoggedActivity logCheckout = new LoggedActivity();
+        logCheckout.logActivity(userID, 5, this.confirmatonID, currentDate, 17);
+        //update customer rewards point balance
+        Reward checkoutReward = new Reward();
+        checkoutReward.setRewardsPoints(userID, points, 17);
+        //charge customer remaining balance on reservation
+
+        //update status
+        status = "checked-out";
+        if (updateReservation(this))
+            return true;
+        return false;
+    }
+
+    public bool checkInReservation(DateTime currentDate)
+    {
+        LoggedActivity logCheckin = new LoggedActivity();
+        logCheckin.logActivity(userID, 4, this.confirmatonID, currentDate, 17);
+        status = "checked-in";
+        if (updateReservation(this))
+            return true;
+        return false;
+    }
+
+    public void dailyCheckIn(DateTime currentDate)
+    {
+        DBConnect checkinConn = new DBConnect();
+        MySqlCommand cmd = new MySqlCommand("SELECT * from dbo.reservation where reservationStatus = 'upcoming' and startDate = @currentDate");
+        cmd.Parameters.Add("@currentDate", MySqlDbType.DateTime).Value = currentDate;
+        checkinConn.OpenConnection();
+        DataTable checkInDT = checkinConn.ExecuteDataTable(cmd);
+
+        foreach (DataRow row in checkInDT.Rows)
+        {
+            int confirmationID = Convert.ToInt32(row["confirmationID"]);
+            Reservation checkInRes = new Reservation(confirmationID);
+            checkInRes.checkInReservation(currentDate);
+        }
+    }
 }

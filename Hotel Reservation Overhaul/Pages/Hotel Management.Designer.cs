@@ -46,6 +46,7 @@
             this.locationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.hotelmgmt = new Hotel_Reservation_Overhaul.hotelmgmt();
             this.grpHotelSettings = new System.Windows.Forms.GroupBox();
+            this.btnTime = new System.Windows.Forms.Button();
             this.btnNewMaintenance = new System.Windows.Forms.Button();
             this.btnNewHotel = new System.Windows.Forms.Button();
             this.btnNewPackages = new System.Windows.Forms.Button();
@@ -55,6 +56,7 @@
             this.lblFileStatus = new System.Windows.Forms.Label();
             this.locationTableAdapter = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.locationTableAdapter();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.btnTime = new System.Windows.Forms.Button();
             this.grpReports.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).BeginInit();
@@ -204,8 +206,8 @@
             this.btnReport.Location = new System.Drawing.Point(580, 80);
             this.btnReport.Name = "btnReport";
             this.btnReport.Size = new System.Drawing.Size(100, 40);
-            this.btnReport.TabIndex = 11;
-            this.btnReport.Text = "Submit";
+            this.btnReport.TabIndex = 12;
+            this.btnReport.Text = "Create Report";
             this.btnReport.UseVisualStyleBackColor = true;
             this.btnReport.Click += new System.EventHandler(this.btnReport_Click_1);
             // 
@@ -221,6 +223,7 @@
             // 
             // grpHotelSettings
             // 
+            this.grpHotelSettings.Controls.Add(this.btnTime);
             this.grpHotelSettings.Controls.Add(this.btnNewMaintenance);
             this.grpHotelSettings.Controls.Add(this.btnNewHotel);
             this.grpHotelSettings.Controls.Add(this.btnNewPackages);
@@ -232,6 +235,17 @@
             this.grpHotelSettings.TabIndex = 20;
             this.grpHotelSettings.TabStop = false;
             this.grpHotelSettings.Text = "Hotel Settings";
+            // 
+            // btnTime
+            // 
+            this.btnTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTime.Location = new System.Drawing.Point(450, 120);
+            this.btnTime.Name = "btnTime";
+            this.btnTime.Size = new System.Drawing.Size(150, 50);
+            this.btnTime.TabIndex = 6;
+            this.btnTime.Text = "Go to Next Day";
+            this.btnTime.UseVisualStyleBackColor = true;
+            this.btnTime.Click += new System.EventHandler(this.btnTime_Click);
             // 
             // btnNewMaintenance
             // 
@@ -362,5 +376,6 @@
         private System.Windows.Forms.BindingSource locationBindingSource;
         private hotelmgmtTableAdapters.locationTableAdapter locationTableAdapter;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.Button btnTime;
     }
 }

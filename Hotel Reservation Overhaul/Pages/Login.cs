@@ -9,19 +9,18 @@ using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Hotel_Reservation_Overhaul
 {
     public partial class Login : Form
     {
-        Utilities verifyCredentials = new Utilities();
-        DateTime currentDate;
-
+        private Utilities verifyCredentials = new Utilities();
+        private DateTime currentDate;
         public Login()
         {
             InitializeComponent();
             DateTime current;
-
             try
             {
                 string[] fileLines = File.ReadAllLines("HotelSettings.txt");
@@ -173,5 +172,11 @@ namespace Hotel_Reservation_Overhaul
             this.Hide();
             resetPassword.Show();
         }
+
+        public void updateDate(DateTime newDay)
+        {
+            currentDate = newDay;
+        }
+
     }
 }
