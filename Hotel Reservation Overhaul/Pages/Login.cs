@@ -102,7 +102,7 @@ namespace Hotel_Reservation_Overhaul
             {
                 if(verifyCredentials.usernameExists(txtUsername.Text))
                 {
-                    if(account.passwordMatches(txtUsername.Text, txtPassword.Text))
+                    if(verifyCredentials.passwordMatches(txtUsername.Text, txtPassword.Text))
                     {
                         if(isCustomer(txtUsername.Text))
                         {
