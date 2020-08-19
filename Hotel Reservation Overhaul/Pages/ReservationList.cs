@@ -56,8 +56,8 @@ namespace Hotel_Reservation_Overhaul
             {
                 // build and execute query
                 DBConnect reservationListConn = new DBConnect();
-                MySqlCommand cmd = new MySqlCommand("SELECT distinct r.confirmationID, r.startDate, r.endDate, loc.locationName  FROM dbo.reservation r join location loc on loc.locationID = r.locationID where r.userID = @userID and r.reservationStatus <> 'cancelled'");
-                cmd.Parameters.AddWithValue("@userID", resUserID);
+                MySqlCommand cmd = new MySqlCommand("SELECT distinct r.confirmationID, r.startDate, r.endDate, loc.locationName  FROM dbo.reservation r join location loc on loc.locationID = r.locationID where r.userID = @userID and r.reservationStatus <> 'cancelled' order by startDate");
+                cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = resUserID;
                 DataSet resReport = reservationListConn.ExecuteDataSet(cmd);
 
                 // pipe dataset to report
@@ -176,13 +176,14 @@ namespace Hotel_Reservation_Overhaul
             this.Show();
         }
 
+   
         private void btnNew_Click(object sender, EventArgs e)
         {
             if (userInfo.isCustomer == false && resUserID == -1)
             {
                 displayError("Please enter a customer ID");
             }
-            else
+            else 
             {
                 var newReservation = new CreateReservation(userInfo.userID, resUserID, currentDate);
                 newReservation.FormClosed += new FormClosedEventHandler(newReservation_FormClosed);
@@ -194,6 +195,7 @@ namespace Hotel_Reservation_Overhaul
         private void newReservation_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.Show();
+            GetData();
         }
 
         private void btnModify_Click(object sender, EventArgs e)
@@ -210,8 +212,8 @@ namespace Hotel_Reservation_Overhaul
             {
                 // Pulls out confirmation ID from selected row
                 int confirmationID = getConfirmationID();
-                var modReservation = new CreateReservation(userInfo.userID, confirmationID, true);
-                modReservation.FormClosed += new FormClosedEventHandler(modReservation_FormClosed);
+                var modReservation = new CreateReservation(userInfo.userID, confirmationID, currentDate, true);
+                modReservation.FormClosed += new FormClosedEventHandler(newReservation_FormClosed);
                 this.Hide();
                 modReservation.Show();
             }
@@ -222,7 +224,7 @@ namespace Hotel_Reservation_Overhaul
             this.Show();
         }
 
-        // DESCRIPTION: Reservation cancellation process
+// DESCRIPTION: Reservation cancellation process
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Utilities getFileSettings = new Utilities();
@@ -249,8 +251,9 @@ namespace Hotel_Reservation_Overhaul
                         {
                             // update reservation info
                             Utilities recalc = new Utilities();
-                            DateTime newEndDate = currentDate;       //FIXME: Replace with date variable
-                            resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, recalc.getPricePerNight(resInfo.locationID, resInfo.roomNumList[0]));
+                            DateTime newEndDate = currentDate;
+                            Room roomDetails = new Room(resInfo.roomNumList[0], resInfo.locationID);
+                            resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays,roomDetails.price);
                             resInfo.points = Convert.ToInt32(recalc.calculatePoints((newEndDate - resInfo.endDate).TotalDays));
                             resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
                             resInfo.status = "checked-out";
@@ -273,7 +276,7 @@ namespace Hotel_Reservation_Overhaul
                         if (resInfo.amountDue < 0)
                         {
                             PaymentRecord issueRefund = new PaymentRecord();
-                            issueRefund.makePayment(17, resInfo.confirmatonID, resInfo.amountDue, "refund", false);
+                            issueRefund.makePayment(17, resInfo.confirmatonID, resInfo.amountDue, "refund", false, currentDate);
                         }
                         // update reservation record
                         resInfo.updateReservation(resInfo);

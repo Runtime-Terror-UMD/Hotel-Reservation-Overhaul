@@ -11,8 +11,7 @@ public class Reservation
     public int reservationID { get; set; }
     public int confirmatonID { get; set; }
     public int locationID { get; set; }
-  
-    public int numGuests { get; set; }
+     public int numGuests { get; set; }
     public List<int> roomNumList { get; set; }
     public int userID { get; set; }
     public DateTime startDate { get; set; }
@@ -34,10 +33,8 @@ public class Reservation
         MySqlCommand cmd = new MySqlCommand(reservationQuery);
         cmd.Parameters.AddWithValue("@confirmationID", confirmationID);
 
-
         // connect to database
         DBConnect ReservationConn = new DBConnect();
-
 
         //Create a data reader and Execute the command
         MySqlDataReader dataReader = ReservationConn.ExecuteReader(cmd);
@@ -97,6 +94,37 @@ public class Reservation
         if (logCancellation.logActivity(userID, 3, this.confirmatonID, currentDate, cancelledBy)) 
             return true;
         return false;
+    }
+
+    //public bool upgradeMaintenanceRoom(Reservation resInfo, int roomNum)
+    //{
+    //    Room getPackages = new Room();
+    //    getPackages.roomPackages(resInfo.roomNumList[0], resInfo.locationID);
+
+    //}
+
+    public void addRoomToRes(Reservation modResInfo, List<int> roomNumList)
+    {
+        foreach (int roomNum in roomNumList)
+        {
+            DBConnect updateRoomConn = new DBConnect();
+            MySqlCommand addRoom = new MySqlCommand("INSERT INTO `dbo`.`reservation`(`confirmationID`,`userID`,`locationID`,`roomNum`,`startDate`,`endDate`,`pointsAccumulated`,`price`,`amountDue`,`amountPaid`,`reservationStatus`,`created`,`numGuests`) VALUES(@confirmationID,@userID,@locationID,@roomNum,@startDate,@endDate,@points,@price,@price,0,@status,@created,@numGuests)");
+
+            addRoom.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = roomNum;
+            addRoom.Parameters.Add("@locationID", MySqlDbType.Int32).Value = modResInfo.locationID;
+            addRoom.Parameters.Add("@userID", MySqlDbType.Int32).Value = modResInfo.userID;
+            addRoom.Parameters.Add("@startDate", MySqlDbType.Date).Value = modResInfo.startDate;
+            addRoom.Parameters.Add("@endDate", MySqlDbType.Date).Value = modResInfo.endDate;
+            addRoom.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = modResInfo.confirmatonID;
+            addRoom.Parameters.Add("@points", MySqlDbType.Int32).Value = modResInfo.points;
+            addRoom.Parameters.Add("@price", MySqlDbType.Decimal).Value = modResInfo.totalPrice;
+            addRoom.Parameters.Add("@status", MySqlDbType.VarChar, 45).Value = "upcoming";
+            addRoom.Parameters.Add("@created", MySqlDbType.Date).Value = DateTime.Today;
+            addRoom.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = modResInfo.numGuests;
+
+            updateRoomConn.NonQuery(addRoom);
+            modResInfo.roomNumList.Add(roomNum);
+        }
     }
 
     //DESCRIPTION: Gets availability for specified reservation request

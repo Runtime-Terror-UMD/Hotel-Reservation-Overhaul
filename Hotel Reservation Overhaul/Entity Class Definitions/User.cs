@@ -47,10 +47,10 @@ public class User
         }
 
         //close Data Reader
-        dataReader.Close();
-        UserProfileConn.CloseConnection();
+        dataReader.Close();;
     }
 
+    // updates information on user record
     public bool updateUser(User userinfo)
     {
         DBConnect updateUserConn = new DBConnect();
