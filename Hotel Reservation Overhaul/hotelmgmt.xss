@@ -11,11 +11,11 @@
     <Shape ID="DesignTable:location" ZOrder="21" X="431" Y="961" Height="209" Width="263" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="142" />
     <Shape ID="DesignTable:maintenance" ZOrder="20" X="764" Y="961" Height="209" Width="300" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="142" />
     <Shape ID="DesignTable:package" ZOrder="19" X="431" Y="1546" Height="182" Width="265" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="115" />
-    <Shape ID="DesignTable:payment" ZOrder="18" X="431" Y="70" Height="236" Width="270" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="169" />
+    <Shape ID="DesignTable:payment" ZOrder="18" X="431" Y="70" Height="317" Width="270" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="250" />
     <Shape ID="DesignTable:reservation" ZOrder="17" X="70" Y="70" Height="425" Width="291" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="358" />
     <Shape ID="DesignTable:room" ZOrder="16" X="764" Y="1267" Height="209" Width="240" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="142" />
     <Shape ID="DesignTable:user" ZOrder="15" X="431" Y="376" Height="371" Width="230" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="304" />
-    <Shape ID="DesignTable:waitlist" ZOrder="14" X="731" Y="655" Height="236" Width="256" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="169" />
+    <Shape ID="DesignTable:waitlist" ZOrder="14" X="731" Y="655" Height="317" Width="256" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="250" />
     <Shape ID="DesignTable:amenity" ZOrder="4" X="0" Y="0" Height="90" Width="158" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="0" />
     <Shape ID="DesignTable:relation_package_amenity" ZOrder="3" X="2188" Y="0" Height="155" Width="300" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="88" />
     <Shape ID="DesignTable:relation_room_package" ZOrder="2" X="2558" Y="0" Height="182" Width="300" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="115" />
@@ -61,12 +61,20 @@
     <Connector ID="DesignRelation:payment_customerID_FK" ZOrder="10" LineWidth="11">
       <RoutePoints>
         <Point>
-          <X>546</X>
-          <Y>376</Y>
+          <X>661</X>
+          <Y>395</Y>
         </Point>
         <Point>
-          <X>546</X>
-          <Y>306</Y>
+          <X>731</X>
+          <Y>395</Y>
+        </Point>
+        <Point>
+          <X>731</X>
+          <Y>379</Y>
+        </Point>
+        <Point>
+          <X>701</X>
+          <Y>379</Y>
         </Point>
       </RoutePoints>
     </Connector>
