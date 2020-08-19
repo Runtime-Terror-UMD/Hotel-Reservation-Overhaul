@@ -23,7 +23,6 @@ namespace Hotel_Reservation_Overhaul.Pages
             InitializeComponent();
             UserID = userID;
             currentDate = current;
-            fillCBoxHotel();
             UserID = userID;
             menuWind = window;
         }
@@ -265,7 +264,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                             {
                                                 // calculate price and create reservation
                                                 Utilities calcPrice = new Utilities();
-                                                Room roomDetails = new Room(roomAvailable[0], Convert.ToInt32(cboxHotel.SelectedValue));
+                                                Room roomDetails = new Room(roomAvailable[0], hotelID);
                                                 double pricePerNight = roomDetails.price;
                                                 double price = calcPrice.calculatePrice(((checkIn - checkOut).TotalDays), pricePerNight);
                                                 int points = Convert.ToInt32(calcPrice.calculatePoints(((checkIn - checkOut).TotalDays)));
@@ -948,23 +947,6 @@ namespace Hotel_Reservation_Overhaul.Pages
             this.Show();
         }
 
-        // DESCRIPTION: Fills hotel combo-box
-        private void fillCBoxHotel()
-        {
-            DBConnect fillCBoxConn = new DBConnect();
-            MySqlCommand fillCBox = new MySqlCommand("select locationID, locationName from dbo.location");
-            DataTable hotelDT = fillCBoxConn.ExecuteDataTable(fillCBox);
-          
-            DataRow row = hotelDT.NewRow();
-            row[0] = 0;
-            row[1] = "All";
-            hotelDT.Rows.InsertAt(row, 0);
-
-            //Assign DataTable as DataSource.
-            cboxHotel.DataSource = hotelDT;
-            cboxHotel.DisplayMember = "locationName";
-            cboxHotel.ValueMember = "locationID";
-        }
 
         private void btnTime_Click(object sender, EventArgs e)
         {

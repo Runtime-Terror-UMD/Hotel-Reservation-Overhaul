@@ -151,25 +151,6 @@
             this.lblUsername.Text = "User ID:";
             this.lblUsername.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // lblHotel
-            // 
-            this.lblHotel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHotel.Location = new System.Drawing.Point(235, 115);
-            this.lblHotel.Name = "lblHotel";
-            this.lblHotel.Size = new System.Drawing.Size(100, 20);
-            this.lblHotel.TabIndex = 0;
-            this.lblHotel.Text = "Hotel:";
-            this.lblHotel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // cboxHotel
-            // 
-            this.cboxHotel.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.locationBindingSource, "locationName", true));
-            this.cboxHotel.FormattingEnabled = true;
-            this.cboxHotel.Location = new System.Drawing.Point(335, 115);
-            this.cboxHotel.Name = "cboxHotel";
-            this.cboxHotel.Size = new System.Drawing.Size(200, 21);
-            this.cboxHotel.TabIndex = 10;
-            // 
             // locationBindingSource
             // 
             this.locationBindingSource.DataMember = "location";
