@@ -21,9 +21,11 @@ namespace Hotel_Reservation_Overhaul.Pages
         public HotelManagement(int userID, DateTime current, Menu window)
         {
             InitializeComponent();
-            UserID = userID;
             currentDate = current;
+            UserID = userID;
             menuWind = window;
+            dateStart.Value = currentDate;
+            dateEnd.Value = currentDate;
         }
         public void displayError(string message)
         {
@@ -896,14 +898,14 @@ namespace Hotel_Reservation_Overhaul.Pages
                         }
                         else if (lstReports.SelectedItem.ToString() == "Occupancy Summary")
                         {
-                            var occupancySummary = new Summary_Reports(dateStart.Value, dateEnd.Value);
+                            var occupancySummary = new OccupancySummary(dateStart.Value, dateEnd.Value);
                             occupancySummary.FormClosed += new FormClosedEventHandler(occupancySummary_FormClosed);
                             this.Hide();
                             occupancySummary.Show();
                         }
                         else// if (lstReports.SelectedItem.ToString() == "Customer Summary")
                         {
-                            var customerSummary = new Summary_Reports(dateStart.Value, dateEnd.Value);
+                            var customerSummary = new CustomerSummary(dateStart.Value, dateEnd.Value);
                             customerSummary.FormClosed += new FormClosedEventHandler(customerSummary_FormClosed);
                             this.Hide();
                             customerSummary.Show();

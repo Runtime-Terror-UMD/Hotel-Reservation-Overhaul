@@ -21,12 +21,19 @@ namespace Hotel_Reservation_Overhaul
         {
             InitializeComponent();
             DateTime current;
-            string[] fileLines = File.ReadAllLines("HotelSettings.txt");
-            if (DateTime.TryParse(fileLines[5].Substring(fileLines[5].IndexOf(' ')), out current))
+            try
             {
-                currentDate = current;
+                string[] fileLines = File.ReadAllLines("HotelSettings.txt");
+                if (DateTime.TryParse(fileLines[5].Substring(fileLines[5].IndexOf(' ')), out current))
+                {
+                    currentDate = current;
+                }
+                else
+                {
+                    currentDate = DateTime.Today;
+                }
             }
-            else
+            catch(Exception ex)
             {
                 currentDate = DateTime.Today;
             }
