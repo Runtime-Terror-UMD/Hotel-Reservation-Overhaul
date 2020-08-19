@@ -12,18 +12,19 @@ class PaymentRecord
     public PaymentRecord() { }
 
     // DESCRIPTION: Creates a payment record and updates the balance of the reservation 
-    public bool makePayment(int userID, int confirmationID, double amountPaid, string paymentMethod, bool usedRewards, DateTime currentDate)
+    public bool makePayment(int userID, int confirmationID, double amountPaid, string paymentMethod, bool usedRewards, DateTime currentDate, int ccNumber)
     {
         // create payment record
         DBConnect makePaymentConn = new DBConnect();
-        MySqlCommand makePayment = new MySqlCommand(@"INSERT INTO dbo.payment(customerID, confirmationID, amountPaid, paymentMethod, usedRewards,created)
-                                                    VALUES(@userID, @confID, @amountPaid, @paymentMethod, @usedRewards, @created)");
+        MySqlCommand makePayment = new MySqlCommand(@"INSERT INTO dbo.payment(customerID, confirmationID, amountPaid, paymentMethod, usedRewards,created, ccNum)
+                                                    VALUES(@userID, @confID, @amountPaid, @paymentMethod, @usedRewards, @created, @ccNum)");
         makePayment.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
         makePayment.Parameters.Add("@confID", MySqlDbType.Int32).Value = confirmationID;
         makePayment.Parameters.Add("@amountPaid", MySqlDbType.Decimal).Value = amountPaid;
         makePayment.Parameters.Add("@paymentMethod", MySqlDbType.VarChar, 45).Value = paymentMethod;
         makePayment.Parameters.Add("@usedRewards", MySqlDbType.Bit).Value = usedRewards;
         makePayment.Parameters.Add("@created", MySqlDbType.Date).Value = currentDate;
+        makePayment.Parameters.Add("@ccNum", MySqlDbType.Int32).Value = ccNumber;
 
         if (makePaymentConn.NonQuery(makePayment) > 0)
         {// update balance and amount paid on reservation
@@ -34,7 +35,8 @@ class PaymentRecord
             }
 
             // get payment ID
-            makePayment.CommandText = "SELECT paymentID from dbo.payment where customerID = @userID and confirmationID = @confID and amountPaid = @amountPAid and paymentMethod = @paymentMethod and usedRewards = @usedRewards and created = @created";
+            makePayment.CommandText = "SELECT paymentID from dbo.payment where customerID = @userID and confirmationID = @confID and amountPaid = @amountPAid and paymentMethod = @paymentMethod and usedRewards = @usedRewards and created = @created and ccNum = @ccNum";
+
             int payID = makePaymentConn.intScalar(makePayment);
             
             // log payment

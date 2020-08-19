@@ -214,6 +214,7 @@ namespace Hotel_Reservation_Overhaul
                 int confirmationID = getConfirmationID();
                 var modReservation = new CreateReservation(userInfo.userID, confirmationID, currentDate, true);
                 modReservation.FormClosed += new FormClosedEventHandler(newReservation_FormClosed);
+                modReservation.FormClosed += new FormClosedEventHandler(modReservation_FormClosed);
                 this.Hide();
                 modReservation.Show();
             }
@@ -276,7 +277,7 @@ namespace Hotel_Reservation_Overhaul
                         if (resInfo.amountDue < 0)
                         {
                             PaymentRecord issueRefund = new PaymentRecord();
-                            issueRefund.makePayment(17, resInfo.confirmatonID, resInfo.amountDue, "refund", false, currentDate);
+                            issueRefund.makePayment(17, resInfo.confirmatonID, resInfo.amountDue, "refund", false, currentDate,12345);
                         }
                         // update reservation record
                         resInfo.updateReservation(resInfo);
