@@ -212,7 +212,7 @@ namespace Hotel_Reservation_Overhaul
             {
                 // Pulls out confirmation ID from selected row
                 int confirmationID = getConfirmationID();
-                var modReservation = new CreateReservation(userInfo.userID, confirmationID, true);
+                var modReservation = new CreateReservation(userInfo.userID, confirmationID, currentDate, true);
                 modReservation.FormClosed += new FormClosedEventHandler(newReservation_FormClosed);
                 this.Hide();
                 modReservation.Show();
