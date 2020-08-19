@@ -214,12 +214,18 @@ namespace Hotel_Reservation_Overhaul
                 int confirmationID = getConfirmationID();
                 var modReservation = new CreateReservation(userInfo.userID, confirmationID, currentDate, true);
                 modReservation.FormClosed += new FormClosedEventHandler(newReservation_FormClosed);
+                modReservation.FormClosed += new FormClosedEventHandler(modReservation_FormClosed);
                 this.Hide();
                 modReservation.Show();
             }
         }
-    
-        // DESCRIPTION: Reservation cancellation process
+
+        private void modReservation_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Show();
+        }
+
+// DESCRIPTION: Reservation cancellation process
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Utilities getFileSettings = new Utilities();
