@@ -107,20 +107,17 @@ namespace Hotel_Reservation_Overhaul
                 {
                     // Everything is good. Create user account
 
-                    string createUser = "INSERT INTO `dbo`.`user`(`firstName`,`lastName`,`email`,`secretQuestion`,`secretAnswer`,`username`,`password`,`isCustomer`)VALUES(@firstName,@lastName,@email,@secretQuestion,@secretAnswer,@username,@password,@isCustomer)";
-                    MySqlCommand cmd = new MySqlCommand(createUser);
-
-                    // add parameters to command
-               
+                    MySqlCommand cmd = new MySqlCommand(@"INSERT INTO `dbo`.`user`(`firstName`,`lastName`,`email`,`secretQuestion`,`secretAnswer`,`username`,`password`,`isCustomer`)
+                                                        VALUES(@firstName,@lastName,@email,@secretQuestion,@secretAnswer,@username,@password,@isCustomer)");
 
                     // assign parameter values 
-                    cmd.Parameters.AddWithValue("@firstName", txtFirstName.Text);
-                    cmd.Parameters.AddWithValue("@lastName", txtLastName.Text);
-                    cmd.Parameters.AddWithValue("@email", txtEmail.Text);
-                    cmd.Parameters.AddWithValue("@secretQuestion", txtSQuest.Text);
-                    cmd.Parameters.AddWithValue("@secretAnswer", txtSAns.Text);
-                    cmd.Parameters.AddWithValue("@username", txtUsername.Text);
-                    cmd.Parameters.AddWithValue("@password", txtPassword.Text);
+                    cmd.Parameters.Add("@firstName", MySqlDbType.VarChar, 45).Value =  txtFirstName.Text;
+                    cmd.Parameters.Add("@lastName", MySqlDbType.VarChar, 45).Value = txtLastName.Text;
+                    cmd.Parameters.Add("@email", MySqlDbType.VarChar, 45).Value = txtEmail.Text;
+                    cmd.Parameters.Add("@secretQuestion", MySqlDbType.VarChar, 45).Value = txtSQuest.Text;
+                    cmd.Parameters.Add("@secretAnswer", MySqlDbType.VarChar, 45).Value = txtSAns.Text;
+                    cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45).Value = txtUsername.Text;
+                    cmd.Parameters.Add("@password", MySqlDbType.VarChar, 45).Value = txtPassword.Text;
                     cmd.Parameters.Add("@isCustomer", MySqlDbType.Bit);
                     // set user type
 
@@ -132,11 +129,17 @@ namespace Hotel_Reservation_Overhaul
                     DBConnect userCreationConn = new DBConnect();
 
                     // execute statement
-                    userCreationConn.NonQuery(cmd);
+                    if(userCreationConn.NonQuery(cmd) > 0)
+                    {
+                        // return to login page
+                        this.Close();
+                        loginForm.accountCreated("Account created successfully!");
+                    }
+                    else
+                    {
+                        displayError("Error creating account");
+                    }
 
-                    // return to login page
-                    this.Close();
-                    loginForm.accountCreated("Account created successfully!");
                 }
 
             }

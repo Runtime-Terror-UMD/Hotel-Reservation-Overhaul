@@ -116,7 +116,7 @@ namespace Hotel_Reservation_Overhaul
                 if (proceed)
                 {
                     PaymentRecord payment = new PaymentRecord();
-                    if(payment.makePayment(userInfo.userID, resInfo.confirmatonID, double.Parse(txtPrice.Text), cboxMethod.SelectedItem.ToString(), this.appliedReward))
+                    if(payment.makePayment(userInfo.userID, resInfo.confirmatonID, double.Parse(txtPrice.Text), cboxMethod.SelectedItem.ToString(), this.appliedReward, currentDate))
                     {
                         MessageBox.Show("Your payment was successful!");
                     }
@@ -162,8 +162,10 @@ namespace Hotel_Reservation_Overhaul
                 if(proceed)
                 {
                     PaymentRecord payment = new PaymentRecord();
-                    payment.makePayment(userInfo.userID, resInfo.confirmatonID, double.Parse(txtPrice.Text), cboxMethod.SelectedItem.ToString(), this.appliedReward);
-                    MessageBox.Show("Your payment was successful");
+                    if (payment.makePayment(userInfo.userID, resInfo.confirmatonID, double.Parse(txtPrice.Text), cboxMethod.SelectedItem.ToString(), this.appliedReward, currentDate))
+                    {
+                        MessageBox.Show("Your payment was successful");
+                    }
                 }
             }
 

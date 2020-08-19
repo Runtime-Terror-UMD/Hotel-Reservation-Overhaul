@@ -243,9 +243,8 @@ namespace Hotel_Reservation_Overhaul.Pages
                 if(points >= 0 && addPoints.setRewardsPoints(user, rewards, UserID))
                 {
                     displayMessage("Rewards points updated for " + user, false);
-                    txtCustomerRewards.Text = "" + points + rewards;
+                    txtCustomerRewards.Text = (points + rewards).ToString();
                     txtAdjustPoints.Clear();
-                    //TODO: add rewards tracking here
                 }
                 else
                 {

@@ -46,6 +46,30 @@ public class Waitlist
         return false;
 
     }
+    //DESCRIPTION: Gets a reference room to calculate price for waitlisted reservation
+    public int getRefRoomforWIL(int locationID, string combinedString)
+    {
+        int refRoomNum = -1;
+        DBConnect checkAvailabilityConn = new DBConnect();
+        MySqlCommand cmd = new MySqlCommand("SELECT rrp.roomNum, group_concat(packageID separator \",\") as packages from dbo.relation_room_package rrp where rrp.locationID =  @locationID group by rrp.roomNum having(packages= @packages) limit 1");
+
+        cmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = locationID;
+        cmd.Parameters.Add("@packages", MySqlDbType.VarChar,45).Value = combinedString;
+
+        MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
+        if (nonAvailableDR.HasRows)
+        {
+            while (nonAvailableDR.Read())
+            {
+                refRoomNum = Convert.ToInt32(nonAvailableDR["roomNum"]);
+            }
+            return refRoomNum;
+        }
+        else
+        {
+            return refRoomNum;
+        }
+    }
     // DESCRIPTION: Deletes any waitlist entries with startdate < currentDate
 
     public void dailyPurgeWaitlist(DateTime currentDate)
@@ -93,8 +117,9 @@ public class Waitlist
             {
             // reservation available, create reservation
             Utilities calcPrice = new Utilities();
-            double pricePerNight = (calcPrice.getPricePerNight(locationID, roomNumList[0])) * numRooms;
-            double price = (calcPrice.calculatePrice(((endDate - startDate).TotalDays), pricePerNight)) * numRooms;
+                Room roomDetails = new Room(roomNumList[0], locationID);
+            double pricePerNight = roomDetails.price * numRooms;
+            double price = (calcPrice.calculatePrice(((endDate - startDate).TotalDays), pricePerNight));
             int points = Convert.ToInt32(calcPrice.calculatePoints(((endDate - startDate).TotalDays)));
             
             confirmationID = checkWL.makeReservation(locationID, customerID, customerID, startDate, endDate, price, points, roomNumList, numGuests, currentDate);
