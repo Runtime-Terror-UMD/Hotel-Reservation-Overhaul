@@ -200,9 +200,9 @@ namespace Hotel_Reservation_Overhaul
                 int numGuests = Convert.ToInt32(cboxNumGuests.SelectedItem);
                 int numRooms = Convert.ToInt32(cboxNumRooms.SelectedItem);
 
-                Room roomDetails = new Room(roomNumList[0], locationID);
 
                 roomNumList = resInfo.getAvailability(numGuests, locationID, numRooms, combinedstring, currentDate, startDate.Value, endDate.Value);
+                Room roomDetails = new Room(roomNumList[0], locationID);
 
                 if (roomNumList.Count != numRooms)
                 {   // no room available, gets roomNum to reference for price 

@@ -112,12 +112,12 @@ namespace Hotel_Reservation_Overhaul
 
                     // assign parameter values 
                     cmd.Parameters.Add("@firstName", MySqlDbType.VarChar, 45).Value =  txtFirstName.Text;
-                    cmd.Parameters.AddWithValue("@lastName", MySqlDbType.VarChar, 45).Value = txtLastName.Text;
-                    cmd.Parameters.AddWithValue("@email", MySqlDbType.VarChar, 45).Value = txtEmail.Text;
-                    cmd.Parameters.AddWithValue("@secretQuestion", MySqlDbType.VarChar, 45).Value = txtSQuest.Text;
-                    cmd.Parameters.AddWithValue("@secretAnswer", MySqlDbType.VarChar, 45).Value = txtSAns.Text;
-                    cmd.Parameters.AddWithValue("@username", MySqlDbType.VarChar, 45).Value = txtUsername.Text;
-                    cmd.Parameters.AddWithValue("@password", MySqlDbType.VarChar, 45).Value = txtPassword.Text;
+                    cmd.Parameters.Add("@lastName", MySqlDbType.VarChar, 45).Value = txtLastName.Text;
+                    cmd.Parameters.Add("@email", MySqlDbType.VarChar, 45).Value = txtEmail.Text;
+                    cmd.Parameters.Add("@secretQuestion", MySqlDbType.VarChar, 45).Value = txtSQuest.Text;
+                    cmd.Parameters.Add("@secretAnswer", MySqlDbType.VarChar, 45).Value = txtSAns.Text;
+                    cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45).Value = txtUsername.Text;
+                    cmd.Parameters.Add("@password", MySqlDbType.VarChar, 45).Value = txtPassword.Text;
                     cmd.Parameters.Add("@isCustomer", MySqlDbType.Bit);
                     // set user type
 
