@@ -15,45 +15,9 @@ namespace Hotel_Reservation_Overhaul.Pages
         public CustomerSummary(DateTime startDate, DateTime endDate)
         {
             InitializeComponent();
-            this.dateStart.Value = startDate;
-            this.dateEnd.Value = endDate;
+            this.lblFromDate.Text= startDate.ToString("MM'/'dd'/'yyyy");
+            this.lblToDate.Text = endDate.ToString("MM'/'dd'/'yyyy");
         }
 
-        private void btnRepeatCx_Click(object sender, EventArgs e)
-        {
-            //get information from database and display it in list box
-        }
-
-        private void btnUpgrades_Click(object sender, EventArgs e)
-        {
-            //get information from database and display it in list box
-        }
-
-        private void btnReserve_Click(object sender, EventArgs e)
-        {
-            //get information from database and display it in list box
-        }
-
-        private void btnModify_Click(object sender, EventArgs e)
-        {
-            //get information from database and display it in list box
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            //get information from database and display it in list box
-        }
-
-        private void btnReturn_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void btnLogout_Click(object sender, EventArgs e)
-        {
-            this.Close();
-            Application.OpenForms["HotelManagement"].Close();
-            Application.OpenForms["Menu"].Close();
-        }
     }
 }

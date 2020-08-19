@@ -29,7 +29,7 @@ namespace Hotel_Reservation_Overhaul.Pages
 
             lblFromDate.Text = startDate.ToString("MM'/'dd'/'yyyy");
             lblToDate.Text = endDate.ToString("MM'/'dd'/'yyyy");
-            
+
             lblRewardsDateXDesc.Text = "Rewards outstanding on " + lblFromDate.Text;
             lblRewardsDateYDesc.Text = "Rewards outstanding on " + lblToDate.Text;
 
@@ -60,7 +60,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                         from dbo.reward_log rl
                                         where rl.created >= @startDate and rl.created <= @endDate
                                         and rl.pointsAmount < 0;";
-  
+
 
             MySqlDataReader dataReader = reportConn.ExecuteReader(reportQuery);
             while (dataReader.Read())
@@ -82,9 +82,5 @@ namespace Hotel_Reservation_Overhaul.Pages
             lblEarned.Text = totalEarned.ToString();
         }
 
-        private void Summary_Reports_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }
