@@ -202,8 +202,7 @@ namespace Hotel_Reservation_Overhaul
 
 
                 roomNumList = resInfo.getAvailability(numGuests, locationID, numRooms, combinedstring, currentDate, startDate.Value, endDate.Value);
-                Room roomDetails = new Room(roomNumList[0], locationID);
-
+                
                 if (roomNumList.Count != numRooms)
                 {   // no room available, gets roomNum to reference for price 
                     if (mod)
@@ -230,7 +229,9 @@ namespace Hotel_Reservation_Overhaul
                     }
                 }
                 else
-                {
+                { 
+                    Room roomDetails = new Room(roomNumList[0], locationID);
+                
                     // calculate price and rewards
                     if (mod)
                     {   // if free upgrade, do not change price per night
