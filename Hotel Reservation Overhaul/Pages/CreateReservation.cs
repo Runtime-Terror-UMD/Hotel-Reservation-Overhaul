@@ -326,13 +326,14 @@ namespace Hotel_Reservation_Overhaul
             cboxHotel.SelectedIndex = -1;
             cboxNumGuests.SelectedIndex = -1;
             cboxNumRooms.SelectedIndex = -1;
-            lblSubTotal.Text = "";
-            lblDeposit.Text = "";
-            txtCostNightly.Text = "";
-            lblStartDate.Text = "";
-            lblEndDate.Text = "";
+            lblSubTotal.Text = string.Empty;
+            lblDeposit.Text = string.Empty;
+            txtCostNightly.Text = string.Empty;
+            lblStartDate.Text = string.Empty;
+            lblEndDate.Text = string.Empty;
             monthStart.SetDate(currentDate);
             monthEnd.SetDate(currentDate);
+
             lblError.Visible = false;
             cboxHotel.Enabled = true;
             cboxNumRooms.Enabled = true;

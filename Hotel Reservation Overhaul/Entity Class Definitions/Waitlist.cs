@@ -54,7 +54,7 @@ public class Waitlist
         MySqlCommand cmd = new MySqlCommand("SELECT rrp.roomNum, group_concat(packageID separator \",\") as packages from dbo.relation_room_package rrp where rrp.locationID =  @locationID group by rrp.roomNum having(packages= @packages) limit 1");
 
         cmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = locationID;
-        cmd.Parameters.Add("@packages", MySqlDbType.Int32).Value = combinedString;
+        cmd.Parameters.Add("@packages", MySqlDbType.VarChar,45).Value = combinedString;
 
         MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
         if (nonAvailableDR.HasRows)
