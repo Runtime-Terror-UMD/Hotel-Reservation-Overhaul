@@ -12,7 +12,7 @@ class PaymentRecord
     public PaymentRecord() { }
 
     // DESCRIPTION: Creates a payment record and updates the balance of the reservation 
-    public bool makePayment(int userID, int confirmationID, double amountPaid, string paymentMethod, bool usedRewards, DateTime currentDate, int ccNumber)
+    public bool makePayment(int userID, int confirmationID, double amountPaid, string paymentMethod, bool usedRewards, DateTime currentDate, string ccNumber)
     {
         // create payment record
         DBConnect makePaymentConn = new DBConnect();
@@ -24,7 +24,7 @@ class PaymentRecord
         makePayment.Parameters.Add("@paymentMethod", MySqlDbType.VarChar, 45).Value = paymentMethod;
         makePayment.Parameters.Add("@usedRewards", MySqlDbType.Bit).Value = usedRewards;
         makePayment.Parameters.Add("@created", MySqlDbType.Date).Value = currentDate;
-        makePayment.Parameters.Add("@ccNum", MySqlDbType.Int32).Value = ccNumber;
+        makePayment.Parameters.Add("@ccNum", MySqlDbType.VarChar, 45).Value = ccNumber;
 
         if (makePaymentConn.NonQuery(makePayment) > 0)
         {// update balance and amount paid on reservation

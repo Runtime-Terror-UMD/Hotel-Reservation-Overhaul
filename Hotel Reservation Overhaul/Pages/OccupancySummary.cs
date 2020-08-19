@@ -12,12 +12,11 @@ namespace Hotel_Reservation_Overhaul.Pages
 {
     public partial class OccupancySummary : Form
     {
-        public OccupancySummary(DateTime startDate, DateTime endDate, string hotel)
+        public OccupancySummary(DateTime startDate, DateTime endDate)
         { 
             InitializeComponent();
-            this.dateStart.Value = startDate;
-            this.dateEnd.Value = endDate;
-            this.txtHotel.Text = hotel;
+            this.lblFromDate.Text = startDate.ToString("MM'/'dd'/'yyyy");
+            this.lblToDate.Text = endDate.ToString("MM'/'dd'/'yyyy");
         }
 
         private void btnUnOccupied_Click(object sender, EventArgs e)

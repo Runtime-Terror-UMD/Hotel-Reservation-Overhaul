@@ -277,7 +277,7 @@ namespace Hotel_Reservation_Overhaul
                         if (resInfo.amountDue < 0)
                         {
                             PaymentRecord issueRefund = new PaymentRecord();
-                            issueRefund.makePayment(17, resInfo.confirmatonID, resInfo.amountDue, "refund", false, currentDate,12345);
+                            issueRefund.makePayment(17, resInfo.confirmatonID, resInfo.amountDue, "refund", false, currentDate,"12345");
                         }
                         // update reservation record
                         resInfo.updateReservation(resInfo);

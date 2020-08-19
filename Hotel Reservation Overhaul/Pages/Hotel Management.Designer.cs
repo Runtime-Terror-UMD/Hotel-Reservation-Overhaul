@@ -192,7 +192,7 @@
             "Occupancy Summary",
             "Customer Summary"});
             this.lstReports.Location = new System.Drawing.Point(25, 25);
-            this.lstReports.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.lstReports.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lstReports.Name = "lstReports";
             this.lstReports.Size = new System.Drawing.Size(200, 160);
             this.lstReports.TabIndex = 6;
@@ -315,7 +315,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 557);
+            this.ClientSize = new System.Drawing.Size(784, 556);
             this.Controls.Add(this.lblFileStatus);
             this.Controls.Add(this.grpHotelSettings);
             this.Controls.Add(this.grpReports);
