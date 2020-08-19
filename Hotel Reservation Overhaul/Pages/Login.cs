@@ -20,7 +20,24 @@ namespace Hotel_Reservation_Overhaul
         public Login()
         {
             InitializeComponent();
-            currentDate = DateTime.Today;
+            DateTime current;
+
+            try
+            {
+                string[] fileLines = File.ReadAllLines("HotelSettings.txt");
+                if (DateTime.TryParse(fileLines[5].Substring(fileLines[5].IndexOf(' ')), out current))
+                {
+                    currentDate = current;
+                }
+                else
+                {
+                    currentDate = DateTime.Today;
+                }
+            }
+            catch(Exception ex)
+            {
+                currentDate = DateTime.Today;
+            }
         }
 
         // DESCRIPTION: Utility function for error display

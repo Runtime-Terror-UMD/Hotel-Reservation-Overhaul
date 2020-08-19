@@ -254,7 +254,7 @@ namespace Hotel_Reservation_Overhaul
                             Utilities recalc = new Utilities();
                             DateTime newEndDate = currentDate;
                             Room roomDetails = new Room(resInfo.roomNumList[0], resInfo.locationID);
-                            resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays,roomDetails.price);
+                            resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, roomDetails.price);
                             resInfo.points = Convert.ToInt32(recalc.calculatePoints((newEndDate - resInfo.endDate).TotalDays));
                             resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
                             resInfo.status = "checked-out";

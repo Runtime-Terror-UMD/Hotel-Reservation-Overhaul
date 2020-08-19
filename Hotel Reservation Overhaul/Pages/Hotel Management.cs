@@ -22,6 +22,10 @@ namespace Hotel_Reservation_Overhaul.Pages
             InitializeComponent();
             UserID = userID;
             currentDate = current;
+            UserID = userID;
+            menuWind = window;
+            dateStart.Value = currentDate;
+            dateEnd.Value = currentDate;
         }
         public void displayError(string message)
         {
