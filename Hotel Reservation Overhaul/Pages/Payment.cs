@@ -116,6 +116,13 @@ namespace Hotel_Reservation_Overhaul
 
                 if (proceed)
                 {
+                    if (chkReward.Checked)
+                    {
+                        resInfo.totalPrice *= 0.9;
+                        resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
+                        // update reservation in database
+                        resInfo.updateReservation(resInfo);
+                    }
                     ccNumber = txtCardNum.Text;
                     PaymentRecord payment = new PaymentRecord();
                     if(payment.makePayment(userInfo.userID, resInfo.confirmatonID, double.Parse(txtPrice.Text), cboxMethod.SelectedItem.ToString(), this.appliedReward, currentDate, ccNumber))
@@ -124,7 +131,6 @@ namespace Hotel_Reservation_Overhaul
                     }
                     if (dateTimePicker1.Value == resInfo.endDate)
                     {
-                        //update amount due and deposit amount
                         MessageBox.Show("Your payment was successful!\nThe deposit amount will be refunded to you");
                     }
                 }
@@ -163,6 +169,13 @@ namespace Hotel_Reservation_Overhaul
                 }
                 if(proceed)
                 {
+                    if(chkReward.Checked)
+                    {
+                        resInfo.totalPrice *= 0.9;
+                        resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
+                        // update reservation in database
+                        resInfo.updateReservation(resInfo);
+                    }
                     ccNumber = txtCardNum.Text;
                     PaymentRecord payment = new PaymentRecord();
                     if (payment.makePayment(userInfo.userID, resInfo.confirmatonID, double.Parse(txtPrice.Text), cboxMethod.SelectedItem.ToString(), this.appliedReward, currentDate, ccNumber))
@@ -227,11 +240,10 @@ namespace Hotel_Reservation_Overhaul
             {
                 if(this.appliedReward)
                 {
-                    resInfo.amountDue /= 0.9;
+   
                     userInfo.pointsBalance += 50;
                     lblBalance.Text = "$" + resInfo.amountDue;
                     lblPoints.Text = "" + userInfo.pointsBalance;
-                    //change values in database
                     lblApplyReward.Visible = false;
                     appliedReward = false;
                 }

@@ -41,8 +41,6 @@ namespace Hotel_Reservation_Overhaul
             userID = UserID;
             currentDate = current;
             cboxHotel.SelectedIndex = -1;
-            monthStart.SelectionRange.Start = currentDate;
-            monthEnd.SelectionRange.Start = currentDate;
         }
 
         // DESCRIPTION: Fills fields with reservation info for reservation to modify
@@ -71,8 +69,6 @@ namespace Hotel_Reservation_Overhaul
             {
                 checkPackages.SetItemChecked(packID - 1, true);
             }
-            monthStart.SelectionRange.Start = currentDate;
-            monthEnd.SelectionRange.Start = currentDate;
         }
 
         private void btnLogOut_Click(object sender, EventArgs e)
