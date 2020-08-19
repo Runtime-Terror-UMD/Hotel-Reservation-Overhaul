@@ -71,6 +71,12 @@
     <Compile Include="Pages\Account Settings.Designer.cs">
       <DependentUpon>Account Settings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Pages\CustomerSummary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\CustomerSummary.Designer.cs">
+      <DependentUpon>CustomerSummary.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pages\History.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +113,12 @@
     <Compile Include="Pages\NewAccount.Designer.cs">
       <DependentUpon>NewAccount.cs</DependentUpon>
     </Compile>
+    <Compile Include="Pages\OccupancySummary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\OccupancySummary.Designer.cs">
+      <DependentUpon>OccupancySummary.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Payment.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,11 +131,11 @@
     <Compile Include="Pages\ReportViewer.Designer.cs">
       <DependentUpon>ReportViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SummaryReport.cs">
+    <Compile Include="Pages\RewardsSummary.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Pages\SummaryReport.Designer.cs">
-      <DependentUpon>SummaryReport.cs</DependentUpon>
+    <Compile Include="Pages\RewardsSummary.Designer.cs">
+      <DependentUpon>RewardsSummary.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -149,6 +161,9 @@
     <EmbeddedResource Include="Pages\Account Settings.resx">
       <DependentUpon>Account Settings.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Pages\CustomerSummary.resx">
+      <DependentUpon>CustomerSummary.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Pages\History.resx">
       <DependentUpon>History.cs</DependentUpon>
     </EmbeddedResource>
@@ -167,14 +182,17 @@
     <EmbeddedResource Include="Pages\NewAccount.resx">
       <DependentUpon>NewAccount.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Pages\OccupancySummary.resx">
+      <DependentUpon>OccupancySummary.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Pages\Payment.resx">
       <DependentUpon>Payment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\ReportViewer.resx">
       <DependentUpon>ReportViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\SummaryReport.resx">
-      <DependentUpon>SummaryReport.cs</DependentUpon>
+    <EmbeddedResource Include="Pages\RewardsSummary.resx">
+      <DependentUpon>RewardsSummary.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -217,9 +235,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="HotelSettings.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

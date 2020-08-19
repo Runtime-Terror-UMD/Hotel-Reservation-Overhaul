@@ -892,12 +892,49 @@ namespace Hotel_Reservation_Overhaul.Pages
                     }
                     else
                     {
-                       //open summary reports
+                        //open summary reports
+                        if (lstReports.SelectedItem.ToString() == "Reward Summary")
+                        {
+                            var rewardSummary = new RewardsSummary(dateStart.Value, dateEnd.Value);
+                            rewardSummary.FormClosed += new FormClosedEventHandler(rewardSummary_FormClosed);
+                            this.Hide();
+                            rewardSummary.Show();
+                        }
+                        else if (lstReports.SelectedItem.ToString() == "Occupancy Summary")
+                        {
+                            var occupancySummary = new OccupancySummary(dateStart.Value, dateEnd.Value, cboxHotel.SelectedText);
+                            occupancySummary.FormClosed += new FormClosedEventHandler(occupancySummary_FormClosed);
+                            this.Hide();
+                            occupancySummary.Show();
+                        }
+                        else// if (lstReports.SelectedItem.ToString() == "Customer Summary")
+                        {
+                            var customerSummary = new CustomerSummary(dateStart.Value, dateEnd.Value);
+                            customerSummary.FormClosed += new FormClosedEventHandler(customerSummary_FormClosed);
+                            this.Hide();
+                            customerSummary.Show();
+                        }
                     }
                 }    
 
             }
         }
+
+        private void customerSummary_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Show();
+        }
+
+        private void occupancySummary_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Show();
+        }
+
+        private void rewardSummary_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Show();
+        }
+
 
         private void userHistory_FormClosed(object sender, FormClosedEventArgs e)
         {

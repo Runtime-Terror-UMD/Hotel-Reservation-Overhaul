@@ -56,6 +56,7 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.lblFileStatus = new System.Windows.Forms.Label();
             this.locationTableAdapter = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.locationTableAdapter();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.grpReports.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).BeginInit();
@@ -219,12 +220,12 @@
             this.lstReports.FormattingEnabled = true;
             this.lstReports.Items.AddRange(new object[] {
             "Customer History",
-           "Employee History",
+            "Employee History",
             "Reward Summary",
             "Occupancy Summary",
             "Customer Summary"});
-            this.lstReports.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lstReports.Location = new System.Drawing.Point(25, 25);
+            this.lstReports.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lstReports.Name = "lstReports";
             this.lstReports.Size = new System.Drawing.Size(200, 160);
             this.lstReports.TabIndex = 6;
@@ -237,7 +238,7 @@
             this.btnReport.Name = "btnReport";
             this.btnReport.Size = new System.Drawing.Size(100, 40);
             this.btnReport.TabIndex = 11;
-            this.btnReport.Text = "Create Report";
+            this.btnReport.Text = "Submit";
             this.btnReport.UseVisualStyleBackColor = true;
             this.btnReport.Click += new System.EventHandler(this.btnReport_Click_1);
             // 
@@ -327,6 +328,11 @@
             // 
             this.locationTableAdapter.ClearBeforeFill = true;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
             // HotelManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -379,5 +385,6 @@
         private hotelmgmt hotelmgmt;
         private System.Windows.Forms.BindingSource locationBindingSource;
         private hotelmgmtTableAdapters.locationTableAdapter locationTableAdapter;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }
