@@ -198,10 +198,12 @@ namespace Hotel_Reservation_Overhaul
             if (chkReward.Checked)
             {
                 if (userInfo.pointsBalance < 50)
+                {
                     lblrewardError.Visible = true;
+                }
                 else
                 {
-                    if(isReserving && !String.IsNullOrEmpty(txtPrice.Text) && double.Parse(txtPrice.Text) < 56)
+                    if (isReserving && !String.IsNullOrEmpty(txtPrice.Text) && double.Parse(txtPrice.Text) < 56)
                     {
                         lblrewardError.Text = "Error: You should pay a minimum of\n$56.00 to apply reward points";
                         lblrewardError.Visible = true;
@@ -215,7 +217,6 @@ namespace Hotel_Reservation_Overhaul
                         lblPoints.Text = "" + userInfo.pointsBalance;
                         lblApplyReward.Visible = true;
                         appliedReward = true;
-                        //change the value in the database;
                     }
                 }
             }

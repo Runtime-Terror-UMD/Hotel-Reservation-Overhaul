@@ -337,7 +337,7 @@
             // 
             this.lblError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblError.ForeColor = System.Drawing.Color.Red;
-            this.lblError.Location = new System.Drawing.Point(150, 290);
+            this.lblError.Location = new System.Drawing.Point(150, 295);
             this.lblError.Name = "lblError";
             this.lblError.Size = new System.Drawing.Size(568, 20);
             this.lblError.TabIndex = 22;
@@ -440,7 +440,7 @@
             this.checkFreeUpgrade.AutoSize = true;
             this.checkFreeUpgrade.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.checkFreeUpgrade.Location = new System.Drawing.Point(163, 469);
-            this.checkFreeUpgrade.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkFreeUpgrade.Margin = new System.Windows.Forms.Padding(2);
             this.checkFreeUpgrade.Name = "checkFreeUpgrade";
             this.checkFreeUpgrade.Size = new System.Drawing.Size(174, 20);
             this.checkFreeUpgrade.TabIndex = 31;
