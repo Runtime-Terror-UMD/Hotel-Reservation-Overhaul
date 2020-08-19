@@ -173,6 +173,7 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Checks for reservation availability
         private void btnSubmit_Click(object sender, EventArgs e)
         {
+            Utilities calcPrice = new Utilities();
             if (checkPackages.GetItemCheckState(0) == CheckState.Unchecked)
             {
                 checkPackages.SetItemCheckState(0, CheckState.Checked);
@@ -191,7 +192,6 @@ namespace Hotel_Reservation_Overhaul
             else if (cboxNumRooms.SelectedItem == null) { displayError("Please select number of rooms"); }
             else
             {
-                Utilities calcPrice = new Utilities();
                 combinedstring = getSelectedPackages();
 
                 // check for availability
@@ -199,6 +199,8 @@ namespace Hotel_Reservation_Overhaul
                 int locationID = Convert.ToInt32(cboxHotel.SelectedValue);
                 int numGuests = Convert.ToInt32(cboxNumGuests.SelectedItem);
                 int numRooms = Convert.ToInt32(cboxNumRooms.SelectedItem);
+
+                Room roomDetails = new Room(roomNumList[0], locationID);
 
                 roomNumList = resInfo.getAvailability(numGuests, locationID, numRooms, combinedstring, currentDate, startDate.Value, endDate.Value);
 
@@ -215,8 +217,8 @@ namespace Hotel_Reservation_Overhaul
                         int refRoomNum = getRefRoom.getRefRoomforWIL(locationID, combinedstring);
                         if (refRoomNum != -1)
                         {
-                            Utilities getWLPricePerNight = new Utilities();
-                            pricePerNight = getWLPricePerNight.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), refRoomNum);
+                            Room getWLPricePerNight = new Room(refRoomNum, Convert.ToInt32(cboxHotel.SelectedValue));
+                            pricePerNight = getWLPricePerNight.price;
                             displayError("No room with those criteria are available. Your reservation will be added to the waitlist");
                             waitlist = true;
                         }
@@ -238,12 +240,12 @@ namespace Hotel_Reservation_Overhaul
                         }
                         else
                         {
-                            pricePerNight = calcPrice.getPricePerNight(locationID, roomNumList[0]) * numRooms;
+                            pricePerNight = roomDetails.price * numRooms;
                         }
                     }
                     else
                     {
-                        pricePerNight = calcPrice.getPricePerNight(locationID, roomNumList[0]) * numRooms;
+                        pricePerNight = roomDetails.price * numRooms;
                         lblError.Visible = false;
                     }
                 }

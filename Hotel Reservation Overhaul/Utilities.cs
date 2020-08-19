@@ -124,10 +124,8 @@ namespace Hotel_Reservation_Overhaul
 
         public bool isCustomer(int userID)
         {
-            DBConnect isCustomerConn = new DBConnect();
-            MySqlCommand cmd = new MySqlCommand("SELECT isCustomer from dbo.user where userid = @userID");
-            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
-            if (isCustomerConn.intScalar(cmd) == 0)
+            User userInfo = new User(userID);
+            if(userInfo.isCustomer == false)
                 return false;
             return true;
         }
@@ -147,20 +145,6 @@ namespace Hotel_Reservation_Overhaul
             return userID;
         }
 
-        //  DESCRIPTION: Gets username based on userID
-        public string getUsername(int userID)
-        {
-            string username;
-            DBConnect getUsernameConn = new DBConnect();
-
-            // build query
-            MySqlCommand cmd = new MySqlCommand("SELECT username from dbo.user where userid = @userID");
-            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
-
-            //assign value to variable
-            username = getUsernameConn.stringScalar(cmd);
-            return username;
-        }
 
         // DESCRIPTION: Checks if entered password matches specified username
         public bool passwordMatches(string username, string password)
@@ -180,16 +164,8 @@ namespace Hotel_Reservation_Overhaul
         }
         public bool passwordMatches(int userID, string password)
         {
-            // construct query
-            MySqlCommand cmd = new MySqlCommand("SELECT Count(*) from dbo.user where userID = @userID AND password = @password");
-            cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
-            cmd.Parameters.Add("@password", MySqlDbType.VarChar, 45).Value = password;
-
-            // connect to database
-            DBConnect passwordMatchesConn = new DBConnect();
-
-            // if records exist
-            if (passwordMatchesConn.intScalar(cmd) > 0)
+            User userInfo = new User(userID);
+            if (userInfo.password == password)
                 return true;
             else
                 return false;
@@ -284,15 +260,5 @@ namespace Hotel_Reservation_Overhaul
             return points;
         }
 
-        // DESCRIPTION: Gets price per night of roomNum at locationID
-        public double getPricePerNight(int locationID, int roomNum)
-        {
-            DBConnect getPricePerNightConn = new DBConnect();
-            MySqlCommand getPricePerNight = new MySqlCommand("SELECT pricePerNight from dbo.room WHERE locationID = @locationID and roomNum = @roomNum");
-            getPricePerNight.Parameters.Add("@locationID", MySqlDbType.Int32).Value = locationID;
-            getPricePerNight.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = roomNum;
-            double pricePerNight = getPricePerNightConn.doubleScalar(getPricePerNight);
-            return pricePerNight;
-        }
     }
 }

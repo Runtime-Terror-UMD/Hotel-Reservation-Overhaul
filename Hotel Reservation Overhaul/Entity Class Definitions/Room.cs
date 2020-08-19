@@ -4,24 +4,36 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 
-class Room
+public class Room
 {
     private int roomNumber { get; set; }
-    //private package ??
-    private int locationID { get; set; }
-    private bool availability { get; set; }
-    private int floor { get; set; }
-    private int building { get; set; }
-    private string description { get; set; }
-    Room(int roomNb, int location, bool available, int flr, int bldng, string descrp)
+
+    public int occupancy { get; set; }
+    public int locationID { get; set; }
+    public double price{ get; set; }
+    public string description { get; set; }
+  public  Room(int roomNb, int location)
     {
-        this.roomNumber = roomNb;
-        this.locationID = location;
-        this.availability = available;
-        this.floor = flr;
-        this.building = bldng;
-        this.description = descrp;
+        DBConnect getRoomConn = new DBConnect();
+        MySqlCommand getRoom = new MySqlCommand("SELECT * from dbo.room where roomNum = @roomNum and locationID = @locationID");
+        getRoom.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = roomNb;
+        getRoom.Parameters.Add("@locationID", MySqlDbType.Int32).Value = location;
+
+        MySqlDataReader dataReader = getRoomConn.ExecuteReader(getRoom);
+
+        //Read the data and store them in the list
+        while (dataReader.Read())
+        {
+            this.roomNumber = Convert.ToInt32(dataReader["roomNum"]);
+            this.locationID = Convert.ToInt32(dataReader["locationID"]);
+            this.occupancy = Convert.ToInt32(dataReader["occupancy"]);
+            this.price = Convert.ToDouble(dataReader["pricePerNight"]);
+        }
+
+        //close Data Reader
+        dataReader.Close(); ;
     }
+
     public Room() { }
 
     public bool addRoom(int roomNum, int hotelID, int roomOcc, decimal roomCost, List<int> roomPackages)

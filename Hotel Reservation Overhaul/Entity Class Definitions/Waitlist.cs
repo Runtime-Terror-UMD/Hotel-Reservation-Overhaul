@@ -117,8 +117,9 @@ public class Waitlist
             {
             // reservation available, create reservation
             Utilities calcPrice = new Utilities();
-            double pricePerNight = (calcPrice.getPricePerNight(locationID, roomNumList[0])) * numRooms;
-            double price = (calcPrice.calculatePrice(((endDate - startDate).TotalDays), pricePerNight)) * numRooms;
+                Room roomDetails = new Room(roomNumList[0], locationID);
+            double pricePerNight = roomDetails.price * numRooms;
+            double price = (calcPrice.calculatePrice(((endDate - startDate).TotalDays), pricePerNight));
             int points = Convert.ToInt32(calcPrice.calculatePoints(((endDate - startDate).TotalDays)));
             
             confirmationID = checkWL.makeReservation(locationID, customerID, customerID, startDate, endDate, price, points, roomNumList, numGuests, currentDate);
