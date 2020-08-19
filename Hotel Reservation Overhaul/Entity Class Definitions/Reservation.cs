@@ -219,7 +219,8 @@ public class Reservation
     public void dailyCheckOut(DateTime currentDate)
     {
         DBConnect checkinConn = new DBConnect();
-        MySqlCommand cmd = new MySqlCommand("SELECT * from dbo.reservation where status = 'checked-in' and endDate = currentDate");
+        MySqlCommand cmd = new MySqlCommand("SELECT * from dbo.reservation where reservationStatus = 'checked-in' and endDate = @currentDate");
+        cmd.Parameters.Add("@currentDate", MySqlDbType.DateTime).Value = currentDate;
         checkinConn.OpenConnection();
         DataTable checkInDT = checkinConn.ExecuteDataTable(cmd);
 
@@ -227,12 +228,14 @@ public class Reservation
         {
             int confirmationID = Convert.ToInt32(row["confirmationID"]);
             Reservation checkInRes = new Reservation(confirmationID);
-            checkInRes.checkInReservation();
+            checkInRes.checkOutReservation(currentDate);
         }
     }
-    public bool checkOutReservation()
+    public bool checkOutReservation(DateTime currentDate)
     {
         //add checkout activity log
+        LoggedActivity logCheckout = new LoggedActivity();
+        logCheckout.logActivity(userID, 5, this.confirmatonID, currentDate, 17);
         //update customer rewards point balance
         //charge customer remaining balance on reservation
         status = "checked-out";
@@ -241,8 +244,10 @@ public class Reservation
         return false;
     }
 
-    public bool checkInReservation()
+    public bool checkInReservation(DateTime currentDate)
     {
+        LoggedActivity logCheckin = new LoggedActivity();
+        logCheckin.logActivity(userID, 4, this.confirmatonID, currentDate, 17);
         status = "checked-in";
         if (updateReservation(this))
             return true;
@@ -252,7 +257,8 @@ public class Reservation
     public void dailyCheckIn(DateTime currentDate)
     {
         DBConnect checkinConn = new DBConnect();
-        MySqlCommand cmd = new MySqlCommand("SELECT * from dbo.reservation where status = 'upcoming' and startDate = currentDate");
+        MySqlCommand cmd = new MySqlCommand("SELECT * from dbo.reservation where reservationStatus = 'upcoming' and startDate = @currentDate");
+        cmd.Parameters.Add("@currentDate", MySqlDbType.DateTime).Value = currentDate;
         checkinConn.OpenConnection();
         DataTable checkInDT = checkinConn.ExecuteDataTable(cmd);
 
@@ -260,7 +266,7 @@ public class Reservation
         {
             int confirmationID = Convert.ToInt32(row["confirmationID"]);
             Reservation checkInRes = new Reservation(confirmationID);
-            checkInRes.checkInReservation();
+            checkInRes.checkInReservation(currentDate);
         }
     }
 }
