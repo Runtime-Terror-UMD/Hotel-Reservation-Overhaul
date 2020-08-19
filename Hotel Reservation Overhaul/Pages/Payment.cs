@@ -17,7 +17,7 @@ namespace Hotel_Reservation_Overhaul
         public Reservation resInfo;
         public DateTime currentDate;
         public bool isReserving;
-        public int ccNumber;
+        public string ccNumber;
         public bool appliedReward = false;
         Utilities getInfo = new Utilities();
         public Payment(int confirmationID, int userID, DateTime current, bool isReserving)
@@ -116,7 +116,7 @@ namespace Hotel_Reservation_Overhaul
 
                 if (proceed)
                 {
-                    ccNumber = Convert.ToInt32(txtCardNum.Text);
+                    ccNumber = txtCardNum.Text;
                     PaymentRecord payment = new PaymentRecord();
                     if(payment.makePayment(userInfo.userID, resInfo.confirmatonID, double.Parse(txtPrice.Text), cboxMethod.SelectedItem.ToString(), this.appliedReward, currentDate, ccNumber))
                     {
@@ -163,7 +163,7 @@ namespace Hotel_Reservation_Overhaul
                 }
                 if(proceed)
                 {
-                    ccNumber = Convert.ToInt32(txtCardNum.Text);
+                    ccNumber = txtCardNum.Text;
                     PaymentRecord payment = new PaymentRecord();
                     if (payment.makePayment(userInfo.userID, resInfo.confirmatonID, double.Parse(txtPrice.Text), cboxMethod.SelectedItem.ToString(), this.appliedReward, currentDate, ccNumber))
                     {
