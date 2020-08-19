@@ -24,7 +24,7 @@ public class LoggedActivity
         cancelRes.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
         cancelRes.Parameters.Add("@activityType", MySqlDbType.Int32).Value = activityType;
         cancelRes.Parameters.Add("@refID", MySqlDbType.Int32).Value = refID;
-        cancelRes.Parameters.Add("@created", MySqlDbType.Date).Value = DateTime.Today;      //FIXME: Replace with date varialbe
+        cancelRes.Parameters.Add("@created", MySqlDbType.Date).Value = created;
         cancelRes.Parameters.Add("@createdBy", MySqlDbType.Int32).Value = createdBy;
         if (cancelResConn.NonQuery(cancelRes) > 0)
             return true;
