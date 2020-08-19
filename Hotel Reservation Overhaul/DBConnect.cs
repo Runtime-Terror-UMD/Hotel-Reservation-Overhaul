@@ -151,24 +151,26 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Executes scalar query of type integer
         public int intScalar(MySqlCommand cmd)
         {
-            this.OpenConnection();
             int returnInt = -1;
 
-            //Open Connection
-            if (this.OpenConnection() == true)
+            try
             {
+                this.OpenConnection();
                 cmd.Connection = connection;
 
                 //ExecuteScalar will return one value
-                returnInt = int.Parse(cmd.ExecuteScalar() + "");    
-                this.CloseConnection();                       
+                returnInt = Convert.ToInt32(cmd.ExecuteScalar());
+                this.CloseConnection();
                 return returnInt;
+
             }
-            else
+            catch (Exception ex)
             {
-                return returnInt;
+                MessageBox.Show(ex.Message);
             }
+            return returnInt;
         }
+
 
         public double doubleScalar(MySqlCommand cmd)
         {
