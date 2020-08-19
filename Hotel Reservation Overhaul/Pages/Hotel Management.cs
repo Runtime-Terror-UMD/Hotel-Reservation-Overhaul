@@ -261,7 +261,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                             {
                                                 // calculate price and create reservation
                                                 Utilities calcPrice = new Utilities();
-                                                Room roomDetails = new Room(roomAvailable[0], Convert.ToInt32(cboxHotel.SelectedValue));
+                                                Room roomDetails = new Room(roomAvailable[0], hotelID);
                                                 double pricePerNight = roomDetails.price;
                                                 double price = calcPrice.calculatePrice(((checkIn - checkOut).TotalDays), pricePerNight);
                                                 int points = Convert.ToInt32(calcPrice.calculatePoints(((checkIn - checkOut).TotalDays)));
