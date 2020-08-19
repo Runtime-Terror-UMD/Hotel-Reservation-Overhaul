@@ -21,6 +21,7 @@ namespace Hotel_Reservation_Overhaul
             InitializeComponent();
             currentDate = current;
             loginWind = loginInstance;
+            lblNotification.Text = "Current Date: " + currentDate.Date;
         }
 
         // DESCRIPTION: Initializer. Shows/hides hotel management button based on isCustomer
@@ -32,6 +33,7 @@ namespace Hotel_Reservation_Overhaul
             if (isCustomer == true)
                 btnHotelManagement.Visible = false;
             currentDate = current;
+            lblNotification.Text = "Current Date: " + currentDate.Date;
 
         }
         //DESCRIPTION: Opens account settings page
@@ -71,6 +73,7 @@ namespace Hotel_Reservation_Overhaul
         public void updateDate(DateTime newDay)
         {
             currentDate = newDay;
+            lblNotification.Text = "Current Date: " + currentDate.Date;
             loginWind.updateDate(newDay);
         }
 
