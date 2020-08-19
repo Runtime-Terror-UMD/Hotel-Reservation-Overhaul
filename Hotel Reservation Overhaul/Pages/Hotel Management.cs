@@ -756,7 +756,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                     // check if there are any rooms currently checked out that are in maintenance 
                                     Utilities getRoomPackages = new Utilities();
                                     DBConnect getMaintenanceRoomsConn = new DBConnect();
-                                    MySqlCommand getMaintenanceRooms = new MySqlCommand(@"select confirmationID from dbo.reservation r
+                                    MySqlCommand getMaintenanceRooms = new MySqlCommand(@"select confirmationID, roomNum from dbo.reservation r
                                                                                         join dbo.maintenance m
 	                                                                                        on m.maintenanceDate between r.startDate and r.endDate
                                                                                             and m.locationID = r.locationID
@@ -767,10 +767,12 @@ namespace Hotel_Reservation_Overhaul.Pages
                                     foreach(DataRow row in maintenanceRooms.Rows)
                                     {
                                         Reservation maintenaceRes = new Reservation(Convert.ToInt32(row["confirmationID"]));
-                                        foreach(int maintenanceRoomNum in maintenaceRes.roomNumList)
-                                        {
-                                            //maintenaceRes
-                                        }
+                                        Room roomDetails = new Room(maintenaceRes.locationID, (Convert.ToInt32(row["roomNum"])));
+
+                                        List<int> roomPackages = roomDetails.roomPackages((Convert.ToInt32(row["roomNum"])),maintenaceRes.locationID);
+                                        string combinedString = string.Join(",",roomPackages);
+
+
                                     }
                                     maintainCount++;
 
