@@ -329,10 +329,12 @@ namespace Hotel_Reservation_Overhaul
             lblSubTotal.Text = string.Empty;
             lblDeposit.Text = string.Empty;
             txtCostNightly.Text = string.Empty;
-            lblStartDate.Text = string.Empty;
-            lblEndDate.Text = string.Empty;
             monthStart.SetDate(currentDate);
             monthEnd.SetDate(currentDate);
+            lblStartDate.Text = string.Empty;
+            lblEndDate.Text = string.Empty;
+            startDate = null;
+            endDate = null;
 
             lblError.Visible = false;
             cboxHotel.Enabled = true;
