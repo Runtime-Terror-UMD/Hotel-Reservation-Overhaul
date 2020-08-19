@@ -46,6 +46,30 @@ public class Waitlist
         return false;
 
     }
+    //DESCRIPTION: Gets a reference room to calculate price for waitlisted reservation
+    public int getRefRoomforWIL(int locationID, string combinedString)
+    {
+        int refRoomNum = -1;
+        DBConnect checkAvailabilityConn = new DBConnect();
+        MySqlCommand cmd = new MySqlCommand("SELECT rrp.roomNum, group_concat(packageID separator \",\") as packages from dbo.relation_room_package rrp where rrp.locationID =  @locationID group by rrp.roomNum having(packages= @packages) limit 1");
+
+        cmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = locationID;
+        cmd.Parameters.Add("@packages", MySqlDbType.Int32).Value = combinedString;
+
+        MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
+        if (nonAvailableDR.HasRows)
+        {
+            while (nonAvailableDR.Read())
+            {
+                refRoomNum = Convert.ToInt32(nonAvailableDR["roomNum"]);
+            }
+            return refRoomNum;
+        }
+        else
+        {
+            return refRoomNum;
+        }
+    }
     // DESCRIPTION: Deletes any waitlist entries with startdate < currentDate
 
     public void dailyPurgeWaitlist(DateTime currentDate)

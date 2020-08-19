@@ -57,6 +57,7 @@ namespace Hotel_Reservation_Overhaul
             txtCostNightly.Text = (modResInfo.totalPrice / modResInfo.duration).ToString();
             lblDeposit.Text = (getDeposit.getMinCharge()).ToString();
             cboxHotel.SelectedValue = modResInfo.locationID;
+            cboxNumGuests.SelectedItem = modResInfo.numGuests.ToString();
             Room roomInfo = new Room();
             List<int> roomPacks = roomInfo.roomPackages(modResInfo.roomNumList[0], modResInfo.locationID);
             cboxNumRooms.SelectedItem = modResInfo.roomNumList.Count.ToString();
@@ -170,6 +171,7 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Checks for reservation availability
         private void btnSubmit_Click(object sender, EventArgs e)
         {
+            currentDate = DateTime.Today;
             if (checkPackages.GetItemCheckState(0) == CheckState.Unchecked)
             {
                 checkPackages.SetItemCheckState(0, CheckState.Checked);
@@ -189,8 +191,6 @@ namespace Hotel_Reservation_Overhaul
             {
                 // get selected packages
                 Utilities calcPrice = new Utilities();
-
-                // put selected package IDs in list
                 combinedstring = getSelectedPackages();
 
                 // check for availability
@@ -199,8 +199,23 @@ namespace Hotel_Reservation_Overhaul
                 int numGuests = Convert.ToInt32(cboxNumGuests.SelectedItem);
                 int numRooms = Convert.ToInt32(cboxNumRooms.SelectedItem);
 
-                roomNumList =  resInfo.getAvailability(numGuests, locationID, numRooms, combinedstring, currentDate, startDate.Value, endDate.Value);
-
+                // if modification, if number of rooms selected is changed
+                if (mod)
+                {
+                    if (numRooms > modResInfo.roomNumList.Count)
+                    {
+                        numRooms = numRooms - modResInfo.roomNumList.Count;
+                        roomNumList = resInfo.getAvailability(numGuests, locationID, numRooms, combinedstring, currentDate, startDate.Value, endDate.Value);
+                    }
+                    else
+                    {
+                        roomNumList = resInfo.getAvailability(numGuests, locationID, numRooms, combinedstring, currentDate, startDate.Value, endDate.Value);
+                    }
+                }
+                else
+                {
+                    roomNumList = resInfo.getAvailability(numGuests, locationID, numRooms, combinedstring, currentDate, startDate.Value, endDate.Value);
+                }
                 if (roomNumList.Count != numRooms)
                 {   // no room available, gets roomNum to reference for price 
                     if (mod)
@@ -209,19 +224,11 @@ namespace Hotel_Reservation_Overhaul
                     }
                     else
                     {
-                        DBConnect checkAvailabilityConn = new DBConnect();
-                        MySqlCommand cmd = new MySqlCommand("SELECT rrp.roomNum, group_concat(packageID separator \",\") as packages from dbo.relation_room_package rrp where rrp.locationID =  @locationID group by rrp.roomNum having(packages= @packages) limit 1");
-
-                        cmd.Parameters.Add("@locationID", MySqlDbType.Int32).Value = locationID;
-                        cmd.Parameters.Add("@packages", MySqlDbType.Int32).Value = combinedstring;
-
-                        MySqlDataReader nonAvailableDR = checkAvailabilityConn.ExecuteReader(cmd);
-                        if (nonAvailableDR.HasRows)
+                        // get room to reference for waitlist price
+                        Waitlist getRefRoom = new Waitlist();
+                        int refRoomNum = getRefRoom.getRefRoomforWIL(locationID, combinedstring);
+                        if (refRoomNum != -1)
                         {
-                            while (nonAvailableDR.Read())
-                            {
-                                refRoomNum = Convert.ToInt32(nonAvailableDR["roomNum"]);
-                            }
                             Utilities getWLPricePerNight = new Utilities();
                             pricePerNight = getWLPricePerNight.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), refRoomNum);
                             displayError("No room with those criteria are available. Your reservation will be added to the waitlist");
@@ -232,15 +239,27 @@ namespace Hotel_Reservation_Overhaul
                             displayError("No room with those criteria exists");
                             return;
                         }
-                        nonAvailableDR.Close();
-                        checkAvailabilityConn.CloseConnection();
                     }
                 }
                 else
                 {
                     // calculate price and rewards
-                    pricePerNight = calcPrice.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), roomNumList[0]) * numRooms;
-                    lblError.Visible = false;
+                    if (mod)
+                    {   // if free upgrade, do not change price per night
+                        if (checkFreeUpgrade.Checked == true)
+                        {
+                            pricePerNight = (modResInfo.totalPrice / modResInfo.duration);
+                        }
+                        else
+                        {
+                            pricePerNight = calcPrice.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), roomNumList[0]) * numRooms;
+                        }
+                    }
+                    else
+                    {
+                        pricePerNight = calcPrice.getPricePerNight(Convert.ToInt32(cboxHotel.SelectedValue), roomNumList[0]) * numRooms;
+                        lblError.Visible = false;
+                    }
                 }
                 price = calcPrice.calculatePrice(((endDate.Value - startDate.Value).TotalDays), pricePerNight);
                 points = Convert.ToInt32(calcPrice.calculatePoints(((endDate.Value - startDate.Value).TotalDays)));
@@ -284,7 +303,7 @@ namespace Hotel_Reservation_Overhaul
             else
             {   // Get next confirmation ID
                 Reservation createReservation = new Reservation();
-                int confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue), resUserID, userID, startDate.Value, endDate.Value, price, points, roomNumList, Convert.ToInt32(cboxNumGuests.SelectedItem), currentDate);
+                int confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue),userID, resUserID, startDate.Value, endDate.Value, price, points, roomNumList, Convert.ToInt32(cboxNumGuests.SelectedItem), currentDate);
                 var makePayment = new Payment(confirmationID, resUserID, currentDate, true);
                 makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
                 this.Hide();
@@ -361,25 +380,55 @@ namespace Hotel_Reservation_Overhaul
 
         private void btnModify_Click(object sender, EventArgs e)
         {
-            if (!(checkFreeUpgrade.Checked))
+            if (checkFreeUpgrade.Checked == true)
             {
                 modResInfo.totalPrice = price;
                 LoggedActivity employeeUpdate = new LoggedActivity();
-                employeeUpdate.logActivity(resUserID, 2, modResInfo.confirmatonID, currentDate, resUserID);
+                employeeUpdate.logActivity(modResInfo.userID, 2, modResInfo.confirmatonID, currentDate, resUserID);
             }
-            else
-            {
                 modResInfo.locationID = Convert.ToInt32(cboxHotel.SelectedValue);
                 modResInfo.numGuests = Convert.ToInt32(cboxNumGuests.SelectedItem);
                 modResInfo.startDate = startDate.Value;
                 modResInfo.endDate = endDate.Value;
-                modResInfo.roomNumList = roomNumList;
                 modResInfo.amountDue = price - modResInfo.amountPaid;
                 modResInfo.points = points;
+
+                if (Convert.ToInt32(cboxNumRooms.SelectedItem.ToString()) != modResInfo.roomNumList.Count)
+                {     
+                    DBConnect updateRoomConn = new DBConnect();
+
+                    // adjusts number of rooms if changed
+                    if (Convert.ToInt32(cboxNumRooms.SelectedItem.ToString()) < modResInfo.roomNumList.Count)
+                    {
+                        // if number of rooms decreased
+                        int difference = modResInfo.roomNumList.Count - roomNumList.Count;
+                        // get rooms to remove from reservation
+                        MySqlCommand updateRoom = new MySqlCommand("SELECT reservationID from dbo.reservation where confirmationID = @confirmationID limit @numRooms");
+                        updateRoom.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = modResInfo.confirmatonID;
+                        updateRoom.Parameters.Add("@numRooms", MySqlDbType.Int32).Value = difference;
+                        DataTable updateRoomDT = updateRoomConn.ExecuteDataTable(updateRoom);
+                        
+                        foreach(DataRow row in updateRoomDT.Rows)
+                        {   // cancel room
+                            int reservationID = Convert.ToInt32(row["reservationID"]);
+                            MySqlCommand cancelRoom = new MySqlCommand("UPDATE dbo.reservation SET reservationStatus = 'cancelled' WHERE reservationID = @reservationID");
+                            cancelRoom.Parameters.Add("@reservationID", MySqlDbType.Int32).Value = reservationID;
+                            updateRoomConn.NonQuery(cancelRoom);
+                        }
+                    }
+                    else if (Convert.ToInt32(cboxNumRooms.SelectedItem.ToString()) > modResInfo.roomNumList.Count)
+                    {
+                        int difference = Convert.ToInt32(cboxNumRooms.SelectedItem.ToString()) - modResInfo.roomNumList.Count;
+                        Reservation modRes = new Reservation(modResInfo.confirmatonID);
+                        modRes.addRoomToRes(modRes, roomNumList);
+                    }
+                }
+                
+                modResInfo.roomNumList = roomNumList;
+                modResInfo.updateReservation(modResInfo);
                 LoggedActivity customerUpdate = new LoggedActivity();
                 customerUpdate.logActivity(modResInfo.userID, 2, modResInfo.confirmatonID, currentDate, modResInfo.userID);
             }
-            modResInfo.updateReservation(modResInfo);
         }
     }
-}
+
