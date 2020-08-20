@@ -235,7 +235,15 @@ public class Reservation
         Reward checkoutReward = new Reward();
         checkoutReward.setRewardsPoints(userID, points, 17);
         //charge customer remaining balance on reservation
+        PaymentRecord checkoutPayment = new PaymentRecord();
+        DBConnect checkinConn = new DBConnect();
+        MySqlCommand cmd = new MySqlCommand("SELECT ccNum from dbo.payment where confirmationID = @confirm");
+        cmd.Parameters.Add("@confirm", MySqlDbType.Int32).Value = confirmatonID;
+        DBConnect ccNumConn = new DBConnect();
+        string ccNum = ccNumConn.stringScalar(cmd);
+        ccNumConn.CloseConnection();
 
+        checkoutPayment.makePayment(userID, confirmatonID, amountDue, "Credit Card", false, currentDate, ccNum);
         //update status
         status = "checked-out";
         if (updateReservation(this))
