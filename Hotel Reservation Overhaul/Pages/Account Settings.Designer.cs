@@ -429,7 +429,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.ClientSize = new System.Drawing.Size(784, 577);
             this.Controls.Add(this.lblRewardsPoints);
             this.Controls.Add(this.lblRewardDesc);
             this.Controls.Add(this.lblEmail);

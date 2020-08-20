@@ -55,6 +55,8 @@
             this.lblPointDesc = new System.Windows.Forms.Label();
             this.lblAmountError = new System.Windows.Forms.Label();
             this.lblApplyReward = new System.Windows.Forms.Label();
+            this.lblPrice = new System.Windows.Forms.Label();
+            this.lblResPrice = new System.Windows.Forms.Label();
             this.groupPaymentDetails.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -152,7 +154,7 @@
             // txtCardNum
             // 
             this.txtCardNum.Location = new System.Drawing.Point(220, 136);
-            this.txtCardNum.MaxLength = 16;
+            this.txtCardNum.MaxLength = 19;
             this.txtCardNum.Name = "txtCardNum";
             this.txtCardNum.Size = new System.Drawing.Size(200, 20);
             this.txtCardNum.TabIndex = 2;
@@ -182,16 +184,16 @@
             // lblPriceAmount
             // 
             this.lblPriceAmount.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPriceAmount.Location = new System.Drawing.Point(545, 300);
+            this.lblPriceAmount.Location = new System.Drawing.Point(513, 300);
             this.lblPriceAmount.Name = "lblPriceAmount";
-            this.lblPriceAmount.Size = new System.Drawing.Size(100, 20);
+            this.lblPriceAmount.Size = new System.Drawing.Size(144, 20);
             this.lblPriceAmount.TabIndex = 0;
-            this.lblPriceAmount.Text = "Amount:";
+            this.lblPriceAmount.Text = "Payment Amount:";
             this.lblPriceAmount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtPrice
             // 
-            this.txtPrice.Location = new System.Drawing.Point(650, 300);
+            this.txtPrice.Location = new System.Drawing.Point(663, 300);
             this.txtPrice.MaxLength = 7;
             this.txtPrice.Name = "txtPrice";
             this.txtPrice.Size = new System.Drawing.Size(100, 20);
@@ -203,7 +205,7 @@
             this.lblDeposit.BackColor = System.Drawing.SystemColors.Window;
             this.lblDeposit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblDeposit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDeposit.Location = new System.Drawing.Point(650, 150);
+            this.lblDeposit.Location = new System.Drawing.Point(663, 188);
             this.lblDeposit.Name = "lblDeposit";
             this.lblDeposit.Size = new System.Drawing.Size(100, 20);
             this.lblDeposit.TabIndex = 0;
@@ -212,7 +214,7 @@
             // lblDepDue
             // 
             this.lblDepDue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDepDue.Location = new System.Drawing.Point(544, 150);
+            this.lblDepDue.Location = new System.Drawing.Point(557, 188);
             this.lblDepDue.Name = "lblDepDue";
             this.lblDepDue.Size = new System.Drawing.Size(100, 20);
             this.lblDepDue.TabIndex = 0;
@@ -224,7 +226,7 @@
             this.lblBalance.BackColor = System.Drawing.SystemColors.Window;
             this.lblBalance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblBalance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBalance.Location = new System.Drawing.Point(650, 200);
+            this.lblBalance.Location = new System.Drawing.Point(663, 225);
             this.lblBalance.Name = "lblBalance";
             this.lblBalance.Size = new System.Drawing.Size(100, 20);
             this.lblBalance.TabIndex = 26;
@@ -233,7 +235,7 @@
             // lblBalDue
             // 
             this.lblBalDue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBalDue.Location = new System.Drawing.Point(544, 200);
+            this.lblBalDue.Location = new System.Drawing.Point(557, 225);
             this.lblBalDue.Name = "lblBalDue";
             this.lblBalDue.Size = new System.Drawing.Size(100, 20);
             this.lblBalDue.TabIndex = 0;
@@ -332,7 +334,7 @@
             // 
             this.lblAmountError.AutoSize = true;
             this.lblAmountError.ForeColor = System.Drawing.Color.Red;
-            this.lblAmountError.Location = new System.Drawing.Point(597, 329);
+            this.lblAmountError.Location = new System.Drawing.Point(590, 332);
             this.lblAmountError.Name = "lblAmountError";
             this.lblAmountError.Size = new System.Drawing.Size(127, 13);
             this.lblAmountError.TabIndex = 28;
@@ -343,18 +345,41 @@
             // 
             this.lblApplyReward.AutoSize = true;
             this.lblApplyReward.ForeColor = System.Drawing.Color.Green;
-            this.lblApplyReward.Location = new System.Drawing.Point(593, 235);
+            this.lblApplyReward.Location = new System.Drawing.Point(597, 274);
             this.lblApplyReward.Name = "lblApplyReward";
             this.lblApplyReward.Size = new System.Drawing.Size(131, 13);
             this.lblApplyReward.TabIndex = 29;
             this.lblApplyReward.Text = "10% Discount was applied";
             this.lblApplyReward.Visible = false;
             // 
+            // lblPrice
+            // 
+            this.lblPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPrice.Location = new System.Drawing.Point(536, 150);
+            this.lblPrice.Name = "lblPrice";
+            this.lblPrice.Size = new System.Drawing.Size(121, 20);
+            this.lblPrice.TabIndex = 30;
+            this.lblPrice.Text = "Reservation Price:";
+            this.lblPrice.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblResPrice
+            // 
+            this.lblResPrice.BackColor = System.Drawing.SystemColors.Window;
+            this.lblResPrice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblResPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblResPrice.Location = new System.Drawing.Point(663, 150);
+            this.lblResPrice.Name = "lblResPrice";
+            this.lblResPrice.Size = new System.Drawing.Size(100, 20);
+            this.lblResPrice.TabIndex = 31;
+            this.lblResPrice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // Payment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(796, 549);
+            this.Controls.Add(this.lblResPrice);
+            this.Controls.Add(this.lblPrice);
             this.Controls.Add(this.lblApplyReward);
             this.Controls.Add(this.lblAmountError);
             this.Controls.Add(this.groupPaymentDetails);
@@ -407,5 +432,7 @@
         private System.Windows.Forms.Label lblrewardError;
         private System.Windows.Forms.Label lblAmountError;
         private System.Windows.Forms.Label lblApplyReward;
+        private System.Windows.Forms.Label lblPrice;
+        private System.Windows.Forms.Label lblResPrice;
     }
 }

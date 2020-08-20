@@ -32,16 +32,21 @@ namespace Hotel_Reservation_Overhaul
                 cboxMethod.Enabled = false;
             }
             this.isReserving = isReserving;
-            lblPoints.Text = "" + userInfo.pointsBalance;
+            lblPoints.Text = userInfo.pointsBalance.ToString();
             dateTimePicker1.Value = currentDate;
             if (isReserving)
             {
                 lblDeposit.Text = "$" + getInfo.getMinCharge();
                 resInfo.amountDue += getInfo.getMinCharge();
+                lblResPrice.Text = "$" + resInfo.totalPrice;
             }
             else
+            {
                 lblDeposit.Text = "$0.00";
-            lblBalance.Text = "$" + resInfo.amountDue.ToString();
+                lblPrice.Visible = false;
+                lblResPrice.Visible = false;
+            }
+            lblBalance.Text = "$" + resInfo.amountDue;
         }
 
         private void btnLogOut_Click(object sender, EventArgs e)
@@ -73,10 +78,16 @@ namespace Hotel_Reservation_Overhaul
                     lblCardNumError.Text = "Error: Enter your credit card number";
                     proceed = false;
                 }
-                else if (long.TryParse(txtCardNum.Text, out _) == false)
+                else if (long.TryParse(txtCardNum.Text.Replace(" ", string.Empty), out _) == false)
                 {
                     lblCardNumError.Visible = true;
                     lblCardNumError.Text = "Error: Your credit card number is not numeric";
+                    proceed = false;
+                }
+                else if(txtCardNum.Text.Length != 19)
+                {
+                    lblCardNumError.Visible = true;
+                    lblCardNumError.Text = "Error: Invalid card number entry";
                     proceed = false;
                 }
             }
@@ -119,7 +130,7 @@ namespace Hotel_Reservation_Overhaul
                     if (chkReward.Checked)
                     {
                         resInfo.totalPrice *= 0.9;
-                        resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
+                        resInfo.amountDue -= resInfo.amountPaid;
                         // update reservation in database
                         resInfo.updateReservation(resInfo);
                     }
@@ -127,12 +138,15 @@ namespace Hotel_Reservation_Overhaul
                     PaymentRecord payment = new PaymentRecord();
                     if(payment.makePayment(userInfo.userID, resInfo.confirmatonID, double.Parse(txtPrice.Text), cboxMethod.SelectedItem.ToString(), this.appliedReward, currentDate, ccNumber))
                     {
-                        MessageBox.Show("Your payment was successful!");
+                        lblBalance.Text = "$" + (resInfo.amountDue - double.Parse(txtPrice.Text));
+                        MessageBox.Show("Your payment was successful! Please be advices that your card will be charged any remaining balance at check out.");
                     }
                     if (dateTimePicker1.Value == resInfo.endDate)
                     {
                         MessageBox.Show("Your payment was successful!\nThe deposit amount will be refunded to you");
                     }
+                    this.Close();
+                    Application.OpenForms["ReservationList"].Close();
                 }
             }
             else
@@ -172,7 +186,7 @@ namespace Hotel_Reservation_Overhaul
                     if(chkReward.Checked)
                     {
                         resInfo.totalPrice *= 0.9;
-                        resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
+                        resInfo.amountDue -= resInfo.amountPaid;
                         // update reservation in database
                         resInfo.updateReservation(resInfo);
                     }
@@ -180,11 +194,14 @@ namespace Hotel_Reservation_Overhaul
                     PaymentRecord payment = new PaymentRecord();
                     if (payment.makePayment(userInfo.userID, resInfo.confirmatonID, double.Parse(txtPrice.Text), cboxMethod.SelectedItem.ToString(), this.appliedReward, currentDate, ccNumber))
                     {
-                        MessageBox.Show("Your payment was successful");
+                        lblBalance.Text = "$" + (resInfo.amountDue - double.Parse(txtPrice.Text));
+                        MessageBox.Show("Your payment was successful! Please be advices that your card will be charged any remaining balance at checkout.");
                     }
+                    this.Close();
+                    Application.OpenForms["CreateReservation"].Close();
+                    Application.OpenForms["ReservationList"].Close();
                 }
             }
-
         }
 
         private void cboxMethod_SelectedIndexChanged(object sender, EventArgs e)
@@ -199,6 +216,12 @@ namespace Hotel_Reservation_Overhaul
 
         private void txtCardNum_TextChanged(object sender, EventArgs e)
         {
+            if(txtCardNum.Text.Length == 4 || txtCardNum.Text.Length == 9 || txtCardNum.Text.Length == 14)
+            {
+                txtCardNum.Text += " ";
+                txtCardNum.SelectionStart = txtCardNum.Text.Length;
+                txtCardNum.SelectionLength = 0;
+            }
             if (!String.IsNullOrEmpty(txtCardNum.Text))
                 lblCardNumError.Visible = false;
         }
@@ -227,10 +250,10 @@ namespace Hotel_Reservation_Overhaul
                     else
                     {
                         lblrewardError.Visible = false;
-                        resInfo.amountDue *= 0.9;
-                        userInfo.pointsBalance -= 50;
-                        lblBalance.Text = "$" + resInfo.amountDue;
-                        lblPoints.Text = "" + userInfo.pointsBalance;
+                        //resInfo.totalPrice *= 0.9;
+                        //userInfo.pointsBalance -= 50;
+                        lblBalance.Text = "$" + resInfo.totalPrice*0.9;
+                        lblPoints.Text = (userInfo.pointsBalance - 50).ToString();
                         lblApplyReward.Visible = true;
                         appliedReward = true;
                     }
@@ -240,10 +263,10 @@ namespace Hotel_Reservation_Overhaul
             {
                 if(this.appliedReward)
                 {
-   
-                    userInfo.pointsBalance += 50;
+                    //resInfo.totalPrice /= 0.9;
+                    //userInfo.pointsBalance += 50;
                     lblBalance.Text = "$" + resInfo.amountDue;
-                    lblPoints.Text = "" + userInfo.pointsBalance;
+                    lblPoints.Text = userInfo.pointsBalance.ToString();
                     lblApplyReward.Visible = false;
                     appliedReward = false;
                 }

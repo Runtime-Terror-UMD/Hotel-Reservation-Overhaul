@@ -299,7 +299,6 @@ namespace Hotel_Reservation_Overhaul
                 makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
                 this.Hide();
                 makePayment.Show();
-
             }
         }
 
