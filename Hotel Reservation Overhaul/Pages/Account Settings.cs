@@ -133,6 +133,7 @@ namespace Hotel_Reservation_Overhaul.Pages
         private void btnLogOut_Click(object sender, EventArgs e)
         {
             this.Close();
+            Application.OpenForms["Menu"].Close();
         }
     }
 }
