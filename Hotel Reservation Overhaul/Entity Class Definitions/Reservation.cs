@@ -65,7 +65,7 @@ public class Reservation
     {
         DBConnect updateResConn = new DBConnect();
         MySqlCommand updateRes = new MySqlCommand();
-        updateRes.CommandText = "UPDATE `dbo`.`reservation` SET `locationID` = @locationID, `roomNum` = @roomNum, `startDate` = @startDate, `endDate` = @endDate, `pointsAccumulated` = @points, `price` = @price, `amountDue` = @amountDue, `amountPaid` = @amountPaid, `reservationStatus` = @resStatus, `numGuests` = @numGuests WHERE `confirmationID` = @confirmationID";
+        updateRes.CommandText = "UPDATE `dbo`.`reservation` SET `locationID` = @locationID, `startDate` = @startDate, `endDate` = @endDate, `pointsAccumulated` = @points, `price` = @price, `amountDue` = @amountDue, `amountPaid` = @amountPaid, `reservationStatus` = @resStatus, `numGuests` = @numGuests WHERE `confirmationID` = @confirmationID";
       
         updateRes.Parameters.Add("@locationID", MySqlDbType.Int32).Value = resInfo.locationID;
         updateRes.Parameters.Add("@startDate", MySqlDbType.Date).Value = resInfo.startDate.Date;
@@ -77,14 +77,9 @@ public class Reservation
         updateRes.Parameters.Add("@resStatus", MySqlDbType.VarChar, 45).Value = resInfo.status;
         updateRes.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = resInfo.numGuests;
         updateRes.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = resInfo.confirmatonID;
-        updateRes.Parameters.Add("@roomNum", MySqlDbType.Int32);
-
-        foreach (int roomNum in resInfo.roomNumList)
-        {
-            updateRes.Parameters["@roomNum"].Value = roomNum;
-            updateResConn.NonQuery(updateRes);
-        }     
-        return true;
+        if (updateResConn.NonQuery(updateRes) > 0)
+            return true;
+        return false;
     }
 
     // DESCRIPTION: Adds cancellation to activity log
