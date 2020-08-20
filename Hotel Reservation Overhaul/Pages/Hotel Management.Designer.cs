@@ -46,7 +46,6 @@
             this.locationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.hotelmgmt = new Hotel_Reservation_Overhaul.hotelmgmt();
             this.grpHotelSettings = new System.Windows.Forms.GroupBox();
-            this.btnTime = new System.Windows.Forms.Button();
             this.btnNewMaintenance = new System.Windows.Forms.Button();
             this.btnNewHotel = new System.Windows.Forms.Button();
             this.btnNewPackages = new System.Windows.Forms.Button();
