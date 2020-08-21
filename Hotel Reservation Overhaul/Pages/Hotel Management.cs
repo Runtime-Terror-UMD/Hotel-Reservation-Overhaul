@@ -724,7 +724,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                             {
                                 bool successHotel = int.TryParse(fileLines[i].Substring(start), out hotelID);
                                 Location HotelExists = new Location();
-                                if(!successHotel || hotelID < 0 || (!HotelExists.hotelExists(hotelID))) // IF HOTEL DOESNT EXIST THROW EXCEPTION
+                                if (!successHotel || hotelID < 0 || (!HotelExists.hotelExists(hotelID))) // IF HOTEL DOESNT EXIST THROW EXCEPTION
                                 {
                                     throw new Exception("Unable to retrieve hotel ID.");
                                 }
@@ -736,15 +736,15 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 Room roomExists = new Room();
                                 bool RoomExists = roomExists.roomExists(roomNum, hotelID);
                                 // if room doesn't exist, throw exception
-                                if (!successRoom || roomNum < 0 || !RoomExists) 
+                                if (!successRoom || roomNum < 0 || !RoomExists)
                                 {
                                     throw new Exception("Unable to retrieve room number.");
                                 }
 
                                 //Insert maintenance record in database
                                 DBConnect insertMaintenanceConn = new DBConnect();
-                                MySqlCommand insertMaintenance = new MySqlCommand(@"INSERT INTO `dbo`.`maintenance`(`locationID`,`mainteanceDate`,`roomNum`)
-                                                                                    VALUES(@hotelID, @maintainDate, @roomNum");
+                                MySqlCommand insertMaintenance = new MySqlCommand(@"INSERT INTO `dbo`.`maintenance`(`locationID`,`maintenanceDate`,`roomNum`)
+                                                                                    VALUES(@hotelID, @maintainDate, @roomNum)");
                                 insertMaintenance.Parameters.Add("@hotelID", MySqlDbType.Int32).Value = hotelID;
                                 insertMaintenance.Parameters.Add("@maintainDate", MySqlDbType.Date).Value = maintainDate;
                                 insertMaintenance.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = roomNum;
@@ -755,37 +755,42 @@ namespace Hotel_Reservation_Overhaul.Pages
                                 else
                                 {
                                     // check if there are any rooms currently checked out that are in maintenance 
-                                    Utilities getRoomPackages = new Utilities();
-                                    DBConnect getMaintenanceRoomsConn = new DBConnect();
-                                    MySqlCommand getMaintenanceRooms = new MySqlCommand(@"select confirmationID, roomNum from dbo.reservation r
-                                                                                        join dbo.maintenance m
-	                                                                                        on m.maintenanceDate between r.startDate and r.endDate
-                                                                                            and m.locationID = r.locationID
-                                                                                            and m.roomNum = r.roomNum
-                                                                                        where r.reservationStatus = 'checked-in'");
-                                    DataTable maintenanceRooms = getMaintenanceRoomsConn.ExecuteDataTable(getMaintenanceRooms);
-                                    
-                                    foreach(DataRow row in maintenanceRooms.Rows)
-                                    {
-                                        Reservation maintenaceRes = new Reservation(Convert.ToInt32(row["confirmationID"]));
-                                        Room roomDetails = new Room(maintenaceRes.locationID, (Convert.ToInt32(row["roomNum"])));
+                                    //Utilities getRoomPackages = new Utilities();
+                                    //DBConnect getMaintenanceRoomsConn = new DBConnect();
+                                    //MySqlCommand getMaintenanceRooms = new MySqlCommand(@"select confirmationID, roomNum from dbo.reservation r
+                                    //                                                    join dbo.maintenance m
+	                                   //                                                     on m.maintenanceDate between r.startDate and r.endDate
+                                    //                                                        and m.locationID = r.locationID
+                                    //                                                        and m.roomNum = r.roomNum
+                                    //                                                    where r.reservationStatus = 'checked-in'");
+                                    //DataTable maintenanceRooms = getMaintenanceRoomsConn.ExecuteDataTable(getMaintenanceRooms);
 
-                                        List<int> roomPackages = roomDetails.roomPackages((Convert.ToInt32(row["roomNum"])),maintenaceRes.locationID);
-                                        string combinedString = string.Join(",",roomPackages);
+                                    //foreach (DataRow row in maintenanceRooms.Rows)
+                                    //{
+                                        //// reservation object to upgrade
+                                        //Reservation maintenaceRes = new Reservation(Convert.ToInt32(row["confirmationID"]));
+                                        //// details of room to be upgraded
+                                        //Room roomDetails = new Room(maintenaceRes.locationID, (Convert.ToInt32(row["roomNum"])));
+                                        //// list of current packages
+                                        //List<int> roomPackages = roomDetails.roomPackages((Convert.ToInt32(row["roomNum"])), maintenaceRes.locationID);
+                                        //string combinedString = string.Join(",", roomPackages);
+                                        //// find pacakages not on room
+                                        //DBConnect getNewPackageConn = new DBConnect();
+                                        //MySqlCommand getNewPackage = new MySqlCommand("SELECT packageID from package where packageID not in (" + combinedString + ")");
+                                        //DataTable newPackage = getNewPackageConn.ExecuteDataTable(getNewPackage);
+                                        //foreach (DataRow packRow in newPackage.Rows)
+                                        //{
 
-
+                                        //}
                                     }
-                                    maintainCount++;
-
                                 }
+                                maintainCount++;
                             }
-                            else
-                            {
-                                throw new Exception("Invalid file format.");
-                            }
+
+
                         }
                     }//end of file
-                }
+              //  }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error: Could not read file. " + ex.Message);
