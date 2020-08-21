@@ -234,7 +234,7 @@ public class Reservation
         logCheckout.logActivity(userID, 5, this.confirmatonID, currentDate, 17);
         //update customer rewards point balance
         Reward checkoutReward = new Reward();
-        checkoutReward.setRewardsPoints(userID, points, 17);
+        checkoutReward.setRewardsPoints(userID, points, 17, currentDate);
         //charge customer remaining balance on reservation
         try
         {

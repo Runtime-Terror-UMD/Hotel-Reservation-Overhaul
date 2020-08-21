@@ -240,7 +240,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             if (int.TryParse(txtAdjustPoints.Text, out rewards)) //rewards is the added/removed points amount
             {
                 Reward addPoints = new Reward();             
-                if(points >= 0 && addPoints.setRewardsPoints(user, rewards, UserID))
+                if(points >= 0 && addPoints.setRewardsPoints(user, rewards, UserID,currentDate))
                 {
                     displayMessage("Rewards points updated for " + user, false);
                     txtCustomerRewards.Text = (points + rewards).ToString();
