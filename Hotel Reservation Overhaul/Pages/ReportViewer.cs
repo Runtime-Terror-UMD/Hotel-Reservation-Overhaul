@@ -36,19 +36,29 @@ namespace Hotel_Reservation_Overhaul.Pages
                 {
                     // build and execute query
                     MySqlCommand cmd = new MySqlCommand(@"select al.created 'Action Date',
-	                                                     concat(activityTypeDescription, al.refID) Action
-                                                         from activitylog al
-                                                        join activitytype at
-	                                                    on at.activityTypeID = al.activityTypeID
+                                                        case 
+	                                                        when al.activityTypeID in (1,2,3) then concat(atype.activityTypeDescription, ' - ', al.refID, ' - Customer ID ',al.userID) 
+                                                            when al.activityTypeID = 6 then concat(atype.activityTypeDescription, ' - Points: ', rl.pointsAmount, ' - Customer ID ',al.userID) 
+                                                            when al.activityTypeID = 8 then concat(atype.activityTypeDescription, '- Pay ID: ', al.refID, ' - Customer ID ',al.userID) 
+	                                                        when al.activityTypeID = 4 then concat(atype.activityTypeDescription, ' - ', al.refID, ' - Customer ID ',al.userID) 
+	                                                        when al.activityTypeID = 5 then concat(atype.activityTypeDescription, ' - ', al.refID, ' - Customer ID ',al.userID) 
+                                                           end as 'Activity'
+                                                        from activitylog al
+                                                        join activitytype atype
+                                                            on atype.activityTypeID = al.activityTypeID
+                                                        left join reward_log rl
+	                                                        on rl.rewardLogID = al.refID
+                                                            and al.activityTypeID = 6
+                                                        left join payment p
+	                                                        on p.paymentID = al.refID
+                                                            and al.activityTypeID = 8
                                                         where al.userID = @userID
-                                                        and al.created BETWEEN @startDate and @endDate");
+                                                        and al.created between @startDate and @endDate");
                     cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
                     cmd.Parameters.Add("@startDate", MySqlDbType.Date).Value = startDate;
                     cmd.Parameters.Add("@endDate", MySqlDbType.Date).Value = endDate;
                     ReportData = reportConn.ExecuteDataTable(cmd);
-                    bindingSource1.DataSource = ReportData;
-                    reportDataGrid.DataSource = bindingSource1;
-                    }
+            }
   
                 catch (Exception err)
                 {
@@ -72,12 +82,24 @@ namespace Hotel_Reservation_Overhaul.Pages
                 {
                     // build and execute query
                     MySqlCommand cmd = new MySqlCommand(@"select al.created 'Action Date',
-	                                                        concat(activityTypeDescription, al.refID ', customer ID ', al.userID) ) Action
-                                                             from activitylog al
-                                                            join activitytype at
-                                                                on at.activityTypeID = al.activityTypeID
-                                                            where al.createdBy = @userID
-                                                            and al.created BETWEEN @startDate and @endDate");
+                                                        case 
+	                                                        when al.activityTypeID in (1,2,3) then concat(atype.activityTypeDescription, ' - ', al.refID, ' - Customer ID ',al.userID) 
+                                                            when al.activityTypeID = 6 then concat(atype.activityTypeDescription, ' - Points: ', rl.pointsAmount, ' - Customer ID ',al.userID) 
+                                                            when al.activityTypeID = 8 then concat(atype.activityTypeDescription, '- Pay ID: ', al.refID, ' - Customer ID ',al.userID) 
+	                                                        when al.activityTypeID = 4 then concat(atype.activityTypeDescription, ' - ', al.refID, ' - Customer ID ',al.userID) 
+	                                                        when al.activityTypeID = 5 then concat(atype.activityTypeDescription, ' - ', al.refID, ' - Customer ID ',al.userID) 
+                                                           end as 'Activity'
+                                                        from activitylog al
+                                                        join activitytype atype
+                                                            on atype.activityTypeID = al.activityTypeID
+                                                        left join reward_log rl
+	                                                        on rl.rewardLogID = al.refID
+                                                            and al.activityTypeID = 6
+                                                        left join payment p
+	                                                        on p.paymentID = al.refID
+                                                            and al.activityTypeID = 8
+                                                        where al.createdBy = @createdBy
+                                                        and al.created between @startDate and @endDate");
                     cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
                     cmd.Parameters.Add("@startDate", MySqlDbType.Date).Value = startDate;
                     cmd.Parameters.Add("@endDate", MySqlDbType.Date).Value = endDate;

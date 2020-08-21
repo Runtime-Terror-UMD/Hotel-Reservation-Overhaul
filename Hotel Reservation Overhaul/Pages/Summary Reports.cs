@@ -26,13 +26,11 @@ namespace Hotel_Reservation_Overhaul.Pages
         {
             InitializeComponent();
 
-
             lblFromDate.Text = startDate.ToString("MM'/'dd'/'yyyy");
             lblToDate.Text = endDate.ToString("MM'/'dd'/'yyyy");
 
             lblRewardsDateXDesc.Text = "Rewards outstanding on " + lblFromDate.Text;
             lblRewardsDateYDesc.Text = "Rewards outstanding on " + lblToDate.Text;
-
 
             DBConnect reportConn = new DBConnect();
             MySqlCommand reportQuery = new MySqlCommand();

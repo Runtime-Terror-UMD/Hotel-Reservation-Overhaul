@@ -816,7 +816,11 @@ namespace Hotel_Reservation_Overhaul.Pages
         //DESCRIPTION: Disables fields depending on type of report
         private void lstReports_SelectedIndexChanged_1(object sender, EventArgs e)
         {
-            if (lstReports.SelectedItem.ToString() == "Customer History" || lstReports.SelectedItem.ToString() == "Employee History")
+            if (lstReports.SelectedItem == null)
+            {
+                lstReports.SelectedIndex = -1;
+            }
+           else  if (lstReports.SelectedItem.ToString() == "Customer History" || lstReports.SelectedItem.ToString() == "Employee History")
             {
                 txtUser.Enabled = true;
             }
