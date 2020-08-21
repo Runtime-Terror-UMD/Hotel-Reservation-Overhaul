@@ -154,7 +154,7 @@
             // txtCardNum
             // 
             this.txtCardNum.Location = new System.Drawing.Point(220, 136);
-            this.txtCardNum.MaxLength = 19;
+            this.txtCardNum.MaxLength = 16;
             this.txtCardNum.Name = "txtCardNum";
             this.txtCardNum.Size = new System.Drawing.Size(200, 20);
             this.txtCardNum.TabIndex = 2;
