@@ -84,7 +84,7 @@ namespace Hotel_Reservation_Overhaul
                     lblCardNumError.Text = "Error: Your credit card number is not numeric";
                     proceed = false;
                 }
-                else if(txtCardNum.Text.Length != 19)
+                else if(txtCardNum.Text.Length != 16)
                 {
                     lblCardNumError.Visible = true;
                     lblCardNumError.Text = "Error: Invalid card number entry";
