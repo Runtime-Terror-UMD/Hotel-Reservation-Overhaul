@@ -323,6 +323,7 @@ namespace Hotel_Reservation_Overhaul
                     else if (resInfo.status == "checked-in") //checkout reservation
                     {
                         resInfo.checkOutReservation(currentDate);
+                        MessageBox.Show("User " + resInfo.userID + " was checked out");
                     }
                     else if (resInfo.status == "upcoming")
                     {

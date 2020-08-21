@@ -228,7 +228,10 @@ public class Reservation
             MessageBox.Show("Unable to retrieve previous credit card number." + ex);
         }
         if (updateReservation(this))
+        {
+            MessageBox.Show("Reservation with confirmation id " + confirmatonID + "was checked out.");
             return true;
+        }
         return false;
     }
 
@@ -247,7 +250,10 @@ public class Reservation
         logCheckin.logActivity(userID, 4, this.confirmatonID, currentDate, 17);
         status = "checked-in";
         if (updateReservation(this))
+        {
+            MessageBox.Show("Reservation with confirmation id " + confirmatonID + "was checked in.");
             return true;
+        }
         return false;
     }
 
