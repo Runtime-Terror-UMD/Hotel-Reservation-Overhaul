@@ -37,18 +37,14 @@ namespace Hotel_Reservation_Overhaul.Pages
                     // build and execute query
                     MySqlCommand cmd = new MySqlCommand(@"select al.created 'Action Date',
                                                         case 
-	                                                        when al.activityTypeID in (1,2,3) then concat(atype.activityTypeDescription, ' - ', al.refID, ' - Customer ID ',al.userID) 
-                                                            when al.activityTypeID = 6 then concat(atype.activityTypeDescription, ' - Points: ', rl.pointsAmount, ' - Customer ID ',al.userID) 
-                                                            when al.activityTypeID = 8 then concat(atype.activityTypeDescription, '- Pay ID: ', al.refID, ' - Customer ID ',al.userID) 
-	                                                        when al.activityTypeID = 4 then concat(atype.activityTypeDescription, ' - ', al.refID, ' - Customer ID ',al.userID) 
-	                                                        when al.activityTypeID = 5 then concat(atype.activityTypeDescription, ' - ', al.refID, ' - Customer ID ',al.userID) 
+	                                                        when al.activityTypeID in (1,2,3) then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID) 
+                                                            when al.activityTypeID = 8 then concat(atype.activityTypeDescription, '- Pay ID: ', al.refID) 
+	                                                        when al.activityTypeID = 4 then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID) 
+	                                                        when al.activityTypeID = 5 then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID) 
                                                            end as 'Activity'
                                                         from activitylog al
                                                         join activitytype atype
                                                             on atype.activityTypeID = al.activityTypeID
-                                                        left join reward_log rl
-	                                                        on rl.rewardLogID = al.refID
-                                                            and al.activityTypeID = 6
                                                         left join payment p
 	                                                        on p.paymentID = al.refID
                                                             and al.activityTypeID = 8
