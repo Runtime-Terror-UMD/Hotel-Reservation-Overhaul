@@ -616,36 +616,33 @@ namespace Hotel_Reservation_Overhaul.Pages
                                     DBConnect insertAmenityConn = new DBConnect();
                                     MySqlCommand insertAmenity = new MySqlCommand("INSERT INTO `dbo`.`amenity` (`description`) VALUES (@amenity)");
                                     insertAmenity.Parameters.Add("@amenity", MySqlDbType.VarChar, 45).Value = amenity;
-                                    insertAmenityConn.NonQuery(insertAmenity);
-
                                     if (insertAmenityConn.NonQuery(insertAmenity) < 1)
                                     {
                                         throw new Exception("Error inserting amenity into database. Contact database admin");
                                     }
+                                }
+                               
+                                    //Add amenity-package relationship in DB
+                                    DBConnect getAmenityIDConn = new DBConnect();
+                                    MySqlCommand getAmenityID = new MySqlCommand("SELECT amenityID from amenity where description = @amenity");
+                                    getAmenityID.Parameters.Add("@amenity", MySqlDbType.VarChar, 45).Value = amenity;
+                                    int amenityID = getAmenityIDConn.intScalar(getAmenityID);
+                                    if (amenityID == -1)
+                                    {
+                                        throw new Exception("Error inserting amenity into database. Could not determine amenity ID");
+                                    }
                                     else
                                     {
-                                        //Add amenity-package relationship in DB
-                                        DBConnect getAmenityIDConn = new DBConnect();
-                                        MySqlCommand getAmenityID = new MySqlCommand("SELECT amenityID from amenity where description = @amenity");
-                                        int amenityID = getAmenityIDConn.intScalar(getAmenityID);
-                                        if (amenityID == -1)
-                                        {
-                                            throw new Exception("Error inserting amenity into database. Contact database admin");
-                                        }
-                                        else
-                                        {
-                                            DBConnect insertAmenityRelationConn = new DBConnect();
-                                            MySqlCommand insertAmenityRelation = new MySqlCommand("INSERT INTO `dbo`.`relation_package_amenity` (`packageID`, `amenityID`) VALUES (@packID, @amenityID)");
-                                            insertAmenityRelation.Parameters.Add("@packID", MySqlDbType.Int32).Value = packID;
-                                            insertAmenityRelation.Parameters.Add("@amenityID", MySqlDbType.Int32).Value = amenityID;
+                                        DBConnect insertAmenityRelationConn = new DBConnect();
+                                        MySqlCommand insertAmenityRelation = new MySqlCommand("INSERT INTO `dbo`.`relation_package_amenity` (`packageID`, `amenityID`) VALUES (@packID, @amenityID)");
+                                        insertAmenityRelation.Parameters.Add("@packID", MySqlDbType.Int32).Value = packID;
+                                        insertAmenityRelation.Parameters.Add("@amenityID", MySqlDbType.Int32).Value = amenityID;
 
-                                            if (insertAmenityRelationConn.NonQuery(insertAmenityRelation) < 1)
-                                            {
-                                                throw new Exception("Error inserting amenity into database. Contact database admin");
-                                            }
+                                        if (insertAmenityRelationConn.NonQuery(insertAmenityRelation) < 1)
+                                        {
+                                            throw new Exception("Error inserting package-amenity relationship into database. Contact database admin");
                                         }
-                                    }
-                                }
+                                    }                 
                                 packageCount++;
                                }
                             else
