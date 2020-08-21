@@ -184,6 +184,8 @@ public class Reservation
     }
     public bool checkOutReservation(DateTime currentDate)
     {
+        //update status
+        status = "checked-out";
         //add checkout activity log
         LoggedActivity logCheckout = new LoggedActivity();
         logCheckout.logActivity(userID, 5, this.confirmatonID, currentDate, 17);
@@ -201,6 +203,7 @@ public class Reservation
             {
                 //cancelation fee
                 totalPrice = recalc.getMinCharge();
+                status = "cancelled";
             }
 
             points = Convert.ToInt32(recalc.calculatePoints(((endDate - startDate).TotalDays)));
@@ -224,8 +227,6 @@ public class Reservation
         {
             MessageBox.Show("Unable to retrieve previous credit card number." + ex);
         }
-        //update status
-        status = "checked-out";
         if (updateReservation(this))
             return true;
         return false;

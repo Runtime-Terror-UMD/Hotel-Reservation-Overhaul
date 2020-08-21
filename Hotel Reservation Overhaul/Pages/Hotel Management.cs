@@ -805,7 +805,11 @@ namespace Hotel_Reservation_Overhaul.Pages
         {
             lblError.Visible = false;
             // if no report selected
-            if (lstReports.SelectedIndex == -1)
+            if(dateEnd.Value < dateStart.Value)
+            {
+                displayError("Cannot run report where end date is before start date.");
+            }
+            else if (lstReports.SelectedIndex == -1)
             {
                 displayError("Please select a report to run");
             }
