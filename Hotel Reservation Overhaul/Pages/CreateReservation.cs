@@ -58,7 +58,7 @@ namespace Hotel_Reservation_Overhaul
             monthEnd.SetDate(modResInfo.endDate);
             lblSubTotal.Text = modResInfo.totalPrice.ToString();
             txtCostNightly.Text = (modResInfo.totalPrice / modResInfo.duration).ToString();
-            lblDeposit.Text = (getDeposit.getMinCharge()).ToString();
+            //lblDeposit.Text = (getDeposit.getMinCharge()).ToString();
             cboxHotel.SelectedValue = modResInfo.locationID;
             cboxNumGuests.SelectedItem = modResInfo.numGuests.ToString();
             Room roomInfo = new Room();
@@ -257,9 +257,9 @@ namespace Hotel_Reservation_Overhaul
 
                 // fill fields
                 Utilities getDeposit = new Utilities();
-                lblDeposit.Text = getDeposit.getMinCharge().ToString();
+                //lblDeposit.Text = getDeposit.getMinCharge().ToString();
                 txtCostNightly.Text = pricePerNight.ToString();
-                lblSubTotal.Text = (price + getDeposit.getMinCharge()).ToString();
+                lblSubTotal.Text = price.ToString();
                 cboxHotel.Enabled = false;
                 cboxNumRooms.Enabled = false;
                 cboxNumGuests.Enabled = false;
@@ -329,7 +329,7 @@ namespace Hotel_Reservation_Overhaul
             cboxNumGuests.SelectedIndex = -1;
             cboxNumRooms.SelectedIndex = -1;
             lblSubTotal.Text = string.Empty;
-            lblDeposit.Text = string.Empty;
+            //lblDeposit.Text = string.Empty;
             txtCostNightly.Text = string.Empty;
             monthStart.SetDate(currentDate);
             monthEnd.SetDate(currentDate);
@@ -396,6 +396,7 @@ namespace Hotel_Reservation_Overhaul
             modResInfo.points = points;
             modResInfo.updateReservation(modResInfo);
         }
+
     }
 }
 

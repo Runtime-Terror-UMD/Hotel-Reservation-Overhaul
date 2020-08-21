@@ -205,7 +205,7 @@
             this.lblDeposit.BackColor = System.Drawing.SystemColors.Window;
             this.lblDeposit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblDeposit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDeposit.Location = new System.Drawing.Point(663, 188);
+            this.lblDeposit.Location = new System.Drawing.Point(663, 150);
             this.lblDeposit.Name = "lblDeposit";
             this.lblDeposit.Size = new System.Drawing.Size(100, 20);
             this.lblDeposit.TabIndex = 0;
@@ -214,11 +214,11 @@
             // lblDepDue
             // 
             this.lblDepDue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDepDue.Location = new System.Drawing.Point(557, 188);
+            this.lblDepDue.Location = new System.Drawing.Point(536, 150);
             this.lblDepDue.Name = "lblDepDue";
-            this.lblDepDue.Size = new System.Drawing.Size(100, 20);
+            this.lblDepDue.Size = new System.Drawing.Size(121, 20);
             this.lblDepDue.TabIndex = 0;
-            this.lblDepDue.Text = "Deposit Due:";
+            this.lblDepDue.Text = "Minimum Charge: ";
             this.lblDepDue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblBalance
@@ -355,11 +355,11 @@
             // lblPrice
             // 
             this.lblPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPrice.Location = new System.Drawing.Point(536, 150);
+            this.lblPrice.Location = new System.Drawing.Point(536, 188);
             this.lblPrice.Name = "lblPrice";
             this.lblPrice.Size = new System.Drawing.Size(121, 20);
             this.lblPrice.TabIndex = 30;
-            this.lblPrice.Text = "Reservation Price:";
+            this.lblPrice.Text = "Booking Price:";
             this.lblPrice.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblResPrice
@@ -367,7 +367,7 @@
             this.lblResPrice.BackColor = System.Drawing.SystemColors.Window;
             this.lblResPrice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblResPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblResPrice.Location = new System.Drawing.Point(663, 150);
+            this.lblResPrice.Location = new System.Drawing.Point(663, 188);
             this.lblResPrice.Name = "lblResPrice";
             this.lblResPrice.Size = new System.Drawing.Size(100, 20);
             this.lblResPrice.TabIndex = 31;
