@@ -45,8 +45,8 @@ class PaymentRecord
             
             // update reservation amount
             Reservation payReservation = new Reservation(confirmationID);
-            payReservation.amountDue = payReservation.amountDue - amountPaid;
-            payReservation.amountPaid = payReservation.amountPaid + amountPaid;
+            payReservation.amountDue = payReservation.totalPrice - amountPaid;
+            payReservation.amountPaid = payReservation.totalPrice + amountPaid;
 
             MySqlCommand updateRes = new MySqlCommand(@"UPDATE reservation
                                                         SET

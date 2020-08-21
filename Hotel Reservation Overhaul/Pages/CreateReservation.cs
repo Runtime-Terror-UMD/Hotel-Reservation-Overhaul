@@ -58,9 +58,8 @@ namespace Hotel_Reservation_Overhaul
             monthEnd.SetDate(modResInfo.endDate);
             lblSubTotal.Text = modResInfo.totalPrice.ToString();
             txtCostNightly.Text = (modResInfo.totalPrice / modResInfo.duration).ToString();
-            //lblDeposit.Text = (getDeposit.getMinCharge()).ToString();
             cboxHotel.SelectedValue = modResInfo.locationID;
-            cboxNumGuests.SelectedItem = modResInfo.numGuests.ToString();
+            cboxNumGuests.Visible = false;
             Room roomInfo = new Room();
             List<int> roomPacks = roomInfo.roomPackages(modResInfo.roomNumList[0], modResInfo.locationID);
             cboxNumRooms.SelectedItem = modResInfo.roomNumList.Count.ToString();
@@ -83,6 +82,7 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Displays error message
         private void displayError(string message)
         {
+            lblError.ForeColor = System.Drawing.Color.Red;
             lblError.Visible = true;
             lblError.Text = message;
         }
@@ -237,14 +237,21 @@ namespace Hotel_Reservation_Overhaul
                     // calculate price and rewards
                     if (mod)
                     {   // if free upgrade, do not change price per night
-                        if (checkFreeUpgrade.Checked == true)
+                        if (checkFreeUpgrade.CheckState == CheckState.Checked)
                         {
                             pricePerNight = (modResInfo.totalPrice / modResInfo.duration);
                         }
+                        else
+                        {
+                            pricePerNight = roomDetails.price * numRooms;
+                            lblError.Visible = false;
+                        }
                     }
+                    else
+                    {
                         pricePerNight = roomDetails.price * numRooms;
                         lblError.Visible = false;
-                    
+                    }
                 }
                 price = calcPrice.calculatePrice(((endDate.Value - startDate.Value).TotalDays), pricePerNight);
                 points = Convert.ToInt32(calcPrice.calculatePoints(((endDate.Value - startDate.Value).TotalDays)));
@@ -390,7 +397,16 @@ namespace Hotel_Reservation_Overhaul
             modResInfo.roomNumList = roomNumList;
             modResInfo.amountDue = price - modResInfo.amountPaid;
             modResInfo.points = points;
-            modResInfo.updateReservation(modResInfo);
+            if(modResInfo.updateReservation(modResInfo) == true)
+            {
+                lblError.ForeColor = System.Drawing.Color.Green;
+                lblError.Visible = true;
+                lblError.Text = "Reservation has been modified";
+            }
+            else
+            {
+                displayError("Unable to modify reservation");
+            }
             if(endDate.Value == currentDate)
             {
                 modResInfo.checkOutReservation(currentDate);
