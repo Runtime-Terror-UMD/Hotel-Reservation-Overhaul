@@ -23,9 +23,19 @@ public class Waitlist
     public bool addToWaitlist(int wlUserID, int wlLocationID, DateTime wlStartDate, DateTime wlEndDate, int wlNumGuests, int wlNumRooms, string combinedString)
 
     {
+        int waitlistID = 1;
         DBConnect addToWLConn = new DBConnect();
         MySqlCommand getNextWlID = new MySqlCommand("select waitlistID from dbo.waitlist order by waitlistID desc limit 1");
-        int waitlistID = addToWLConn.intScalar(getNextWlID) + 1;
+        DataTable WlDT = addToWLConn.ExecuteDataTable(getNextWlID);
+
+        if(WlDT != null)
+        {
+            if(WlDT.Rows.Count > 0)
+            {
+                 waitlistID = addToWLConn.intScalar(getNextWlID) + 1;
+            } 
+        }
+        
 
         MySqlCommand addToWL = new MySqlCommand(@"INSERT INTO `dbo`.`waitlist`(`waitlistID`,`customerID`,`locationID`,`startDate`,`endDate`,`numGuests`,`numRooms`,`packages`)
                                                   VALUES(@waitlistID, @userID, @locationID, @startDate, @endDate, @numGuests,@numRooms, @packages)");

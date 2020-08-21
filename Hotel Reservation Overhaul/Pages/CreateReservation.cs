@@ -174,16 +174,16 @@ namespace Hotel_Reservation_Overhaul
 
         // DESCRIPTION: Checks for reservation availability
         private void btnSubmit_Click(object sender, EventArgs e)
-        {
+        {  // reset error
+            lblError.Visible = false;
+
             Utilities calcPrice = new Utilities();
             if (checkPackages.GetItemCheckState(0) == CheckState.Unchecked)
             {
                 checkPackages.SetItemCheckState(0, CheckState.Checked);
-                lblError.Text = "All rooms contain basic package.";
+                displayError("All rooms contain basic package.");
             }
-            // reset error
-            lblError.Visible = false;
-
+          
             // verify fields are valid
             if (startDate == null) { displayError("Please select a start date"); }
             else if (endDate == null) { displayError("Please select an end date"); }

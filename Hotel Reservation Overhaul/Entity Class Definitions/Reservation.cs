@@ -175,11 +175,17 @@ public class Reservation
         checkinConn.OpenConnection();
         DataTable checkInDT = checkinConn.ExecuteDataTable(cmd);
 
-        foreach (DataRow row in checkInDT.Rows)
+        if (checkInDT != null)
         {
-            int confirmationID = Convert.ToInt32(row["confirmationID"]);
-            Reservation checkInRes = new Reservation(confirmationID);
-            checkInRes.checkOutReservation(currentDate);
+            if (checkInDT.Rows.Count > 0)
+            {
+                foreach (DataRow row in checkInDT.Rows)
+                {
+                    int confirmationID = Convert.ToInt32(row["confirmationID"]);
+                    Reservation checkInRes = new Reservation(confirmationID);
+                    checkInRes.checkOutReservation(currentDate);
+                }
+            }
         }
     }
     public bool checkOutReservation(DateTime currentDate)
