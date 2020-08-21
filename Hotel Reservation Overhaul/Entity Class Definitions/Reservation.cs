@@ -245,6 +245,16 @@ public class Reservation
         //update customer rewards point balance
         Reward checkoutReward = new Reward();
         checkoutReward.setRewardsPoints(userID, points, 17, currentDate);
+        //update reservation price
+        if (endDate != currentDate)
+        {
+            endDate = currentDate;
+            Utilities recalc = new Utilities();
+            Room roomDetails = new Room(roomNumList[0], locationID);
+            totalPrice = recalc.calculatePrice(((endDate - startDate).TotalDays), roomDetails.price);
+            points = Convert.ToInt32(recalc.calculatePoints(((endDate - startDate).TotalDays)));
+            amountDue = totalPrice - amountPaid;
+        }
         //charge customer remaining balance on reservation
         try
         {
@@ -272,6 +282,15 @@ public class Reservation
 
     public bool checkInReservation(DateTime currentDate)
     {
+        if (startDate != currentDate)
+        {
+            startDate = currentDate;
+            Utilities recalc = new Utilities();
+            Room roomDetails = new Room(roomNumList[0], locationID);
+            totalPrice = recalc.calculatePrice(((endDate - startDate).TotalDays), roomDetails.price);
+            points = Convert.ToInt32(recalc.calculatePoints(((endDate - startDate).TotalDays)));
+            amountDue = totalPrice - amountPaid;
+        }
         LoggedActivity logCheckin = new LoggedActivity();
         logCheckin.logActivity(userID, 4, this.confirmatonID, currentDate, 17);
         status = "checked-in";

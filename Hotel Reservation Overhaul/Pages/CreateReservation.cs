@@ -295,6 +295,11 @@ namespace Hotel_Reservation_Overhaul
             {   // Get next confirmation ID
                 Reservation createReservation = new Reservation();
                 int confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue), userID, resUserID, startDate.Value, endDate.Value, price, points, roomNumList, Convert.ToInt32(cboxNumGuests.SelectedItem), currentDate);
+                if (startDate.Value == currentDate)
+                {
+                    Reservation resCheckin = new Reservation(confirmationID);
+                    resCheckin.checkInReservation(currentDate);
+                }
                 var makePayment = new Payment(confirmationID, resUserID, currentDate, true);
                 makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
                 this.Hide();
@@ -395,6 +400,10 @@ namespace Hotel_Reservation_Overhaul
             modResInfo.amountDue = price - modResInfo.amountPaid;
             modResInfo.points = points;
             modResInfo.updateReservation(modResInfo);
+            if(endDate.Value == currentDate)
+            {
+                modResInfo.checkOutReservation(currentDate);
+            }
         }
 
     }

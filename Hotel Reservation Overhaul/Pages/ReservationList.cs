@@ -304,52 +304,52 @@ namespace Hotel_Reservation_Overhaul
 
         private void btnCheckinout_Click(object sender, EventArgs e)
         {
-        //    Utilities getFileSettings = new Utilities();
-        //    if (resListDataGrid.SelectedRows.Count > 0)
-        //    {
-        //        {   // begin checkin/checkout process
-        //            int confirmationID = getConfirmationID();
-        //            Reservation resInfo = new Reservation(confirmationID);
+            Utilities getFileSettings = new Utilities();
+            if (resListDataGrid.SelectedRows.Count > 0)
+            {
+                {   // begin checkin/checkout process
+                    int confirmationID = getConfirmationID();
+                    Reservation resInfo = new Reservation(confirmationID);
 
-        //            // check if reservation can be checked in/out
-        //            if (resInfo.status == "cancelled")
-        //            {
-        //                displayError("This reservation has already been cancelled");
-        //            }
-        //            else if (resInfo.status == "checked-out")
-        //            {
-        //                displayError("This reservation has already been completed");
-        //            }
-        //            else if (resInfo.status == "checked-in") //checkout reservation
-        //            {
-        //                // update reservation info
-        //                Utilities recalc = new Utilities();
-        //                DateTime newEndDate = currentDate;
-        //                Room roomDetails = new Room(resInfo.roomNumList[0], resInfo.locationID);
-        //                resInfo.totalPrice = recalc.calculatePrice((newEndDate - resInfo.endDate).TotalDays, roomDetails.price);
-        //                resInfo.points = Convert.ToInt32(recalc.calculatePoints((newEndDate - resInfo.endDate).TotalDays));
-        //                resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
-        //                resInfo.status = "checked-out";
-        //            }
-        //            else if (resInfo.status == "upcoming")
-        //            {
-        //                resInfo.checkInReservation(currentDate);
-        //            }
-        //            if (resInfo.amountDue < 0)
-        //            {
-        //                PaymentRecord issueRefund = new PaymentRecord();
-        //                issueRefund.makePayment(17, resInfo.confirmatonID, resInfo.amountDue, "refund", false, currentDate, "12345");
-        //            }
-        //            // update reservation record
-        //            resInfo.updateReservation(resInfo);
+                    // check if reservation can be checked in/out
+                    if (resInfo.status == "cancelled")
+                    {
+                        displayError("This reservation has already been cancelled");
+                    }
+                    else if (resInfo.status == "checked-out")
+                    {
+                        displayError("This reservation has already been completed");
+                    }
+                    else if (resInfo.status == "checked-in") //checkout reservation
+                    {
+                        resInfo.checkOutReservation(currentDate);
+                    }
+                    else if (resInfo.status == "upcoming")
+                    {
+                        if (resInfo.endDate < currentDate)
+                        {
+                            displayError("Reservation end date is before today. Please create a new reservation instead.");
+                        }
+                        else
+                        {
+                            resInfo.checkInReservation(currentDate);
+                        }
+                    }
+                    if (resInfo.amountDue < 0)
+                    {
+                        PaymentRecord issueRefund = new PaymentRecord();
+                        issueRefund.makePayment(17, resInfo.confirmatonID, resInfo.amountDue, "refund", false, currentDate, "12345");
+                    }
+                    // update reservation record
+                    //resInfo.updateReservation(resInfo);
 
-        //            GetData(); //update table
-        //        }
-        //    }
-        //    else
-        //    {
-        //        displayError("No reservation selected");
-        //    }
+                    GetData(); //update table
+                }
+            }
+            else
+            {
+                displayError("No reservation selected");
+            }
 
         }
     }
