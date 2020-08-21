@@ -111,19 +111,6 @@ namespace Hotel_Reservation_Overhaul.Pages
                     MessageBox.Show(err.ToString());
                 }
             }
-            else if(report == "RewardSummary")
-            {
-
-            }
-            else if(report == "OccupancySummary")
-            {
-
-            }   
-            else if(report == "CustomerSummary")
-            {
-
-            }
-
             bindingSource1.DataSource = ReportData;
             reportDataGrid.DataSource = bindingSource1;
         }

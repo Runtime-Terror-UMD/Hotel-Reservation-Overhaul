@@ -32,18 +32,24 @@ namespace Hotel_Reservation_Overhaul.Pages
             int totalCustomers = Convert.ToInt32(reportConn.intScalar(reportQuery));
             txtNumCustomers.Text = totalCustomers.ToString();
 
-            reportQuery.CommandText = @"select IFNULL(count(userID),0) from reservation
-                                        where startDate >= @startDate AND endDate <= @endDate
-                                        and userID in (select userID from reservation group by userID, confirmationID having(count(*) > 1))";
-            int repeatCustomers = Convert.ToInt32(reportConn.intScalar(reportQuery));
+            reportQuery.CommandText = @" select distinct userID from reservation 
+                                        where startDate >= @startDate and endDate <= @endDate 
+                                        group by userID, confirmationID having(count(*) > 1)";
+            DataTable repeatCustomers = reportConn.ExecuteDataTable(reportQuery);
 
-            if (repeatCustomers == 0)
+            int repeatCustomersNum = 0;
+            foreach (DataRow row in repeatCustomers.Rows)
+            {
+                repeatCustomersNum++;
+            }
+
+            if (repeatCustomersNum == 0)
             {
                 txtRepeat.Text = "0.0%";
             }
             else
             {
-                double repeatPercentage = (Convert.ToDouble(repeatCustomers)) / (Convert.ToDouble(totalCustomers)) * 100;
+                double repeatPercentage = (Convert.ToDouble(repeatCustomersNum)) / (Convert.ToDouble(totalCustomers)) * 100;
                 txtRepeat.Text = "" + String.Format("{0:F2}", repeatPercentage) + "%";
             }
 
