@@ -12,7 +12,7 @@ public class Reservation
     public int reservationID { get; set; }
     public int confirmatonID { get; set; }
     public int locationID { get; set; }
-     public int numGuests { get; set; }
+    public int numGuests { get; set; }
     public List<int> roomNumList { get; set; }
     public int userID { get; set; }
     public DateTime startDate { get; set; }
@@ -21,7 +21,6 @@ public class Reservation
     public double totalPrice { get; set; }
     public double amountPaid { get; set; }
     public double amountDue { get; set; }
-
     public int points { get; set; }
     public string status { get; set; }
 
@@ -62,25 +61,25 @@ public class Reservation
         //close Data Reader
         dataReader.Close();
     }
-    public bool updateReservation(Reservation resInfo)
+    public bool updateReservation()
     {
         DBConnect updateResConn = new DBConnect();
         MySqlCommand updateRes = new MySqlCommand();
         updateRes.CommandText = "UPDATE `dbo`.`reservation` SET `locationID` = @locationID, `roomNum` = @roomNum, `startDate` = @startDate, `endDate` = @endDate, `pointsAccumulated` = @points, `price` = @price, `amountDue` = @amountDue, `amountPaid` = @amountPaid, `reservationStatus` = @resStatus, `numGuests` = @numGuests WHERE `confirmationID` = @confirmationID";
 
-        updateRes.Parameters.Add("@locationID", MySqlDbType.Int32).Value = resInfo.locationID;
-        updateRes.Parameters.Add("@startDate", MySqlDbType.Date).Value = resInfo.startDate.Date;
-        updateRes.Parameters.Add("@endDate", MySqlDbType.Date).Value = resInfo.endDate.Date;
-        updateRes.Parameters.Add("@points", MySqlDbType.Int32).Value = resInfo.points;
-        updateRes.Parameters.Add("@price", MySqlDbType.Decimal).Value = Convert.ToDecimal(resInfo.totalPrice);
-        updateRes.Parameters.Add("@amountDue", MySqlDbType.Decimal).Value = Convert.ToDecimal(resInfo.amountDue);
-        updateRes.Parameters.Add("@amountPaid", MySqlDbType.Decimal).Value = Convert.ToDecimal(resInfo.amountPaid);
-        updateRes.Parameters.Add("@resStatus", MySqlDbType.VarChar, 45).Value = resInfo.status;
-        updateRes.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = resInfo.numGuests;
-        updateRes.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = resInfo.confirmatonID;
+        updateRes.Parameters.Add("@locationID", MySqlDbType.Int32).Value = this.locationID;
+        updateRes.Parameters.Add("@startDate", MySqlDbType.Date).Value = this.startDate.Date;
+        updateRes.Parameters.Add("@endDate", MySqlDbType.Date).Value = this.endDate.Date;
+        updateRes.Parameters.Add("@points", MySqlDbType.Int32).Value = this.points;
+        updateRes.Parameters.Add("@price", MySqlDbType.Decimal).Value = Convert.ToDecimal(this.totalPrice);
+        updateRes.Parameters.Add("@amountDue", MySqlDbType.Decimal).Value = Convert.ToDecimal(this.amountDue);
+        updateRes.Parameters.Add("@amountPaid", MySqlDbType.Decimal).Value = Convert.ToDecimal(this.amountPaid);
+        updateRes.Parameters.Add("@resStatus", MySqlDbType.VarChar, 45).Value = this.status;
+        updateRes.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = this.numGuests;
+        updateRes.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = this.confirmatonID;
         updateRes.Parameters.Add("@roomNum", MySqlDbType.Int32);
 
-        foreach (int roomNum in resInfo.roomNumList)
+        foreach (int roomNum in this.roomNumList)
         {
             updateRes.Parameters["@roomNum"].Value = roomNum;
             updateResConn.NonQuery(updateRes);
@@ -220,7 +219,7 @@ public class Reservation
         }
         //update status
         status = "checked-out";
-        if (updateReservation(this))
+        if (updateReservation())
             return true;
         return false;
     }
@@ -239,7 +238,7 @@ public class Reservation
         LoggedActivity logCheckin = new LoggedActivity();
         logCheckin.logActivity(userID, 4, this.confirmatonID, currentDate, 17);
         status = "checked-in";
-        if (updateReservation(this))
+        if (updateReservation())
             return true;
         return false;
     }

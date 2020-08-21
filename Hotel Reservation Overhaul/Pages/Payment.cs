@@ -138,9 +138,10 @@ namespace Hotel_Reservation_Overhaul
                     if (chkReward.Checked)
                     {     
                         resInfo.totalPrice *= 0.9;
+                        //resInfo.amountDue = resInfo.totalPrice - resInfo.amountDue;
                         //resInfo.amountDue -= resInfo.amountPaid;
                         // update reservation in database
-                        resInfo.updateReservation(resInfo);
+                        resInfo.updateReservation();
                     }
                     
                     ccNumber = txtCardNum.Text;
@@ -195,7 +196,7 @@ namespace Hotel_Reservation_Overhaul
                     {
                         resInfo.totalPrice *= 0.9;
                         //resInfo.amountDue -= double.Parse(txtPrice.Text);
-                        resInfo.updateReservation(resInfo);
+                        resInfo.updateReservation();
                     }
                     
                     // update reservation in database
@@ -265,7 +266,9 @@ namespace Hotel_Reservation_Overhaul
                         lblrewardError.Visible = false;
                         //resInfo.amountDue *= 0.9;
                         //userInfo.pointsBalance -= 50;
-                        lblBalance.Text = "$" + resInfo.amountDue*0.9;
+                        lblResPrice.Text = "$" + resInfo.totalPrice*0.9;
+                        if (isReserving)
+                            lblBalance.Text = "$" + resInfo.totalPrice*0.9;
                         lblPoints.Text = (userInfo.pointsBalance - 50).ToString();
                         lblApplyReward.Visible = true;
                         appliedReward = true;
@@ -278,7 +281,9 @@ namespace Hotel_Reservation_Overhaul
                 {
                     //resInfo.amountDue /= 0.9;
                     //userInfo.pointsBalance += 50;
-                    lblBalance.Text = "$" + resInfo.amountDue;
+                    lblResPrice.Text = "$" + resInfo.totalPrice;
+                    if(isReserving)
+                        lblBalance.Text = "$" + resInfo.totalPrice;
                     lblPoints.Text = userInfo.pointsBalance.ToString();
                     lblApplyReward.Visible = false;
                     appliedReward = false;

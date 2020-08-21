@@ -280,7 +280,7 @@ namespace Hotel_Reservation_Overhaul
                             issueRefund.makePayment(17, resInfo.confirmatonID, resInfo.amountDue, "refund", false, currentDate,"12345");
                         }
                         // update reservation record
-                        resInfo.updateReservation(resInfo);
+                        resInfo.updateReservation();
 
                         // log cancellation
                         if(userInfo.isCustomer) 

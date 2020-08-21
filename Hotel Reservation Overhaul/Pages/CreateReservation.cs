@@ -397,7 +397,7 @@ namespace Hotel_Reservation_Overhaul
             modResInfo.roomNumList = roomNumList;
             modResInfo.amountDue = price - modResInfo.amountPaid;
             modResInfo.points = points;
-            if(modResInfo.updateReservation(modResInfo) == true)
+            if(modResInfo.updateReservation() == true)
             {
                 lblError.ForeColor = System.Drawing.Color.Green;
                 lblError.Visible = true;

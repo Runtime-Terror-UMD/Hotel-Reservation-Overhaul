@@ -7,12 +7,13 @@ using System.Runtime.Remoting.Messaging;
 public class Room
 {
     private int roomNumber { get; set; }
-
     public int occupancy { get; set; }
     public int locationID { get; set; }
     public double price{ get; set; }
-    public string description { get; set; }
-  public  Room(int roomNb, int location)
+
+    public Room() { }
+
+    public Room(int roomNb, int location)
     {
         DBConnect getRoomConn = new DBConnect();
         MySqlCommand getRoom = new MySqlCommand("SELECT * from dbo.room where roomNum = @roomNum and locationID = @locationID");
@@ -33,8 +34,6 @@ public class Room
         //close Data Reader
         dataReader.Close(); ;
     }
-
-    public Room() { }
 
     public bool addRoom(int roomNum, int hotelID, int roomOcc, decimal roomCost, List<int> roomPackages)
     {

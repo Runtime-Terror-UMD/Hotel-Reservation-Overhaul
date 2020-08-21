@@ -4,11 +4,6 @@ using System;
 
 class PaymentRecord
 {
-
-    private int paymentID { get; set; }
-    private int confirmationID { get; set; }
-    private double amount { get; set; }
-
     public PaymentRecord() { }
 
     // DESCRIPTION: Creates a payment record and updates the balance of the reservation 
@@ -45,8 +40,8 @@ class PaymentRecord
             
             // update reservation amount
             Reservation payReservation = new Reservation(confirmationID);
-            payReservation.amountDue = payReservation.totalPrice - amountPaid;
-            payReservation.amountPaid = payReservation.totalPrice + amountPaid;
+            payReservation.amountDue = payReservation.amountDue - amountPaid;
+            payReservation.amountPaid = payReservation.amountPaid + amountPaid;
 
             MySqlCommand updateRes = new MySqlCommand(@"UPDATE reservation
                                                         SET

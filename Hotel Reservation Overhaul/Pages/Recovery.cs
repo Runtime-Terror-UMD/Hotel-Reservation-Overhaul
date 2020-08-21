@@ -111,7 +111,7 @@ namespace Hotel_Reservation_Overhaul
                     {
                         // reset password
                         userInfo.password = txtPassword.Text;
-                        if(userInfo.updateUser(userInfo))
+                        if(userInfo.updateUser())
                         {
                             lblError.Text = "Your password has been updated";
                             lblError.ForeColor = System.Drawing.Color.Green;

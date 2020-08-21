@@ -10,7 +10,6 @@ public class User
     public string firstName { get; set; }
     public string lastName { get; set; }
     public int rewardPoints { get { return pointsBalance; } set { } }
-    public decimal balance { get; set; }
     public string email { get; set; }
     public string username { get; set; }
     public string password { get; set; }
@@ -51,7 +50,7 @@ public class User
     }
 
     // updates information on user record
-    public bool updateUser(User userinfo)
+    public bool updateUser()
     {
         DBConnect updateUserConn = new DBConnect();
         MySqlCommand updateUserCmd = new MySqlCommand(@"UPDATE `dbo`.`user`
@@ -65,15 +64,15 @@ public class User
                                                         password = @password,
                                                         pointsBalance = @points
                                                         WHERE userID = @userID;");
-        updateUserCmd.Parameters.Add("@firstName", MySqlDbType.VarChar, 45).Value = userinfo.firstName;
-        updateUserCmd.Parameters.Add("@lastName", MySqlDbType.VarChar, 45).Value = userinfo.lastName;
-        updateUserCmd.Parameters.Add("@email", MySqlDbType.VarChar, 45).Value = userinfo.email;
-        updateUserCmd.Parameters.Add("@secretQuestion", MySqlDbType.VarChar, 45).Value = userinfo.secretQuestion;
-        updateUserCmd.Parameters.Add("@secretAnswer", MySqlDbType.VarChar, 45).Value = userinfo.secretAnswer;
-        updateUserCmd.Parameters.Add("@userName", MySqlDbType.VarChar, 45).Value = userinfo.username;
-        updateUserCmd.Parameters.Add("@password", MySqlDbType.VarChar, 45).Value = userinfo.password;
-        updateUserCmd.Parameters.Add("@points", MySqlDbType.Int32).Value = userinfo.pointsBalance;
-        updateUserCmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userinfo.userID;
+        updateUserCmd.Parameters.Add("@firstName", MySqlDbType.VarChar, 45).Value = this.firstName;
+        updateUserCmd.Parameters.Add("@lastName", MySqlDbType.VarChar, 45).Value = this.lastName;
+        updateUserCmd.Parameters.Add("@email", MySqlDbType.VarChar, 45).Value = this.email;
+        updateUserCmd.Parameters.Add("@secretQuestion", MySqlDbType.VarChar, 45).Value = this.secretQuestion;
+        updateUserCmd.Parameters.Add("@secretAnswer", MySqlDbType.VarChar, 45).Value = this.secretAnswer;
+        updateUserCmd.Parameters.Add("@userName", MySqlDbType.VarChar, 45).Value = this.username;
+        updateUserCmd.Parameters.Add("@password", MySqlDbType.VarChar, 45).Value = this.password;
+        updateUserCmd.Parameters.Add("@points", MySqlDbType.Int32).Value = this.pointsBalance;
+        updateUserCmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = this.userID;
         if (updateUserConn.NonQuery(updateUserCmd) > 0)
             return true;
         return false;

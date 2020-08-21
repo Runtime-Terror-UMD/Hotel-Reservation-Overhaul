@@ -52,7 +52,7 @@ namespace Hotel_Reservation_Overhaul.Pages
 
                 userInfo.firstName = txtFirstName.Text;
                 userInfo.lastName = txtLastName.Text;
-                if(userInfo.updateUser(userInfo))
+                if(userInfo.updateUser())
                 {
                     MessageBox.Show("Full name was successfully changed.");
                     txtFirstName.Text = userInfo.firstName.ToString();
@@ -78,7 +78,7 @@ namespace Hotel_Reservation_Overhaul.Pages
             if (accountInfo.passwordMatches(UserID, txtCurrentPassword.Text))
             {
                 userInfo.password = txtNewPassword.Text;
-                if(userInfo.updateUser(userInfo))
+                if(userInfo.updateUser())
                 {
                     MessageBox.Show("Account password changed successfully.");
                 }
@@ -111,7 +111,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                 userInfo.secretQuestion = txtNewQuestion.Text;
                 userInfo.secretAnswer = txtNewAnswer.Text;
                 
-                if(userInfo.updateUser(userInfo))
+                if(userInfo.updateUser())
                 {
                     MessageBox.Show("Account secret question and answer has been change successfully.");
                 }

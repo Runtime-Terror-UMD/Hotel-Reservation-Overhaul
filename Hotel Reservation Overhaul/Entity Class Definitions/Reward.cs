@@ -4,19 +4,18 @@ using System;
 
 public class Reward
 {
-
     public Reward(){}
 
-    public bool applyReward(Reservation resInfo)
+    /*public bool applyReward(Reservation resInfo)
     {
         resInfo.totalPrice = resInfo.totalPrice * .9;
         resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
-        resInfo.updateReservation(resInfo);
+        resInfo.updateReservation();
         return true;
-    }
+    }*/
 
     // DESCRIPTION: Gets rewards points based on userid
-    public int getRewardsPoints(int userID)
+    /*public int getRewardsPoints(int userID)
     {
         int rewards;
         DBConnect getPointsBalanceConn = new DBConnect();
@@ -28,7 +27,7 @@ public class Reward
         //assign value to variable
         rewards = getPointsBalanceConn.intScalar(cmd);
         return rewards;
-    }
+    }*/
     //DESCRIPTION: Sets rewards points based on userid
     public bool setRewardsPoints(int userID, int points, int createdBy, DateTime currentDate)
     {

@@ -3,20 +3,7 @@ using MySql.Data.MySqlClient;
 using System;
 public class LoggedActivity
 {
-    private int activityLogID { get; set; }
-    private int customerID { get; set; }
-    private int activityTypeID { get; set; }
-    private DateTime creationDate { get; set; }
-    LoggedActivity (int customer, int type, DateTime date)
-    {
-     //   this.activityLogID = ?? from database
-        this.customerID = customer;
-        this.activityTypeID = type;
-        this.creationDate = date;
-    }
-
-   public LoggedActivity() { }
-
+    public LoggedActivity() { }
     public bool logActivity(int userID, int activityType, int refID, DateTime created, int createdBy)
     {
         DBConnect cancelResConn = new DBConnect();
