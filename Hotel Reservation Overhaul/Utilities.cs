@@ -270,7 +270,14 @@ namespace Hotel_Reservation_Overhaul
             double pricePerNight = getPricePerNightConn.doubleScalar(getPricePerNight);
             return pricePerNight;
         }
-
+        public bool checkIfRewardApplied(int confirmationID)
+        {
+            DBConnect checkRewardConn = new DBConnect();
+            MySqlCommand checkReward = new MySqlCommand("SELECT ifnull(count(*),0) from payment where confirmationID = @confirmationID and usedRewards = 1");
+            checkReward.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = confirmationID;
+            int check = checkRewardConn.intScalar(checkReward);
+            return (check == 0)?false:true;
+        }
         
     }
 }

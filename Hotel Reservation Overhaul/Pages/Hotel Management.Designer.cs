@@ -48,6 +48,7 @@
             this.grpHotelSettings = new System.Windows.Forms.GroupBox();
             this.btnNewMaintenance = new System.Windows.Forms.Button();
             this.btnNewHotel = new System.Windows.Forms.Button();
+            this.btnTime = new System.Windows.Forms.Button();
             this.btnNewPackages = new System.Windows.Forms.Button();
             this.btnThirdParty = new System.Windows.Forms.Button();
             this.btnHotelSettings = new System.Windows.Forms.Button();

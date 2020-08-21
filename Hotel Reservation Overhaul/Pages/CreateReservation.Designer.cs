@@ -51,8 +51,6 @@
             this.btnReset = new System.Windows.Forms.Button();
             this.lblSubTotalDesc = new System.Windows.Forms.Label();
             this.lblSubTotal = new System.Windows.Forms.Label();
-            this.lblDeposit = new System.Windows.Forms.Label();
-            this.lblDepositDesc = new System.Windows.Forms.Label();
             this.dboDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.locationBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.locationTableAdapter1 = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.locationTableAdapter();
@@ -262,7 +260,7 @@
             // lblSubTotalDesc
             // 
             this.lblSubTotalDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSubTotalDesc.Location = new System.Drawing.Point(405, 440);
+            this.lblSubTotalDesc.Location = new System.Drawing.Point(405, 406);
             this.lblSubTotalDesc.Name = "lblSubTotalDesc";
             this.lblSubTotalDesc.Size = new System.Drawing.Size(99, 20);
             this.lblSubTotalDesc.TabIndex = 0;
@@ -274,32 +272,11 @@
             this.lblSubTotal.BackColor = System.Drawing.SystemColors.Window;
             this.lblSubTotal.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblSubTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSubTotal.Location = new System.Drawing.Point(509, 440);
+            this.lblSubTotal.Location = new System.Drawing.Point(510, 404);
             this.lblSubTotal.Name = "lblSubTotal";
-            this.lblSubTotal.Size = new System.Drawing.Size(100, 20);
+            this.lblSubTotal.Size = new System.Drawing.Size(100, 22);
             this.lblSubTotal.TabIndex = 0;
             this.lblSubTotal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblDeposit
-            // 
-            this.lblDeposit.BackColor = System.Drawing.SystemColors.Window;
-            this.lblDeposit.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblDeposit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDeposit.Location = new System.Drawing.Point(509, 409);
-            this.lblDeposit.Name = "lblDeposit";
-            this.lblDeposit.Size = new System.Drawing.Size(100, 20);
-            this.lblDeposit.TabIndex = 0;
-            this.lblDeposit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblDepositDesc
-            // 
-            this.lblDepositDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDepositDesc.Location = new System.Drawing.Point(405, 409);
-            this.lblDepositDesc.Name = "lblDepositDesc";
-            this.lblDepositDesc.Size = new System.Drawing.Size(99, 20);
-            this.lblDepositDesc.TabIndex = 0;
-            this.lblDepositDesc.Text = "Deposit:";
-            this.lblDepositDesc.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // locationBindingSource1
             // 
@@ -382,16 +359,16 @@
             this.txtCostNightly.BackColor = System.Drawing.SystemColors.Window;
             this.txtCostNightly.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.txtCostNightly.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCostNightly.Location = new System.Drawing.Point(509, 380);
+            this.txtCostNightly.Location = new System.Drawing.Point(510, 368);
             this.txtCostNightly.Name = "txtCostNightly";
-            this.txtCostNightly.Size = new System.Drawing.Size(100, 20);
+            this.txtCostNightly.Size = new System.Drawing.Size(100, 22);
             this.txtCostNightly.TabIndex = 26;
             this.txtCostNightly.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblCost
             // 
             this.lblCost.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCost.Location = new System.Drawing.Point(405, 380);
+            this.lblCost.Location = new System.Drawing.Point(405, 369);
             this.lblCost.Name = "lblCost";
             this.lblCost.Size = new System.Drawing.Size(99, 20);
             this.lblCost.TabIndex = 27;
@@ -426,7 +403,7 @@
             // btnModify
             // 
             this.btnModify.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnModify.Location = new System.Drawing.Point(619, 380);
+            this.btnModify.Location = new System.Drawing.Point(619, 396);
             this.btnModify.Name = "btnModify";
             this.btnModify.Size = new System.Drawing.Size(130, 30);
             this.btnModify.TabIndex = 30;
@@ -463,8 +440,6 @@
             this.Controls.Add(this.lblEndDate);
             this.Controls.Add(this.lblStartDate);
             this.Controls.Add(this.lblError);
-            this.Controls.Add(this.lblDeposit);
-            this.Controls.Add(this.lblDepositDesc);
             this.Controls.Add(this.lblSubTotal);
             this.Controls.Add(this.lblSubTotalDesc);
             this.Controls.Add(this.btnReset);
@@ -514,8 +489,6 @@
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.Label lblSubTotalDesc;
         private System.Windows.Forms.Label lblSubTotal;
-        private System.Windows.Forms.Label lblDeposit;
-        private System.Windows.Forms.Label lblDepositDesc;
         private System.Windows.Forms.BindingSource locationBindingSource;
         private System.Windows.Forms.BindingSource dboDataSetBindingSource;
         private hotelmgmt hotelmgmt;
