@@ -149,18 +149,36 @@ namespace Hotel_Reservation_Overhaul
         // DESCRIPTION: Checks if entered password matches specified username
         public bool passwordMatches(string username, string password)
         {
-            // construct query
-            MySqlCommand cmd = new MySqlCommand("SELECT Count(*) from dbo.user where username = @username AND password = @password");
-            cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45).Value = username;
-            cmd.Parameters.Add("@password", MySqlDbType.VarChar, 45).Value = password;
 
-            // connect to database
-            DBConnect passwordMatchesConn = new DBConnect();
-            // if records exist
-            if (passwordMatchesConn.intScalar(cmd) > 0)
-                return true;
+            int userID = getUserIDFromUsername(username);
+            if(userID != -1)
+            {
+                User userInfo = new User(userID);
+                if(userInfo.password == password)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
             else
+            {
                 return false;
+            }
+            // construct query
+            //MySqlCommand cmd = new MySqlCommand("SELECT Count(*) from dbo.user where username = @username AND password = @password");
+            //cmd.Parameters.Add("@username", MySqlDbType.VarChar, 45).Value = username;
+            //cmd.Parameters.Add("@password", MySqlDbType.VarChar, 45).Value = password;
+
+            //// connect to database
+            //DBConnect passwordMatchesConn = new DBConnect();
+            //// if records exist
+            //if (passwordMatchesConn.intScalar(cmd) > 0)
+            //    return true;
+            //else
+            //    return false;
         }
         public bool passwordMatches(int userID, string password)
         {
