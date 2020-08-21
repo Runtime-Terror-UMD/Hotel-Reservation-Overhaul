@@ -34,9 +34,9 @@ public class Location
         MySqlCommand insertHotel = new MySqlCommand(@"INSERT INTO `dbo`.`location` (`locationID`, `locationName`, `locationCity`,`locationState`)
                                                                                   VALUES (@hotelID, @hotelName, @hotelCity, @hotelState");
         insertHotel.Parameters.Add("@hotelID", MySqlDbType.Int32).Value = hotelID;
-        insertHotel.Parameters.Add("@hotelID", MySqlDbType.VarChar, 100).Value = hotelName;
-        insertHotel.Parameters.Add("@hotelID", MySqlDbType.VarChar, 45).Value = hotelCity;
-        insertHotel.Parameters.Add("@hotelID", MySqlDbType.VarChar, 45).Value = hotelState;
+        insertHotel.Parameters.Add("@hotelName", MySqlDbType.VarChar, 100).Value = hotelName;
+        insertHotel.Parameters.Add("@hotelCity", MySqlDbType.VarChar, 45).Value = hotelCity;
+        insertHotel.Parameters.Add("@hotelState", MySqlDbType.VarChar, 45).Value = hotelState;
         if (insertHotelConn.NonQuery(insertHotel) > 0)
         {
             return true;

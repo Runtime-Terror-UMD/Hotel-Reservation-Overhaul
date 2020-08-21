@@ -54,6 +54,7 @@
             this.Location = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.reservationTableAdapter = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.reservationTableAdapter();
             this.locationTableAdapter = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.locationTableAdapter();
+            this.btnCheckinout = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.reservationBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hotelmgmtBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).BeginInit();
@@ -107,7 +108,7 @@
             // btnModify
             // 
             this.btnModify.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnModify.Location = new System.Drawing.Point(600, 413);
+            this.btnModify.Location = new System.Drawing.Point(600, 340);
             this.btnModify.Name = "btnModify";
             this.btnModify.Size = new System.Drawing.Size(150, 50);
             this.btnModify.TabIndex = 2;
@@ -119,7 +120,7 @@
             // btnCancel
             // 
             this.btnCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.Location = new System.Drawing.Point(600, 317);
+            this.btnCancel.Location = new System.Drawing.Point(600, 267);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(150, 50);
             this.btnCancel.TabIndex = 4;
@@ -140,7 +141,7 @@
             // btnPay
             // 
             this.btnPay.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPay.Location = new System.Drawing.Point(600, 205);
+            this.btnPay.Location = new System.Drawing.Point(600, 180);
             this.btnPay.Name = "btnPay";
             this.btnPay.Size = new System.Drawing.Size(150, 50);
             this.btnPay.TabIndex = 3;
@@ -228,7 +229,7 @@
             this.resListDataGrid.DataSource = this.hotelmgmt;
             this.resListDataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.resListDataGrid.Location = new System.Drawing.Point(50, 100);
-            this.resListDataGrid.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.resListDataGrid.Margin = new System.Windows.Forms.Padding(2);
             this.resListDataGrid.MultiSelect = false;
             this.resListDataGrid.Name = "resListDataGrid";
             this.resListDataGrid.ReadOnly = true;
@@ -282,12 +283,24 @@
             // 
             this.locationTableAdapter.ClearBeforeFill = true;
             // 
+            // btnCheckinout
+            // 
+            this.btnCheckinout.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCheckinout.Location = new System.Drawing.Point(600, 413);
+            this.btnCheckinout.Name = "btnCheckinout";
+            this.btnCheckinout.Size = new System.Drawing.Size(150, 50);
+            this.btnCheckinout.TabIndex = 12;
+            this.btnCheckinout.Text = "Check-in/Check-out";
+            this.btnCheckinout.UseVisualStyleBackColor = true;
+            this.btnCheckinout.Click += new System.EventHandler(this.btnCheckinout_Click);
+            // 
             // ReservationList
             // 
             this.AcceptButton = this.btnSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 566);
+            this.Controls.Add(this.btnCheckinout);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.resListDataGrid);
             this.Controls.Add(this.btnSearch);
@@ -342,5 +355,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn StartDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn EndDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn Location;
+        private System.Windows.Forms.Button btnCheckinout;
     }
 }

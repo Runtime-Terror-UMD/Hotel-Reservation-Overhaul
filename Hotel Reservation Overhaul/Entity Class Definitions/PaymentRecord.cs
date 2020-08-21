@@ -47,7 +47,16 @@ class PaymentRecord
             Reservation payReservation = new Reservation(confirmationID);
             payReservation.amountDue = payReservation.amountDue - amountPaid;
             payReservation.amountPaid = payReservation.amountPaid + amountPaid;
-            if (payReservation.updateReservation(payReservation))
+
+            MySqlCommand updateRes = new MySqlCommand(@"UPDATE reservation
+                                                        SET
+                                                        amountDue = @amountDue,
+                                                        amountPaid = @amountPaid
+                                                        WHERE confirmationID = @confirmationID");
+            updateRes.Parameters.Add("@amountDue", MySqlDbType.Decimal).Value = payReservation.amountDue;
+            updateRes.Parameters.Add("@amountPaid", MySqlDbType.Decimal).Value = payReservation.amountPaid;
+            updateRes.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = payReservation.confirmatonID;
+            if (makePaymentConn.NonQuery(updateRes) > 0)
                 return true;
             else
                 return false;

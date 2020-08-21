@@ -66,8 +66,8 @@ public class Reservation
     {
         DBConnect updateResConn = new DBConnect();
         MySqlCommand updateRes = new MySqlCommand();
-        updateRes.CommandText = "UPDATE `dbo`.`reservation` SET `locationID` = @locationID, `startDate` = @startDate, `endDate` = @endDate, `pointsAccumulated` = @points, `price` = @price, `amountDue` = @amountDue, `amountPaid` = @amountPaid, `reservationStatus` = @resStatus, `numGuests` = @numGuests WHERE `confirmationID` = @confirmationID";
-      
+        updateRes.CommandText = "UPDATE `dbo`.`reservation` SET `locationID` = @locationID, `roomNum` = @roomNum, `startDate` = @startDate, `endDate` = @endDate, `pointsAccumulated` = @points, `price` = @price, `amountDue` = @amountDue, `amountPaid` = @amountPaid, `reservationStatus` = @resStatus, `numGuests` = @numGuests WHERE `confirmationID` = @confirmationID";
+
         updateRes.Parameters.Add("@locationID", MySqlDbType.Int32).Value = resInfo.locationID;
         updateRes.Parameters.Add("@startDate", MySqlDbType.Date).Value = resInfo.startDate.Date;
         updateRes.Parameters.Add("@endDate", MySqlDbType.Date).Value = resInfo.endDate.Date;
@@ -78,9 +78,14 @@ public class Reservation
         updateRes.Parameters.Add("@resStatus", MySqlDbType.VarChar, 45).Value = resInfo.status;
         updateRes.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = resInfo.numGuests;
         updateRes.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = resInfo.confirmatonID;
-        if (updateResConn.NonQuery(updateRes) > 0)
-            return true;
-        return false;
+        updateRes.Parameters.Add("@roomNum", MySqlDbType.Int32);
+
+        foreach (int roomNum in resInfo.roomNumList)
+        {
+            updateRes.Parameters["@roomNum"].Value = roomNum;
+            updateResConn.NonQuery(updateRes);
+        }
+        return true;
     }
 
     // DESCRIPTION: Adds cancellation to activity log
@@ -92,12 +97,17 @@ public class Reservation
         return false;
     }
 
-    //public bool upgradeMaintenanceRoom(Reservation resInfo, int roomNum)
-    //{
-    //    Room getPackages = new Room();
-    //    getPackages.roomPackages(resInfo.roomNumList[0], resInfo.locationID);
-
-    //}
+    public bool upgradeMaintenanceRoom(Reservation resInfo, int roomNum)
+    {
+        Room getPackages = new Room();
+        getPackages.roomPackages(roomNum, locationID);
+        //get packages on current room to be upgraded
+        //get list of packages that are NOT included in room to be upgraded
+        //find one room with current pacakges plus any package from new list
+        //change room number
+        //log as system upgrade
+        return true;
+    }
 
     public void addRoomToRes(Reservation modResInfo, List<int> roomNumList)
     {
@@ -240,6 +250,16 @@ public class Reservation
         //update customer rewards point balance
         Reward checkoutReward = new Reward();
         checkoutReward.setRewardsPoints(userID, points, 17, currentDate);
+        //update reservation price
+        if (endDate != currentDate)
+        {
+            endDate = currentDate;
+            Utilities recalc = new Utilities();
+            Room roomDetails = new Room(roomNumList[0], locationID);
+            totalPrice = recalc.calculatePrice(((endDate - startDate).TotalDays), roomDetails.price);
+            points = Convert.ToInt32(recalc.calculatePoints(((endDate - startDate).TotalDays)));
+            amountDue = totalPrice - amountPaid;
+        }
         //charge customer remaining balance on reservation
         try
         {
@@ -267,6 +287,15 @@ public class Reservation
 
     public bool checkInReservation(DateTime currentDate)
     {
+        if (startDate != currentDate)
+        {
+            startDate = currentDate;
+            Utilities recalc = new Utilities();
+            Room roomDetails = new Room(roomNumList[0], locationID);
+            totalPrice = recalc.calculatePrice(((endDate - startDate).TotalDays), roomDetails.price);
+            points = Convert.ToInt32(recalc.calculatePoints(((endDate - startDate).TotalDays)));
+            amountDue = totalPrice - amountPaid;
+        }
         LoggedActivity logCheckin = new LoggedActivity();
         logCheckin.logActivity(userID, 4, this.confirmatonID, currentDate, 17);
         status = "checked-in";
