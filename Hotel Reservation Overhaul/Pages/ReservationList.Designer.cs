@@ -287,7 +287,7 @@
             this.AcceptButton = this.btnSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 487);
+            this.ClientSize = new System.Drawing.Size(784, 566);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.resListDataGrid);
             this.Controls.Add(this.btnSearch);

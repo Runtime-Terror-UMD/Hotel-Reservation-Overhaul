@@ -46,7 +46,6 @@
             this.locationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.hotelmgmt = new Hotel_Reservation_Overhaul.hotelmgmt();
             this.grpHotelSettings = new System.Windows.Forms.GroupBox();
-            this.btnTime = new System.Windows.Forms.Button();
             this.btnNewMaintenance = new System.Windows.Forms.Button();
             this.btnNewHotel = new System.Windows.Forms.Button();
             this.btnNewPackages = new System.Windows.Forms.Button();
@@ -56,7 +55,6 @@
             this.lblFileStatus = new System.Windows.Forms.Label();
             this.locationTableAdapter = new Hotel_Reservation_Overhaul.hotelmgmtTableAdapters.locationTableAdapter();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.btnTime = new System.Windows.Forms.Button();
             this.grpReports.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.locationBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hotelmgmt)).BeginInit();
@@ -329,7 +327,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 556);
+            this.ClientSize = new System.Drawing.Size(784, 567);
             this.Controls.Add(this.lblFileStatus);
             this.Controls.Add(this.grpHotelSettings);
             this.Controls.Add(this.grpReports);

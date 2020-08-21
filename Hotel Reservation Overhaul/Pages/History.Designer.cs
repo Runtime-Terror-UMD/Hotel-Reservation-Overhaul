@@ -38,10 +38,9 @@
             // 
             // btnReturn
             // 
-            this.btnReturn.Location = new System.Drawing.Point(18, 18);
-            this.btnReturn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnReturn.Location = new System.Drawing.Point(12, 12);
             this.btnReturn.Name = "btnReturn";
-            this.btnReturn.Size = new System.Drawing.Size(112, 38);
+            this.btnReturn.Size = new System.Drawing.Size(75, 25);
             this.btnReturn.TabIndex = 5;
             this.btnReturn.Text = "Return";
             this.btnReturn.UseVisualStyleBackColor = true;
@@ -50,10 +49,9 @@
             // lblDescribe
             // 
             this.lblDescribe.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDescribe.Location = new System.Drawing.Point(300, 92);
-            this.lblDescribe.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDescribe.Location = new System.Drawing.Point(200, 60);
             this.lblDescribe.Name = "lblDescribe";
-            this.lblDescribe.Size = new System.Drawing.Size(600, 31);
+            this.lblDescribe.Size = new System.Drawing.Size(400, 20);
             this.lblDescribe.TabIndex = 0;
             this.lblDescribe.Text = "View your history";
             this.lblDescribe.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -61,20 +59,18 @@
             // lblTitle
             // 
             this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.Location = new System.Drawing.Point(300, 23);
-            this.lblTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTitle.Location = new System.Drawing.Point(200, 15);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(600, 62);
+            this.lblTitle.Size = new System.Drawing.Size(400, 40);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Hotel Reservation System";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // btnLogOut
             // 
-            this.btnLogOut.Location = new System.Drawing.Point(1046, 18);
-            this.btnLogOut.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnLogOut.Location = new System.Drawing.Point(697, 12);
             this.btnLogOut.Name = "btnLogOut";
-            this.btnLogOut.Size = new System.Drawing.Size(112, 38);
+            this.btnLogOut.Size = new System.Drawing.Size(75, 25);
             this.btnLogOut.TabIndex = 6;
             this.btnLogOut.Text = "Log Out";
             this.btnLogOut.UseVisualStyleBackColor = true;
@@ -85,25 +81,25 @@
             this.reportDataGrid.AllowUserToAddRows = false;
             this.reportDataGrid.AllowUserToDeleteRows = false;
             this.reportDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.reportDataGrid.Location = new System.Drawing.Point(75, 154);
+            this.reportDataGrid.Location = new System.Drawing.Point(50, 100);
+            this.reportDataGrid.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.reportDataGrid.Name = "reportDataGrid";
             this.reportDataGrid.ReadOnly = true;
             this.reportDataGrid.RowHeadersWidth = 62;
             this.reportDataGrid.RowTemplate.Height = 28;
-            this.reportDataGrid.Size = new System.Drawing.Size(1009, 565);
+            this.reportDataGrid.Size = new System.Drawing.Size(673, 367);
             this.reportDataGrid.TabIndex = 7;
             // 
             // History
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1176, 866);
+            this.ClientSize = new System.Drawing.Size(784, 502);
             this.Controls.Add(this.reportDataGrid);
             this.Controls.Add(this.btnReturn);
             this.Controls.Add(this.lblDescribe);
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.btnLogOut);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "History";
             this.Text = "Hotel Reservation: History";
             ((System.ComponentModel.ISupportInitialize)(this.reportDataGrid)).EndInit();

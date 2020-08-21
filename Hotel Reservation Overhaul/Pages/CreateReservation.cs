@@ -41,6 +41,8 @@ namespace Hotel_Reservation_Overhaul
             userID = UserID;
             currentDate = current;
             cboxHotel.SelectedIndex = -1;
+            monthEnd.SetDate(current);
+            monthStart.SetDate(current);
         }
 
         // DESCRIPTION: Fills fields with reservation info for reservation to modify
@@ -297,7 +299,6 @@ namespace Hotel_Reservation_Overhaul
                 makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
                 this.Hide();
                 makePayment.Show();
-
             }
         }
 
