@@ -294,7 +294,7 @@ namespace Hotel_Reservation_Overhaul
             else
             {   // Get next confirmation ID
                 Reservation createReservation = new Reservation();
-                int confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue), userID, resUserID, startDate.Value, endDate.Value, price, points, roomNumList, Convert.ToInt32(cboxNumGuests.SelectedItem), currentDate);
+                confirmationID = createReservation.makeReservation(Convert.ToInt32(cboxHotel.SelectedValue), userID, resUserID, startDate.Value, endDate.Value, price, points, roomNumList, Convert.ToInt32(cboxNumGuests.SelectedItem), currentDate);
                 var makePayment = new Payment(confirmationID, resUserID, currentDate, true);
                 makePayment.FormClosed += new FormClosedEventHandler(makePayment_FormClosed);
                 this.Hide();
@@ -304,6 +304,8 @@ namespace Hotel_Reservation_Overhaul
 
         private void makePayment_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Reservation r = new Reservation(confirmationID);
+            r.deleteReservation();
             this.Show();
         }
 

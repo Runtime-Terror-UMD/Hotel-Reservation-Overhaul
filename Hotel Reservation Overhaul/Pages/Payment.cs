@@ -47,6 +47,7 @@ namespace Hotel_Reservation_Overhaul
 
         private void btnLogOut_Click(object sender, EventArgs e)
         {
+            resInfo.deleteReservation();
             this.Close();
             if(Application.OpenForms["CreateReservation"] != null)
                 Application.OpenForms["CreateReservation"].Close();
@@ -56,6 +57,7 @@ namespace Hotel_Reservation_Overhaul
 
         private void btnReturn_Click(object sender, EventArgs e)
         {
+            resInfo.deleteReservation();
             this.Close();
         }
 

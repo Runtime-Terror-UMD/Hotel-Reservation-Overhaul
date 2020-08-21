@@ -290,4 +290,14 @@ public class Reservation
             checkInRes.checkInReservation(currentDate);
         }
     }
+
+    public bool deleteReservation()
+    {
+        DBConnect connection = new DBConnect();
+        MySqlCommand cmd = new MySqlCommand("DELETE FROM reservation where confirmationID = @confirmationID; DELETE FROM activitylog where refID = @confirmationID");
+        cmd.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = this.confirmatonID;
+        if (connection.NonQuery(cmd) > 0)
+            return true;
+        return false;
+    }
 }
