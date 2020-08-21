@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Windows.Forms;
 
 public class Waitlist
 {
@@ -108,7 +109,7 @@ public class Waitlist
         DBConnect waitlistConn = new DBConnect();
         MySqlCommand getWL = new MySqlCommand("SELECT * from dbo.waitlist order by waitlistID");
         DataTable waitlistDT = waitlistConn.ExecuteDataTable(getWL);
-        foreach(DataRow row in waitlistDT.Rows)
+        foreach (DataRow row in waitlistDT.Rows)
         {
             // get waitlist parameters
             waitlistID = Convert.ToInt32(row["waitlistID"]);
@@ -123,23 +124,25 @@ public class Waitlist
             // check for availability
             Reservation checkWL = new Reservation();
             roomNumList = checkWL.getAvailability(numGuests, locationID, numRooms, packages, currentDate, startDate, endDate);
-            if(roomNumList.Count == numRooms)
+            if (roomNumList.Count == numRooms)
             {
-            // reservation available, create reservation
-            Utilities calcPrice = new Utilities();
+                // reservation available, create reservation
+                Utilities calcPrice = new Utilities();
                 Room roomDetails = new Room(roomNumList[0], locationID);
-            double pricePerNight = roomDetails.price * numRooms;
-            double price = (calcPrice.calculatePrice(((endDate - startDate).TotalDays), pricePerNight));
-            int points = Convert.ToInt32(calcPrice.calculatePoints(((endDate - startDate).TotalDays)));
-            
-            confirmationID = checkWL.makeReservation(locationID, customerID, customerID, startDate, endDate, price, points, roomNumList, numGuests, currentDate);
-            // reservation created successfully, remove from waitlist
-            if(confirmationID > 0)
+                double pricePerNight = roomDetails.price * numRooms;
+                double price = (calcPrice.calculatePrice(((endDate - startDate).TotalDays), pricePerNight));
+                int points = Convert.ToInt32(calcPrice.calculatePoints(((endDate - startDate).TotalDays)));
+
+                confirmationID = checkWL.makeReservation(locationID, customerID, customerID, startDate, endDate, price, points, roomNumList, numGuests, currentDate);
+                MessageBox.Show("Reservation with confirmation id " + confirmationID + " was created from waitlist.");
+
+                // reservation created successfully, remove from waitlist
+                if (confirmationID > 0)
                 {
                     DBConnect removeFromWLConn = new DBConnect();
                     MySqlCommand removeFromWL = new MySqlCommand("DELETE FROM dbo.waitlist WHERE waitlistID = @waitlistID");
                     removeFromWL.Parameters.Add("@waitlistID", MySqlDbType.Int32).Value = waitlistID;
-                    removeFromWLConn.NonQuery(removeFromWL);                     
+                    removeFromWLConn.NonQuery(removeFromWL);
                 }
             }
         }
