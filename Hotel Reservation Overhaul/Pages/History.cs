@@ -48,7 +48,9 @@ namespace Hotel_Reservation_Overhaul.Pages
                                                         left join payment p
 	                                                        on p.paymentID = al.refID
                                                             and al.activityTypeID = 8
-                                                        where al.userID = @userID and createdBy = @userID";
+                                                        where al.userID = @userID 
+                                                        and al.createdBy = @userID
+                                                        order by al.created desc";
                     cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
 
                     ReportData = reportConn.ExecuteDataTable(cmd);
@@ -83,7 +85,8 @@ namespace Hotel_Reservation_Overhaul.Pages
                                                         left join payment p
 	                                                        on p.paymentID = al.refID
                                                             and al.activityTypeID = 8
-                                                        where al.createdBy = @createdBy";
+                                                        where al.createdBy = @createdBy
+                                                        order by al.created desc";
                     cmd.Parameters.Add("@createdBy", MySqlDbType.Int32).Value = userID;
 
                     ReportData = reportConn.ExecuteDataTable(cmd);

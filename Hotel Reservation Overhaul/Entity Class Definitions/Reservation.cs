@@ -184,6 +184,11 @@ public class Reservation
             createResCmd.Parameters["@roomNum"].Value = newResRoomNum;
             createResConn.NonQuery(createResCmd);
         }
+        if(confirmationID != -1)
+        {
+            LoggedActivity logNewRes = new LoggedActivity();
+            logNewRes.logActivity(resUserID, 1, confirmationID, currentDate, newResUserID);
+        }
         return confirmationID;
     }
 

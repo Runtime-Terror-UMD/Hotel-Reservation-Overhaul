@@ -49,7 +49,9 @@ namespace Hotel_Reservation_Overhaul.Pages
 	                                                        on p.paymentID = al.refID
                                                             and al.activityTypeID = 8
                                                         where al.userID = @userID
-                                                        and al.created between @startDate and @endDate");
+                                                        and al.createdBy = @userID
+                                                        and al.created between @startDate and @endDate
+                                                         order by al.created desc");
                     cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
                     cmd.Parameters.Add("@startDate", MySqlDbType.Date).Value = startDate;
                     cmd.Parameters.Add("@endDate", MySqlDbType.Date).Value = endDate;
@@ -95,7 +97,8 @@ namespace Hotel_Reservation_Overhaul.Pages
 	                                                        on p.paymentID = al.refID
                                                             and al.activityTypeID = 8
                                                         where al.createdBy = @createdBy
-                                                        and al.created between @startDate and @endDate");
+                                                        and al.created between @startDate and @endDate
+                                                        order by al.created desc");
                     cmd.Parameters.Add("@createdBy", MySqlDbType.Int32).Value = userID;
                     cmd.Parameters.Add("@startDate", MySqlDbType.Date).Value = startDate;
                     cmd.Parameters.Add("@endDate", MySqlDbType.Date).Value = endDate;
