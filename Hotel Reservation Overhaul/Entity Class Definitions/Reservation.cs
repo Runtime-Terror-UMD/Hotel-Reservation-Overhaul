@@ -97,42 +97,6 @@ public class Reservation
         return false;
     }
 
-    public bool upgradeMaintenanceRoom(Reservation resInfo, int roomNum)
-    {
-        Room getPackages = new Room();
-        getPackages.roomPackages(roomNum, locationID);
-        //get packages on current room to be upgraded
-        //get list of packages that are NOT included in room to be upgraded
-        //find one room with current pacakges plus any package from new list
-        //change room number
-        //log as system upgrade
-        return true;
-    }
-
-    public void addRoomToRes(Reservation modResInfo, List<int> roomNumList)
-    {
-        foreach (int roomNum in roomNumList)
-        {
-            DBConnect updateRoomConn = new DBConnect();
-            MySqlCommand addRoom = new MySqlCommand("INSERT INTO `dbo`.`reservation`(`confirmationID`,`userID`,`locationID`,`roomNum`,`startDate`,`endDate`,`pointsAccumulated`,`price`,`amountDue`,`amountPaid`,`reservationStatus`,`created`,`numGuests`) VALUES(@confirmationID,@userID,@locationID,@roomNum,@startDate,@endDate,@points,@price,@price,0,@status,@created,@numGuests)");
-
-            addRoom.Parameters.Add("@roomNum", MySqlDbType.Int32).Value = roomNum;
-            addRoom.Parameters.Add("@locationID", MySqlDbType.Int32).Value = modResInfo.locationID;
-            addRoom.Parameters.Add("@userID", MySqlDbType.Int32).Value = modResInfo.userID;
-            addRoom.Parameters.Add("@startDate", MySqlDbType.Date).Value = modResInfo.startDate;
-            addRoom.Parameters.Add("@endDate", MySqlDbType.Date).Value = modResInfo.endDate;
-            addRoom.Parameters.Add("@confirmationID", MySqlDbType.Int32).Value = modResInfo.confirmatonID;
-            addRoom.Parameters.Add("@points", MySqlDbType.Int32).Value = modResInfo.points;
-            addRoom.Parameters.Add("@price", MySqlDbType.Decimal).Value = modResInfo.totalPrice;
-            addRoom.Parameters.Add("@status", MySqlDbType.VarChar, 45).Value = "upcoming";
-            addRoom.Parameters.Add("@created", MySqlDbType.Date).Value = DateTime.Today;
-            addRoom.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = modResInfo.numGuests;
-
-            updateRoomConn.NonQuery(addRoom);
-            modResInfo.roomNumList.Add(roomNum);
-        }
-    }
-
     //DESCRIPTION: Gets availability for specified reservation request
     public List<int> getAvailability(int numGuests,int hotelID, int numRooms, string combinedstring, DateTime currentDate, DateTime resStart, DateTime resEnd)
     {
@@ -200,30 +164,6 @@ public class Reservation
             logNewRes.logActivity(resUserID, 1, confirmationID, currentDate, newResUserID);
         }
         return confirmationID;
-    }
-
-    // DESCRIPTION: Adds request to dbo.waitlist
-    public bool addToWaitlist(int wlUserID, int wlLocationID, DateTime wlStartDate, DateTime wlEndDate, int wlNumGuests, string combinedString)
-    {
-        DBConnect addToWLConn = new DBConnect();
-        MySqlCommand addToWL = new MySqlCommand(@"INSERT INTO `dbo`.`waitlist`(`customerID`,`locationID`,`startDate`,`endDate`,`numGuests`,`packages`)
-                                                  VALUES(@userID, @locationID, @startDate, @endDate, @numGuests,@packages)");
-        addToWL.Parameters.Add("@locationID", MySqlDbType.Int32).Value = wlLocationID;
-        addToWL.Parameters.Add("@userID", MySqlDbType.Int32, 10).Value = wlUserID;
-        addToWL.Parameters.Add("@startDate", MySqlDbType.Date).Value = wlStartDate;
-        addToWL.Parameters.Add("@endDate", MySqlDbType.Date).Value = wlEndDate;
-        addToWL.Parameters.Add("@numGuests", MySqlDbType.Int32).Value = wlNumGuests;
-        addToWL.Parameters.Add("@packages", MySqlDbType.VarChar, 45).Value = combinedString;
-        if (addToWLConn.NonQuery(addToWL) > 0)
-        {
-
-            LoggedActivity logNewReservation = new LoggedActivity();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     //DESCRIPTION: 
