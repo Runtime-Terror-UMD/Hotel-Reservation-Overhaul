@@ -351,7 +351,7 @@ namespace Hotel_Reservation_Overhaul
         //        displayError("No reservation selected");
         //    }
 
-        //}
+        }
     }
 
 }
