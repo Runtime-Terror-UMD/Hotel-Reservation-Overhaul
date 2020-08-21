@@ -197,6 +197,12 @@ public class Reservation
             Utilities recalc = new Utilities();
             Room roomDetails = new Room(roomNumList[0], locationID);
             totalPrice = recalc.calculatePrice(((endDate - startDate).TotalDays), roomDetails.price);
+            if((endDate - startDate).TotalDays == 0)
+            {
+                //cancelation fee
+                totalPrice = recalc.getMinCharge();
+            }
+
             points = Convert.ToInt32(recalc.calculatePoints(((endDate - startDate).TotalDays)));
             amountDue = totalPrice - amountPaid;
         }
