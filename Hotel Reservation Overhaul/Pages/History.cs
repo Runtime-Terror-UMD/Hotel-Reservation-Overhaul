@@ -72,7 +72,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                      case 
 	                                     when al.activityTypeID in (1,2,3) then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID, ' - Customer ID ',al.userID) 
                                          when al.activityTypeID = 6 then concat(atype.activityTypeDescription, ' - Points: ', rl.pointsAmount, ' - Customer ID ',al.userID) 
-                                         when al.activityTypeID = 8 then concat('Processed customer payment '- Pay ID: ', al.refID, ' - Customer ID ',al.userID) 
+                                         when al.activityTypeID = 8 then concat('Processed customer payment ','- Pay ID: ', al.refID, ' - Customer ID ',al.userID) 
 	                                     when al.activityTypeID = 4 then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID, ' - Customer ID ',al.userID) 
 	                                     when al.activityTypeID = 5 then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID, ' - Customer ID ',al.userID) 
                                         end as 'Activity'

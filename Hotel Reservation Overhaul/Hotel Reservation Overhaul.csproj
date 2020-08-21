@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="DBConnect.cs" />
     <Compile Include="Entity Class Definitions\ActivityType.cs" />
+    <Compile Include="Entity Class Definitions\maintenance.cs" />
     <Compile Include="Entity Class Definitions\User.cs" />
     <Compile Include="Entity Class Definitions\Employee.cs" />
     <Compile Include="Entity Class Definitions\Location.cs" />
