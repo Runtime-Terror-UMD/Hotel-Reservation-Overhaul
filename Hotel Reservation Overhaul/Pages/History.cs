@@ -29,16 +29,52 @@ namespace Hotel_Reservation_Overhaul.Pages
             DBConnect reportConn = new DBConnect();
             DataTable ReportData = new DataTable();
             BindingSource bindingSource1 = new BindingSource();
+            MySqlCommand cmd = new MySqlCommand();
 
-            try
+            if (userInfo.isCustomer == true)
             {
-                MySqlCommand cmd = new MySqlCommand(@"select al.created 'Action Date',
+                try
+                {
+                    cmd.CommandText = @"select al.created 'Action Date',
                                                         case 
-	                                                        when al.activityTypeID in (1,2,3) then concat(atype.activityTypeDescription, ' - ', al.refID, ' - Customer ID ',al.userID) 
+	                                                        when al.activityTypeID in (1,2,3) then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID) 
+                                                            when al.activityTypeID = 8 then concat(atype.activityTypeDescription, '- Pay ID: ', al.refID) 
+	                                                        when al.activityTypeID = 4 then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID) 
+	                                                        when al.activityTypeID = 5 then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID) 
+                                                           end as 'Activity'
+                                                        from activitylog al
+                                                        join activitytype atype
+                                                            on atype.activityTypeID = al.activityTypeID
+                                                        left join payment p
+	                                                        on p.paymentID = al.refID
+                                                            and al.activityTypeID = 8
+                                                        where al.userID = @userID 
+                                                        and al.createdBy = @userID
+                                                        order by al.created desc";
+                    cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
+
+                    ReportData = reportConn.ExecuteDataTable(cmd);
+                    bindingSource1.DataSource = ReportData;
+                    reportDataGrid.DataSource = bindingSource1;
+                    reportDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                }
+
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.ToString());
+                }
+            }
+            else
+            {
+                try
+                {
+                    cmd.CommandText = @"select al.created 'Action Date',
+                                                        case 
+	                                                        when al.activityTypeID in (1,2,3) then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID, ' - Customer ID ',al.userID) 
                                                             when al.activityTypeID = 6 then concat(atype.activityTypeDescription, ' - Points: ', rl.pointsAmount, ' - Customer ID ',al.userID) 
                                                             when al.activityTypeID = 8 then concat(atype.activityTypeDescription, '- Pay ID: ', al.refID, ' - Customer ID ',al.userID) 
-	                                                        when al.activityTypeID = 4 then concat(atype.activityTypeDescription, ' - ', al.refID, ' - Customer ID ',al.userID) 
-	                                                        when al.activityTypeID = 5 then concat(atype.activityTypeDescription, ' - ', al.refID, ' - Customer ID ',al.userID) 
+	                                                        when al.activityTypeID = 4 then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID, ' - Customer ID ',al.userID) 
+	                                                        when al.activityTypeID = 5 then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID, ' - Customer ID ',al.userID) 
                                                            end as 'Activity'
                                                         from activitylog al
                                                         join activitytype atype
@@ -49,19 +85,22 @@ namespace Hotel_Reservation_Overhaul.Pages
                                                         left join payment p
 	                                                        on p.paymentID = al.refID
                                                             and al.activityTypeID = 8
-                                                        where al.createdBy = @createdBy");
-                cmd.Parameters.Add("@createdBy", MySqlDbType.Int32).Value = userID;
-                cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
-                ReportData = reportConn.ExecuteDataTable(cmd);
-                bindingSource1.DataSource = ReportData;
-                reportDataGrid.DataSource = bindingSource1;
-                reportDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                                                        where al.createdBy = @createdBy
+                                                        order by al.created desc";
+                    cmd.Parameters.Add("@createdBy", MySqlDbType.Int32).Value = userID;
+
+                    ReportData = reportConn.ExecuteDataTable(cmd);
+                    bindingSource1.DataSource = ReportData;
+                    reportDataGrid.DataSource = bindingSource1;
+                    reportDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.ToString());
+                }
+
             }
 
-            catch (Exception err)
-            {
-                MessageBox.Show(err.ToString());
-            }
         }
 
         private void btnReturn_Click(object sender, EventArgs e)
