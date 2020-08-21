@@ -3,14 +3,6 @@ using MySql.Data.MySqlClient;
 
 public class Location
 {
-    private int locationID { get; set; }
-    private string name { get; set; }
-    Location(string name_)
-    {
-        //this.locationID = ?? from database
-        this.name = name_;
-    }
-
     public Location() { }
 
     public bool hotelExists(int hotelID)
@@ -32,7 +24,7 @@ public class Location
     {
         DBConnect insertHotelConn = new DBConnect();
         MySqlCommand insertHotel = new MySqlCommand(@"INSERT INTO `dbo`.`location` (`locationID`, `locationName`, `locationCity`,`locationState`)
-                                                                                  VALUES (@hotelID, @hotelName, @hotelCity, @hotelState");
+                                                                                  VALUES (@hotelID, @hotelName, @hotelCity, @hotelState)");
         insertHotel.Parameters.Add("@hotelID", MySqlDbType.Int32).Value = hotelID;
         insertHotel.Parameters.Add("@hotelName", MySqlDbType.VarChar, 100).Value = hotelName;
         insertHotel.Parameters.Add("@hotelCity", MySqlDbType.VarChar, 45).Value = hotelCity;
