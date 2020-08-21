@@ -229,7 +229,7 @@ public class Reservation
         }
         if (updateReservation(this))
         {
-            MessageBox.Show("Reservation with confirmation id " + confirmatonID + "was checked out.");
+            MessageBox.Show("Reservation with confirmation id " + confirmatonID + " was checked out.");
             return true;
         }
         return false;
@@ -251,7 +251,7 @@ public class Reservation
         status = "checked-in";
         if (updateReservation(this))
         {
-            MessageBox.Show("Reservation with confirmation id " + confirmatonID + "was checked in.");
+            MessageBox.Show("Reservation with confirmation id " + confirmatonID + " was checked in.");
             return true;
         }
         return false;

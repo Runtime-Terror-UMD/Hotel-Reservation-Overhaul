@@ -959,6 +959,7 @@ namespace Hotel_Reservation_Overhaul.Pages
 
             //update other pages
             menuWind.updateDate(currentDate);
+            MessageBox.Show("Program has progressed to next day: " + currentDate);
             //checkin reservations
             updateRes.dailyCheckIn(currentDate);
             //update waitlist
