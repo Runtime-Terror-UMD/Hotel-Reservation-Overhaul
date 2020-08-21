@@ -233,7 +233,7 @@ namespace Hotel_Reservation_Overhaul
                 else
                 { 
                     Room roomDetails = new Room(roomNumList[0], locationID);
-                
+
                     // calculate price and rewards
                     if (mod)
                     {   // if free upgrade, do not change price per night
@@ -241,23 +241,15 @@ namespace Hotel_Reservation_Overhaul
                         {
                             pricePerNight = (modResInfo.totalPrice / modResInfo.duration);
                         }
-                        else
-                        {
-                            pricePerNight = roomDetails.price * numRooms;
-                        }
                     }
-                    else
-                    {
                         pricePerNight = roomDetails.price * numRooms;
                         lblError.Visible = false;
-                    }
+                    
                 }
                 price = calcPrice.calculatePrice(((endDate.Value - startDate.Value).TotalDays), pricePerNight);
                 points = Convert.ToInt32(calcPrice.calculatePoints(((endDate.Value - startDate.Value).TotalDays)));
 
                 // fill fields
-                Utilities getDeposit = new Utilities();
-                //lblDeposit.Text = getDeposit.getMinCharge().ToString();
                 txtCostNightly.Text = pricePerNight.ToString();
                 lblSubTotal.Text = price.ToString();
                 cboxHotel.Enabled = false;
@@ -334,7 +326,6 @@ namespace Hotel_Reservation_Overhaul
             cboxNumGuests.SelectedIndex = -1;
             cboxNumRooms.SelectedIndex = -1;
             lblSubTotal.Text = string.Empty;
-            //lblDeposit.Text = string.Empty;
             txtCostNightly.Text = string.Empty;
             monthStart.SetDate(currentDate);
             monthEnd.SetDate(currentDate);
