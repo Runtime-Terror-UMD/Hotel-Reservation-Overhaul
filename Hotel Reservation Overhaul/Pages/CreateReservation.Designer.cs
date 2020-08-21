@@ -341,7 +341,7 @@
             this.lblError.Name = "lblError";
             this.lblError.Size = new System.Drawing.Size(568, 20);
             this.lblError.TabIndex = 22;
-            this.lblError.Text = "Error: Start date later than end date or no start date selected";
+            this.lblError.Text = "";
             this.lblError.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.lblError.Visible = false;
             // 
