@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Windows.Forms;
 
 public class Reservation
 {
@@ -183,6 +184,11 @@ public class Reservation
             createResCmd.Parameters["@roomNum"].Value = newResRoomNum;
             createResConn.NonQuery(createResCmd);
         }
+        if(confirmationID != -1)
+        {
+            LoggedActivity logNewRes = new LoggedActivity();
+            logNewRes.logActivity(resUserID, 1, confirmationID, currentDate, newResUserID);
+        }
         return confirmationID;
     }
 
@@ -233,17 +239,25 @@ public class Reservation
         logCheckout.logActivity(userID, 5, this.confirmatonID, currentDate, 17);
         //update customer rewards point balance
         Reward checkoutReward = new Reward();
-        checkoutReward.setRewardsPoints(userID, points, 17);
+        checkoutReward.setRewardsPoints(userID, points, 17, currentDate);
         //charge customer remaining balance on reservation
-        PaymentRecord checkoutPayment = new PaymentRecord();
-        DBConnect checkinConn = new DBConnect();
-        MySqlCommand cmd = new MySqlCommand("SELECT ccNum from dbo.payment where confirmationID = @confirm");
-        cmd.Parameters.Add("@confirm", MySqlDbType.Int32).Value = confirmatonID;
-        DBConnect ccNumConn = new DBConnect();
-        string ccNum = ccNumConn.stringScalar(cmd);
-        ccNumConn.CloseConnection();
-
-        checkoutPayment.makePayment(userID, confirmatonID, amountDue, "Credit Card", false, currentDate, ccNum);
+        try
+        {
+            PaymentRecord checkoutPayment = new PaymentRecord();
+            DBConnect checkinConn = new DBConnect();
+            MySqlCommand cmd = new MySqlCommand("SELECT ccNum from dbo.payment where confirmationID = @confirm");
+            cmd.Parameters.Add("@confirm", MySqlDbType.Int32).Value = confirmatonID;
+            DBConnect ccNumConn = new DBConnect();
+            string ccNum = ccNumConn.stringScalar(cmd);
+            ccNumConn.CloseConnection();
+            checkoutPayment.makePayment(userID, confirmatonID, amountDue, "Credit Card", false, currentDate, ccNum);
+            amountPaid += amountDue;
+            amountDue = 0;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Unable to retrieve previous credit card number." + ex);
+        }
         //update status
         status = "checked-out";
         if (updateReservation(this))

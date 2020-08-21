@@ -30,7 +30,7 @@ public class Reward
         return rewards;
     }
     //DESCRIPTION: Sets rewards points based on userid
-    public bool setRewardsPoints(int userID, int points, int createdBy)
+    public bool setRewardsPoints(int userID, int points, int createdBy, DateTime currentDate)
     {
         // build query
         MySqlCommand cmd = new MySqlCommand("UPDATE `dbo`.`user` SET `pointsBalance` = pointsBalance + @newPoints WHERE `userID` = @userID");
@@ -39,13 +39,29 @@ public class Reward
         DBConnect updatePoints = new DBConnect();
         if ((updatePoints.NonQuery(cmd)) > 0)
         {
-            // add to rewards log
             cmd.CommandText = @"INSERT INTO `dbo`.`reward_log` (`customerID`,`PointsAmount`,`createdBy`,`created`)
                                     VALUES(@userID, @newPoints, @createdBy, @created)";
             cmd.Parameters.Add("@createdBy", MySqlDbType.Int32).Value = createdBy;
-            cmd.Parameters.Add("@created", MySqlDbType.Date).Value = DateTime.Today;
+            cmd.Parameters.Add("@created", MySqlDbType.Date).Value = currentDate;
             if ((updatePoints.NonQuery(cmd)) > 0)
-                return true;
+              
+            {
+               cmd.CommandText = "SELECT rewardLogID from reward_log order by rewardLogID desc limit 1";
+                int rewardLogID = updatePoints.intScalar(cmd);
+               
+                // add to rewards log
+                MySqlCommand activityLog = new MySqlCommand(@"INSERT INTO `dbo`.`activitylog`
+                                (userID,activityTypeID,refID,created,createdBy)
+                                VALUES(@userID, 6,@refID, @created, @createdBy);");
+                activityLog.Parameters.Add("@createdBy", MySqlDbType.Int32).Value = createdBy;
+                activityLog.Parameters.Add("@created", MySqlDbType.Date).Value = currentDate;
+                activityLog.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
+                activityLog.Parameters.Add("@refID", MySqlDbType.Int32).Value = rewardLogID;
+
+                if ((updatePoints.NonQuery(activityLog)) > 0)
+                    return true;
+                return false;
+            }
             return false;
         }
         return false;

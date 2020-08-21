@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.btnTime = new System.Windows.Forms.Button();
             this.components = new System.ComponentModel.Container();
             this.btnReturn = new System.Windows.Forms.Button();
             this.lblDescribe = new System.Windows.Forms.Label();
