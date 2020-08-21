@@ -31,7 +31,7 @@ class PaymentRecord
             if(usedRewards)
             {
                 Reward updateRewards = new Reward();
-                updateRewards.setRewardsPoints(userID, -50, userID);
+                updateRewards.setRewardsPoints(userID, -50, userID,currentDate);
             }
 
             // get payment ID
