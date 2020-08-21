@@ -100,7 +100,7 @@ namespace Hotel_Reservation_Overhaul.Pages
                                                             and al.activityTypeID = 8
                                                         where al.createdBy = @createdBy
                                                         and al.created between @startDate and @endDate");
-                    cmd.Parameters.Add("@userID", MySqlDbType.Int32).Value = userID;
+                    cmd.Parameters.Add("@createdBy", MySqlDbType.Int32).Value = userID;
                     cmd.Parameters.Add("@startDate", MySqlDbType.Date).Value = startDate;
                     cmd.Parameters.Add("@endDate", MySqlDbType.Date).Value = endDate;
                     ReportData = reportConn.ExecuteDataTable(cmd);

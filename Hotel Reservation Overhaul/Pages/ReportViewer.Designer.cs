@@ -141,7 +141,7 @@
             this.grpProfileInfo.Size = new System.Drawing.Size(1012, 166);
             this.grpProfileInfo.TabIndex = 16;
             this.grpProfileInfo.TabStop = false;
-            this.grpProfileInfo.Text = "Customer Profile";
+            this.grpProfileInfo.Text = "User Profile";
             // 
             // lblRewardDesc
             // 
