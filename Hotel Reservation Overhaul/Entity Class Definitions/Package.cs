@@ -23,7 +23,7 @@ class Package
         MySqlCommand insertPackage = new MySqlCommand(@"INSERT INTO `dbo`.`package`(`packageID`,`packageName`,`pricePerNight`) VALUES(@packID, @packName, @packCost)");
         insertPackage.Parameters.Add("@packID", MySqlDbType.Int32).Value = packID;
         insertPackage.Parameters.Add("@packName", MySqlDbType.VarChar, 45).Value = packName;
-        insertPackage.Parameters.Add("@packName", MySqlDbType.Decimal).Value = packCost;
+        insertPackage.Parameters.Add("@packCost", MySqlDbType.Decimal).Value = packCost;
         if (insertPackageConn.NonQuery(insertPackage) > 0)
             return true;
         else

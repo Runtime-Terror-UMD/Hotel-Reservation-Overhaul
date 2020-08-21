@@ -100,6 +100,17 @@ namespace Hotel_Reservation_Overhaul
             this.Show();
         }
 
+        private void btnRooms_Click(object sender, EventArgs e)
+        {
+            var rooms = new HotelRooms();
+            rooms.FormClosed += new FormClosedEventHandler(rooms_FormClosed);
+            this.Hide();
+            rooms.Show();
+        }
 
+        private void rooms_FormClosed(object sender, EventArgs e)
+        {
+            this.Show();
+        }
     }
 }
