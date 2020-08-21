@@ -138,7 +138,7 @@ namespace Hotel_Reservation_Overhaul
                     if (chkReward.Checked)
                     {
                         resInfo.totalPrice *= 0.9;
-                        resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
+                       // resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
                         // update reservation in database
                         resInfo.updateReservation(resInfo);
                     }
@@ -194,7 +194,7 @@ namespace Hotel_Reservation_Overhaul
                     if (chkReward.Checked)
                     {
                         resInfo.totalPrice *= 0.9;
-                        resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
+                        //resInfo.amountDue = resInfo.totalPrice - resInfo.amountPaid;
                         resInfo.updateReservation(resInfo);
                     }
 
