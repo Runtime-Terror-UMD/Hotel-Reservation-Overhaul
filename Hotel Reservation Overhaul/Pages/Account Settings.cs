@@ -40,11 +40,11 @@ namespace Hotel_Reservation_Overhaul.Pages
         {
             if(string.IsNullOrWhiteSpace(txtFirstName.Text))
             {
-                //throw error
+                MessageBox.Show("Unable to change name");
             }
             else if (string.IsNullOrWhiteSpace(txtLastName.Text))
             {
-                //throw error
+                MessageBox.Show("Unable to change name");
             }
             else
             {
@@ -72,7 +72,7 @@ namespace Hotel_Reservation_Overhaul.Pages
         {
             if(string.IsNullOrWhiteSpace(txtNewPassword.Text))
             {
-                //throw error
+                MessageBox.Show("Unable to change password");
             }
             Utilities accountInfo = new Utilities();
             if (accountInfo.passwordMatches(UserID, txtCurrentPassword.Text))
@@ -100,11 +100,11 @@ namespace Hotel_Reservation_Overhaul.Pages
             Utilities accountInfo = new Utilities();
             if(string.IsNullOrWhiteSpace(txtCurrentAnswer.Text))
             {
-                //throw error
+                MessageBox.Show("Unable to change question");
             }    
             else if(string.IsNullOrWhiteSpace(txtNewQuestion.Text))
             {
-                // throw error
+                MessageBox.Show("Unable to change question");
             }
             else if(userInfo.secretAnswer == txtCurrentAnswer.Text)
             {
