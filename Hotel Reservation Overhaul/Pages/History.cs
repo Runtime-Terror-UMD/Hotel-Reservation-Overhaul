@@ -69,24 +69,24 @@ namespace Hotel_Reservation_Overhaul.Pages
                 try
                 {
                     cmd.CommandText = @"select al.created 'Action Date',
-                                                        case 
-	                                                        when al.activityTypeID in (1,2,3) then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID, ' - Customer ID ',al.userID) 
-                                                            when al.activityTypeID = 6 then concat(atype.activityTypeDescription, ' - Points: ', rl.pointsAmount, ' - Customer ID ',al.userID) 
-                                                            when al.activityTypeID = 8 then concat(atype.activityTypeDescription, '- Pay ID: ', al.refID, ' - Customer ID ',al.userID) 
-	                                                        when al.activityTypeID = 4 then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID, ' - Customer ID ',al.userID) 
-	                                                        when al.activityTypeID = 5 then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID, ' - Customer ID ',al.userID) 
-                                                           end as 'Activity'
-                                                        from activitylog al
-                                                        join activitytype atype
-                                                            on atype.activityTypeID = al.activityTypeID
-                                                        left join reward_log rl
-	                                                        on rl.rewardLogID = al.refID
-                                                            and al.activityTypeID = 6
-                                                        left join payment p
-	                                                        on p.paymentID = al.refID
-                                                            and al.activityTypeID = 8
-                                                        where al.createdBy = @createdBy
-                                                        order by al.created desc";
+                                     case 
+	                                     when al.activityTypeID in (1,2,3) then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID, ' - Customer ID ',al.userID) 
+                                         when al.activityTypeID = 6 then concat(atype.activityTypeDescription, ' - Points: ', rl.pointsAmount, ' - Customer ID ',al.userID) 
+                                         when al.activityTypeID = 8 then concat('Processed customer payment '- Pay ID: ', al.refID, ' - Customer ID ',al.userID) 
+	                                     when al.activityTypeID = 4 then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID, ' - Customer ID ',al.userID) 
+	                                     when al.activityTypeID = 5 then concat(atype.activityTypeDescription, ' - Confirmation ID: ', al.refID, ' - Customer ID ',al.userID) 
+                                        end as 'Activity'
+                                     from activitylog al
+                                     join activitytype atype
+                                         on atype.activityTypeID = al.activityTypeID
+                                     left join reward_log rl
+	                                     on rl.rewardLogID = al.refID
+                                         and al.activityTypeID = 6
+                                     left join payment p
+	                                     on p.paymentID = al.refID
+                                         and al.activityTypeID = 8
+                                     where al.createdBy = @createdBy
+                                     order by al.created desc";
                     cmd.Parameters.Add("@createdBy", MySqlDbType.Int32).Value = userID;
 
                     ReportData = reportConn.ExecuteDataTable(cmd);

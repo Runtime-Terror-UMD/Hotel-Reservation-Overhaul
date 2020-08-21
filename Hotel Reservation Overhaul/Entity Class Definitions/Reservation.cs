@@ -97,12 +97,17 @@ public class Reservation
         return false;
     }
 
-    //public bool upgradeMaintenanceRoom(Reservation resInfo, int roomNum)
-    //{
-    //    Room getPackages = new Room();
-    //    getPackages.roomPackages(resInfo.roomNumList[0], resInfo.locationID);
-
-    //}
+    public bool upgradeMaintenanceRoom(Reservation resInfo, int roomNum)
+    {
+        Room getPackages = new Room();
+        getPackages.roomPackages(roomNum, locationID);
+        //get packages on current room to be upgraded
+        //get list of packages that are NOT included in room to be upgraded
+        //find one room with current pacakges plus any package from new list
+        //change room number
+        //log as system upgrade
+        return true;
+    }
 
     public void addRoomToRes(Reservation modResInfo, List<int> roomNumList)
     {
